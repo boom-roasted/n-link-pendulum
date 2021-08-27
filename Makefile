@@ -1,7 +1,7 @@
 build:
 	g++ pendulumsim.cpp -o pendulumsim -Wall
 
-run:
+sim:
 	./pendulumsim
 
 clean:

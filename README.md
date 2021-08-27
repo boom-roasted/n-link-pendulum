@@ -13,7 +13,7 @@ TODO
 
 No special packages are required, other than `g++`, `make`, and `python 3`.
 
-To run the entire simulation, clone the repository and run `make clean build run plot`.
-This command rebuilds the simulation code, re-runs the simulation, and plots the resultant data.
+To run the entire simulation, clone the repository and run `make clean build sim plot`.
+This command rebuilds the simulation code, runs the simulation, and plots the resultant data.
 
 Change simulation parameters such as simulation time or link node properties in the `main` function.
