@@ -141,6 +141,8 @@ class App:
         self.canvas.pack(fill="both", expand=True)
         self.scale = SCALE
 
+        self.uiTimeTextId = self.canvas.create_text(0, 0, text="", anchor="sw")
+
         self.chain: Chain = None
         self.chainGenerator = chainGenerator
         self.timeDelta = 0
@@ -158,6 +160,7 @@ class App:
         for n, node in enumerate(self.chain.nodes):
             pointPrev = Point.FromPin(self.chain.pin) if n == 0 else Point.FromNode(self.chain.nodes[n-1])
             self.uiNodes.append(UiNode(self.canvas, node, pointPrev))
+        self.UpdateUiTime()
         self.canvas.scale("all", 0, 0, self.scale, self.scale)
         self.canvas.tag_raise("node", "link")
         self.master.after(0, self.Update)
@@ -173,6 +176,7 @@ class App:
 
     def Update(self):
         self.canvas.update_idletasks()
+        self.UpdateUiTime()
         for n, node in enumerate(self.chain.nodes):
             pointPrev = Point.FromPin(self.chain.pin) if n == 0 else Point.FromNode(self.chain.nodes[n-1])
             self.uiNodes[n].Update(node, pointPrev)
@@ -180,9 +184,18 @@ class App:
 
         self.chain = self.NextRelevantChain()
         if self.chain is None:
-            self.master.destroy()
+            self.SimulationComplete()
         else:
             self.master.after(self.renderTimeDelta, self.Update)
+
+    def UpdateUiTime(self):
+        self.canvas.itemconfigure(self.uiTimeTextId, text=f"Sim. Time: {self.chain.ts:.2f} seconds")
+        padding = self.canvas.winfo_width() * 0.1
+        self.canvas.coords(self.uiTimeTextId, (0 + padding) / SCALE, (self.canvas.winfo_height() - padding) / SCALE)
+
+    def SimulationComplete(self):
+        oldText = self.canvas.itemcget(self.uiTimeTextId, "text")
+        self.canvas.itemconfigure(self.uiTimeTextId, text=oldText + ". Done. Press 'q' to quit.")
 
 
 if __name__ == "__main__":
