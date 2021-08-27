@@ -3,3 +3,6 @@ build:
 
 run:
 	./main
+
+clean:
+	rm -f main
