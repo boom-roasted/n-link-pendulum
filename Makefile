@@ -1,11 +1,11 @@
 build:
-	g++ main.cpp -o main -Wall
+	g++ pendulumsim.cpp -o pendulumsim -Wall
 
 run:
-	./main
+	./pendulumsim
 
 clean:
-	rm -f main
+	rm -f pendulumsim
 	rm -f data.bin
 
 plot:

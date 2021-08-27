@@ -2,7 +2,7 @@
 .cache/
 Project*/
 
-main
+pendulumsim
 
 compile_commands.json
 *.bin
