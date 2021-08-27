@@ -339,17 +339,18 @@ class Chain
 
 int main(int argc, char *argv[])
 {
-    const int numLinks = 4; // Size of chain
+    // Main modify-able simulation parameters
+    const int numLinks = 2; // Size of chain
     const std::string fp = "data.bin"; // Output data file
+    const double simTime = 10; // Simulation time, seconds
 
     // Default node properties
-    const double m = 1;
-    const double l = 1;
+    const double m = 0.25;
+    const double l = 3;
     const double k = 1e5;
     const double c = 0;
 
     const double deltaT = 1.0 / 200.0 * 1.0 / std::sqrt(k / m); // Time step increment
-    const double simTime = 10; // Simulation time, seconds
     const int iterations = std::lround(simTime / deltaT);
 
     auto chain = Chain::Create(numLinks, m, l, k, c, Chain::Layout::Line);
