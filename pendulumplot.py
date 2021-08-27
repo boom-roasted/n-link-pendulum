@@ -6,6 +6,7 @@ import tkinter as tk
 from typing import List
 
 SCALE = 50
+RENDER_TIME_DELTA = 20 # ms
 
 class Colors:
     NODE = "#03396c"
@@ -133,9 +134,11 @@ class UiNode:
 
 
 class App:
-    def __init__(self, master, chainGenerator):
+    def __init__(self, master, chainGeneratorFunc):
         self.master: tk.Tk = master
         self.master.bind_all('<Key>', self.HandleKeyPress)
+
+        self.chainGeneratorFunc = chainGeneratorFunc
 
         self.canvas: tk.Canvas = tk.Canvas(self.master, width=SCALE, height=SCALE)
         self.canvas.pack(fill="both", expand=True)
@@ -144,18 +147,22 @@ class App:
         self.uiTimeTextId = self.canvas.create_text(0, 0, text="", anchor="sw")
 
         self.chain: Chain = None
-        self.chainGenerator = chainGenerator
-        self.timeDelta = 0
-        self.renderTimeDelta = 20 # milliseconds
+        self._updateJob = None
+        self.chainGenerator = chainGeneratorFunc()
         self.InitializeChain()
 
     def HandleKeyPress(self, event):
         if event.char == 'q':
             self.master.quit()
+        elif event.char == 'r':
+            if self._updateJob is not None:
+                self.canvas.after_cancel(self._updateJob)
+            self.chainGenerator = chainGeneratorFunc()
+            self.chain = next(self.chainGenerator)
+            self._updateJob = self.master.after(0, self.Update)
 
     def InitializeChain(self):
         self.chain = next(self.chainGenerator)
-        self.ts = self.chain.ts
         self.uiNodes: List[UiNode] = []
         for n, node in enumerate(self.chain.nodes):
             pointPrev = Point.FromPin(self.chain.pin) if n == 0 else Point.FromNode(self.chain.nodes[n-1])
@@ -163,11 +170,11 @@ class App:
         self.UpdateUiTime()
         self.canvas.scale("all", 0, 0, self.scale, self.scale)
         self.canvas.tag_raise("node", "link")
-        self.master.after(0, self.Update)
+        self._updateJob = self.master.after(0, self.Update)
 
     def NextRelevantChain(self):
         oldTime = self.chain.ts
-        while self.chain.ts - oldTime < self.renderTimeDelta / 1000:
+        while self.chain.ts - oldTime < RENDER_TIME_DELTA / 1000:
             try:
                 self.chain = next(self.chainGenerator)
             except StopIteration:
@@ -184,18 +191,19 @@ class App:
 
         self.chain = self.NextRelevantChain()
         if self.chain is None:
+            self._updateJob = None
             self.SimulationComplete()
         else:
-            self.master.after(self.renderTimeDelta, self.Update)
+            self._updateJob = self.master.after(RENDER_TIME_DELTA, self.Update)
 
     def UpdateUiTime(self):
-        self.canvas.itemconfigure(self.uiTimeTextId, text=f"Sim. Time: {self.chain.ts:.2f} seconds")
+        self.canvas.itemconfigure(self.uiTimeTextId, text=f"Sim. Time: {self.chain.ts:.2f} seconds.\nPress 'q' to quit. Press 'r' to restart.")
         padding = self.canvas.winfo_width() * 0.1
         self.canvas.coords(self.uiTimeTextId, (0 + padding) / SCALE, (self.canvas.winfo_height() - padding) / SCALE)
 
     def SimulationComplete(self):
         oldText = self.canvas.itemcget(self.uiTimeTextId, "text")
-        self.canvas.itemconfigure(self.uiTimeTextId, text=oldText + ". Done. Press 'q' to quit.")
+        self.canvas.itemconfigure(self.uiTimeTextId, text=oldText + "\nDone. Simulation complete.")
 
 
 if __name__ == "__main__":
@@ -208,9 +216,9 @@ if __name__ == "__main__":
 
     # Assume data file is argument
     fp = sys.argv[1]
-    chainGenerator = ReadChains(fp)
+    chainGeneratorFunc = lambda: ReadChains(fp)
 
     # Initialize tk environment
     root = tk.Tk()
-    app = App(root, chainGenerator)
+    app = App(root, chainGeneratorFunc)
     root.mainloop()
