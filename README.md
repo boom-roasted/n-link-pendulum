@@ -11,9 +11,11 @@ Only one timestep (approximately) is held in memory at a time, allowing this sim
 ## Screenshots
 
 2-link pendulum
+
 ![Image of 2-link pendulum](img/2-link.png)
 
 5-link pendulum
+
 ![Image of 5-link pendulum](img/5-link.png)
 
 ## Quickstart
