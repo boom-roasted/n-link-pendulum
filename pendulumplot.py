@@ -7,6 +7,10 @@ from typing import List
 
 SCALE = 50
 
+class Colors:
+    NODE = "#03396c"
+    LINK = "#6497b1"
+
 class Pin:
     fmt = "dd"
     unpack = struct.Struct(fmt).unpack_from
@@ -105,12 +109,12 @@ def CircleCoords(x, y, r):
 class UiNode:
     def __init__(self, canvas: tk.Canvas, node: Node, pointPrevious: Point):
         self.canvas = canvas
-        self.radius = 0.25
+        self.radius = 0.2
         x, y, x1, y1 = CircleCoords(node.state.x, node.state.y, self.radius)
         w = self._WidthAdjustment()
         h = self._HeightAdjustment()
-        self.nodeId = canvas.create_oval(x + w, y + h, x1 + w, y1 + h, outline="", fill="purple")
-        self.linkId = canvas.create_line(pointPrevious.x + w, pointPrevious.y + h, node.state.x + w, node.state.y + h, fill="orange", width=5)
+        self.nodeId = canvas.create_oval(x + w, y + h, x1 + w, y1 + h, tags="node", outline="", fill=Colors.NODE)
+        self.linkId = canvas.create_line(pointPrevious.x + w, pointPrevious.y + h, node.state.x + w, node.state.y + h, tags="link", fill=Colors.LINK, width=5)
 
     def _WidthAdjustment(self):
         """Add this to an x coordinate to center it"""
@@ -140,7 +144,7 @@ class App:
         self.chain: Chain = None
         self.chainGenerator = chainGenerator
         self.timeDelta = 0
-        self.renderTimeDelta = 10 # milliseconds
+        self.renderTimeDelta = 20 # milliseconds
         self.InitializeChain()
 
     def HandleKeyPress(self, event):
@@ -155,7 +159,7 @@ class App:
             pointPrev = Point.FromPin(self.chain.pin) if n == 0 else Point.FromNode(self.chain.nodes[n-1])
             self.uiNodes.append(UiNode(self.canvas, node, pointPrev))
         self.canvas.scale("all", 0, 0, self.scale, self.scale)
-
+        self.canvas.tag_raise("node", "link")
         self.master.after(0, self.Update)
 
     def NextRelevantChain(self):
@@ -179,6 +183,7 @@ class App:
             self.master.destroy()
         else:
             self.master.after(self.renderTimeDelta, self.Update)
+
 
 if __name__ == "__main__":
     import sys

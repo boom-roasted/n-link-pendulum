@@ -348,8 +348,8 @@ int main(int argc, char *argv[])
     const double k = 1e5;
     const double c = 0;
 
-    const double deltaT = 1.0 / 100.0 * 1.0 / std::sqrt(k / m); // Time step increment
-    const double simTime = 20; // Simulation time, seconds
+    const double deltaT = 1.0 / 200.0 * 1.0 / std::sqrt(k / m); // Time step increment
+    const double simTime = 10; // Simulation time, seconds
     const int iterations = std::lround(simTime / deltaT);
 
     auto chain = Chain::Create(numLinks, m, l, k, c, Chain::Layout::Line);
