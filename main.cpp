@@ -44,7 +44,7 @@ struct State
     }
 };
 
-struct Node 
+struct Node
 {
     double m; // Mass of node, kg
     double l; // Initial length to node, meter
@@ -141,7 +141,7 @@ std::vector<State> ComputeState(const Pin& pin, const std::vector<Node>& nodes)
         const auto dist = std::sqrt(
                 ( node.state.x - xPrev ) * ( node.state.x - xPrev ) +
                 ( node.state.y - yPrev ) * ( node.state.y - yPrev ));
-        
+
         // Difference in distance from initial link length
         const auto deltaS = dist - node.l;
 
@@ -231,7 +231,7 @@ class Chain
     {
         // Update time
         ts += deltaT;
-        
+
         const auto z1 = nodes;
         const auto f1 = ComputeState(pin, z1);
 
@@ -244,7 +244,7 @@ class Chain
         for (std::size_t n = 0; n < nodes.size(); n++)
         {
             auto& node = nodes[n];
-            
+
             // Function evaluation at specific node
             const auto& f1n = f1[n];
             const auto& f2n = f2[n];
