@@ -320,7 +320,7 @@ class Chain
         return chains;
     }
 
-    void WriteState() const
+    void PrintState() const
     {
         std::cout << "t = " << ts;
 
@@ -339,8 +339,6 @@ class Chain
 
 int main(int argc, char *argv[])
 {
-    std::cout << "hello\n";
-
     const int numLinks = 4; // Size of chain
 
     // Default node properties
@@ -350,7 +348,7 @@ int main(int argc, char *argv[])
     const double c = 0;
 
     const double deltaT = 1.0 / 100.0 * 1.0 / std::sqrt(k / m); // Time step increment
-    const double simTime = 0.001; // Simulation time, seconds
+    const double simTime = 20; // Simulation time, seconds
     const int iterations = std::lround(simTime / deltaT);
 
     auto chain = Chain::Create(numLinks, m, l, k, c, Chain::Layout::Line);
@@ -363,29 +361,54 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    // Write initial node state
-    chain.WriteState();
+    // Write initial state to file
+    chain.Serialize(fout);
 
+    // Main simulation loop
     for (int i = 0; i < iterations; i++)
     {
         // Increment time
         chain.RungaKuttaStep(deltaT);
 
-        // Write node state
-        chain.WriteState();
+        // Write state to file
         chain.Serialize(fout);
+
+        // Display progress
+        if (i % 1000 == 0)
+        {
+            double progress = i / static_cast<double>(iterations);
+            const int barWidth = 70;
+            std::cout << "[";
+            int barPosition = barWidth * progress;
+            for (int i = 0; i < barWidth; ++i)
+            {
+                if (i <= barPosition) std::cout << "#";
+                else std::cout << " ";
+            }
+            std::cout << "] " << int(std::lround(progress * 100.0)) << " %\r";
+            std::cout.flush();
+        }
     }
+
+    // Finish progress bar
+    std::cout << std::endl;
 
     // Close data file
     fout.close();
 
-    // Read output file
-    const auto resultChains = Chain::Deserialize("data.bin");
-
-    // Print resultant data (read from file) to demonstrate it's integrety
-    for (const auto& c : resultChains)
+    // Read output file and print resultant data to demonstrate integrety
+    constexpr bool printResult = false;
+    if (printResult)
     {
-        c.WriteState();
+        const auto resultChains = Chain::Deserialize("data.bin");
+
+        for (const auto& c : resultChains)
+        {
+            std::cout << "r: ";
+            c.PrintState();
+        }
     }
+
+
     return 0;
 }
