@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <stdexcept>
 #include <vector>
 #include <cmath>
 
@@ -60,6 +62,8 @@ struct Node
         : m(m), l(l), k(k), c(c), state(x0, y0, xdot0, ydot0)
     {
     }
+
+    Node() : Node(0, 0, 0, 0, 0, 0, 0, 0) {} // Requried for reading binary file
 
     Node WithState(const State& newState) const
     {
@@ -169,11 +173,12 @@ std::vector<State> ComputeState(const Pin& pin, const std::vector<Node>& nodes)
 
 class Chain
 {
+    double ts; // Time stamp
     Pin pin;
     std::vector<Node> nodes;
 
-    Chain(const Pin& pin, const std::vector<Node>& nodes)
-        : pin(pin), nodes(nodes)
+    Chain(double ts, const Pin& pin, const std::vector<Node>& nodes)
+        : ts(ts), pin(pin), nodes(nodes)
     {
     }
 
@@ -187,6 +192,7 @@ class Chain
     static Chain Create(int numNodes, double m, double l, double k, double c, Layout layout)
     {
         // Defaults
+        const double currentTime = 0;
         const auto pin = Pin(0, 0);
         const double xdot0 = 0;
         const double ydot0 = 0;
@@ -217,13 +223,14 @@ class Chain
             nodes.push_back(node);
         }
 
-        return Chain(pin, nodes);
+        return Chain(currentTime, pin, nodes);
     }
 
     // A second order Runga Kutta function
     void RungaKuttaStep(double deltaT)
     {
-        std::cout << "Computing step function" << std::endl;
+        // Update time
+        ts += deltaT;
         
         const auto z1 = nodes;
         const auto f1 = ComputeState(pin, z1);
@@ -249,19 +256,84 @@ class Chain
         }
     }
 
-    void WriteState()
+    // Serialize this chain in it's current state to binary format
+    void Serialize(std::ofstream& f)
     {
-        std::cout << "Writing chain state" << std::endl;
-        int n = 0;
-        for (const auto& node : nodes)
+        // Current time
+        f.write(reinterpret_cast<char*>( &ts ), sizeof(ts));
+
+        // Pin x, pin y
+        f.write(reinterpret_cast<char*>( &pin.x ), sizeof(pin.x));
+        f.write(reinterpret_cast<char*>( &pin.y ), sizeof(pin.y));
+
+        // Number of nodes
+        auto numNodes = nodes.size();
+        f.write(reinterpret_cast<char*>( &numNodes ), sizeof(numNodes));
+
+        // This should work because vector data should be contiguous.
+        // Point to the first item, then write out the size of all items.
+        f.write(reinterpret_cast<char*>( &nodes[0] ), nodes.size() * sizeof(nodes[0])); // Node data
+    }
+
+    // Read in a binary file of many chains
+    static std::vector<Chain> Deserialize(const std::string& p)
+    {
+        // Open file for reading
+        auto f = std::ifstream(p, std::ios::in | std::ios::binary);
+        if (!f)
+            throw std::runtime_error("Cannot open file for reading");
+
+        // Initialize chain vector
+        auto chains = std::vector<Chain>();
+
+        // Read all chains available
+        while (!f.eof())
         {
-            std::cout << 
-                "Node " + std::to_string(n) 
-                + ": x: " + std::to_string(node.state.x)
-                + ", y: " + std::to_string(node.state.y)
-                << std::endl;
-            n++;
+            // Current time
+            double currentTime;
+            f.read(reinterpret_cast<char*>( &currentTime ), sizeof(currentTime));
+
+            // Pinx, pin y
+            double xPin;
+            double yPin;
+            f.read(reinterpret_cast<char*>( &xPin ), sizeof(xPin));
+            f.read(reinterpret_cast<char*>( &yPin ), sizeof(yPin));
+
+            // Number of nodes
+            std::size_t numNodes;
+            f.read(reinterpret_cast<char*>( &numNodes ), sizeof(numNodes));
+
+            // Nodes vector
+            std::vector<Node> nodes(numNodes);
+            f.read(reinterpret_cast<char*>( nodes.data() ), nodes.size() * sizeof(Node));
+
+            // Store chain
+            chains.push_back(Chain(currentTime, Pin(xPin, yPin), nodes));
         }
+
+        // Close input file
+        f.close();
+
+        // TODO The last value appears to be trash.
+        chains.pop_back();
+
+        return chains;
+    }
+
+    void WriteState() const
+    {
+        std::cout << "t = " << ts;
+
+        for (std::size_t n = 0; n < nodes.size(); n++)
+        {
+            const auto& node = nodes[n];
+            std::cout << "\t" <<
+                "Node(x: " << node.state.x << ", y: " << node.state.y <<
+                // ", xdot: " << node.state.xdot << ", ydot: " << node.state.ydot <<
+                ")";
+        }
+
+        std::cout << std::endl;
     }
 };
 
@@ -270,7 +342,7 @@ int main(int argc, char *argv[])
     std::cout << "hello\n";
 
     const int numLinks = 4; // Size of chain
-    
+
     // Default node properties
     const double m = 1;
     const double l = 1;
@@ -278,10 +350,18 @@ int main(int argc, char *argv[])
     const double c = 0;
 
     const double deltaT = 1.0 / 100.0 * 1.0 / std::sqrt(k / m); // Time step increment
-    const double simTime = 5; // Simulation time, seconds
+    const double simTime = 0.001; // Simulation time, seconds
     const int iterations = std::lround(simTime / deltaT);
 
     auto chain = Chain::Create(numLinks, m, l, k, c, Chain::Layout::Line);
+
+    // Data storage
+    auto fout = std::ofstream("data.bin", std::ios::out | std::ios::binary);
+    if (!fout)
+    {
+        std::cout << "Cannot open file for writing!" << std::endl;
+        return 1;
+    }
 
     // Write initial node state
     chain.WriteState();
@@ -293,7 +373,19 @@ int main(int argc, char *argv[])
 
         // Write node state
         chain.WriteState();
+        chain.Serialize(fout);
     }
 
+    // Close data file
+    fout.close();
+
+    // Read output file
+    const auto resultChains = Chain::Deserialize("data.bin");
+
+    // Print resultant data (read from file) to demonstrate it's integrety
+    for (const auto& c : resultChains)
+    {
+        c.WriteState();
+    }
     return 0;
 }
