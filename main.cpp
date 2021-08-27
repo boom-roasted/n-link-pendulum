@@ -340,6 +340,7 @@ class Chain
 int main(int argc, char *argv[])
 {
     const int numLinks = 4; // Size of chain
+    const std::string fp = "data.bin"; // Output data file
 
     // Default node properties
     const double m = 1;
@@ -354,7 +355,7 @@ int main(int argc, char *argv[])
     auto chain = Chain::Create(numLinks, m, l, k, c, Chain::Layout::Line);
 
     // Data storage
-    auto fout = std::ofstream("data.bin", std::ios::out | std::ios::binary);
+    auto fout = std::ofstream(fp, std::ios::out | std::ios::binary);
     if (!fout)
     {
         std::cout << "Cannot open file for writing!" << std::endl;
@@ -400,7 +401,7 @@ int main(int argc, char *argv[])
     constexpr bool printResult = false;
     if (printResult)
     {
-        const auto resultChains = Chain::Deserialize("data.bin");
+        const auto resultChains = Chain::Deserialize(fp);
 
         for (const auto& c : resultChains)
         {
