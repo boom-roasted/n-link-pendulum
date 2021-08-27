@@ -6,3 +6,7 @@ run:
 
 clean:
 	rm -f main
+	rm -f data.bin
+
+plot:
+	python pendulumplot.py data.bin
