@@ -148,6 +148,7 @@ class App:
 
         self.chain: Chain = None
         self._updateJob = None
+        self._paused = False
         self.chainGenerator = chainGeneratorFunc()
         self.InitializeChain()
 
@@ -160,6 +161,16 @@ class App:
             self.chainGenerator = chainGeneratorFunc()
             self.chain = next(self.chainGenerator)
             self._updateJob = self.master.after(0, self.Update)
+        elif event.char == ' ':
+            if self._paused:
+                self._paused = False
+                if self.chain is not None and self._updateJob is not None: # Only play if not finished
+                    self._updateJob = self.master.after(0, self.Update)
+            else:
+                self._paused = True
+                if self._updateJob is not None:
+                    self.canvas.after_cancel(self._updateJob)
+
 
     def InitializeChain(self):
         self.chain = next(self.chainGenerator)
@@ -197,7 +208,7 @@ class App:
             self._updateJob = self.master.after(RENDER_TIME_DELTA, self.Update)
 
     def UpdateUiTime(self):
-        self.canvas.itemconfigure(self.uiTimeTextId, text=f"Sim. Time: {self.chain.ts:.2f} seconds.\nPress 'q' to quit. Press 'r' to restart.")
+        self.canvas.itemconfigure(self.uiTimeTextId, text=f"Sim. Time: {self.chain.ts:.2f} seconds.\nPress 'q' to quit\nPress 'r' to restart\nPress '<space>' to pause")
         padding = self.canvas.winfo_width() * 0.1
         self.canvas.coords(self.uiTimeTextId, (0 + padding) / SCALE, (self.canvas.winfo_height() - padding) / SCALE)
 
