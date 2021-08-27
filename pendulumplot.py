@@ -231,5 +231,6 @@ if __name__ == "__main__":
 
     # Initialize tk environment
     root = tk.Tk()
+    root.geometry("600x400+50+50")
     app = App(root, chainGeneratorFunc)
     root.mainloop()
