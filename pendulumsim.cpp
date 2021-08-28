@@ -12,6 +12,40 @@ struct Pin
     Pin(double x, double y) : x(x), y(y) {}
 };
 
+// Vector in the spacial 2D sense of the word
+struct Vector
+{
+    double x;
+    double y;
+
+    Vector(double x, double y) : x(x), y(y) {}
+
+    double Dot(const Vector& other) const
+    {
+        return x * other.x + y * other.y;
+    }
+
+    double Magnitude() const
+    {
+        return std::sqrt(x * x + y * y);
+    }
+
+    Vector operator*(double k) const
+    {
+        return Vector(x *k, y *k);
+    }
+
+    Vector ProjectOnto(const Vector& other) const
+    {
+        return other * (Dot(other) / other.Dot(other));
+    }
+};
+
+Vector operator*(double k, const Vector& v)
+{
+    return v * k;
+}
+
 struct State
 {
     double x; // X position
@@ -116,7 +150,6 @@ std::vector<State> operator+(const std::vector<State>& statesLHS, const std::vec
     return s;
 }
 
-
 std::vector<State> ComputeState(const Pin& pin, const std::vector<Node>& nodes)
 {
     // Initialize return structure
@@ -145,8 +178,19 @@ std::vector<State> ComputeState(const Pin& pin, const std::vector<Node>& nodes)
         // Difference in distance from initial link length
         const auto deltaS = dist - node.l;
 
-        // Force of link on node (Hooke's Law)
-        const auto force = node.k * deltaS;
+        // Spring force of link on node (Hooke's Law)
+        const auto kForce = node.k * deltaS;
+
+        // Velocity of link expansion is the portion of velocity along the link
+        const auto linkExpansionV =
+                Vector(node.state.xdot, node.state.ydot)
+                .ProjectOnto(Vector(node.state.x - xPrev, node.state.y - yPrev));
+
+        // Damper force of link on node
+        const auto cForce = (node.c * linkExpansionV).Magnitude();
+
+        // Force of link on node
+        const auto force = kForce - cForce;
 
         // Deconstruct force into x and y directions
         const auto xForce = force * (node.state.x - xPrev) / dist;
@@ -342,13 +386,13 @@ int main(int argc, char *argv[])
     // Main modify-able simulation parameters
     const int numLinks = 2; // Size of chain
     const std::string fp = "data.bin"; // Output data file
-    const double simTime = 10; // Simulation time, seconds
+    const double simTime = 20; // Simulation time, seconds
 
     // Default node properties
     const double m = 0.25;
     const double l = 3;
     const double k = 1e5;
-    const double c = 0;
+    const double c = 0.0001;
 
     const double deltaT = 1.0 / 200.0 * 1.0 / std::sqrt(k / m); // Time step increment
     const int iterations = std::lround(simTime / deltaT);
