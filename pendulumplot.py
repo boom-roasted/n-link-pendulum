@@ -142,7 +142,6 @@ class App:
 
         self.canvas: tk.Canvas = tk.Canvas(self.master, width=SCALE, height=SCALE)
         self.canvas.pack(fill="both", expand=True)
-        self.scale = SCALE
 
         self.uiTimeTextId = self.canvas.create_text(0, 0, text="", anchor="sw")
 
@@ -171,7 +170,6 @@ class App:
                 if self._updateJob is not None:
                     self.canvas.after_cancel(self._updateJob)
 
-
     def InitializeChain(self):
         self.chain = next(self.chainGenerator)
         self.uiNodes: List[UiNode] = []
@@ -179,7 +177,7 @@ class App:
             pointPrev = Point.FromPin(self.chain.pin) if n == 0 else Point.FromNode(self.chain.nodes[n-1])
             self.uiNodes.append(UiNode(self.canvas, node, pointPrev))
         self.UpdateUiTime()
-        self.canvas.scale("all", 0, 0, self.scale, self.scale)
+        self.canvas.scale("all", 0, 0, SCALE, SCALE)
         self.canvas.tag_raise("node", "link")
         self._updateJob = self.master.after(0, self.Update)
 
@@ -198,7 +196,7 @@ class App:
         for n, node in enumerate(self.chain.nodes):
             pointPrev = Point.FromPin(self.chain.pin) if n == 0 else Point.FromNode(self.chain.nodes[n-1])
             self.uiNodes[n].Update(node, pointPrev)
-        self.canvas.scale("all", 0, 0, self.scale, self.scale)
+        self.canvas.scale("all", 0, 0, SCALE, SCALE)
 
         self.chain = self.NextRelevantChain()
         if self.chain is None:
