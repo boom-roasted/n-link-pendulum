@@ -270,8 +270,8 @@ class Chain
         return Chain(currentTime, pin, nodes);
     }
 
-    // A second order Runga Kutta function
-    void RungaKuttaStep(double deltaT)
+    // A second order Runge Kutta function
+    void RungeKuttaSecondOrder(double deltaT)
     {
         // Update time
         ts += deltaT;
@@ -414,7 +414,7 @@ int main(int argc, char *argv[])
     for (int i = 0; i < iterations; i++)
     {
         // Increment time
-        chain.RungaKuttaStep(deltaT);
+        chain.RungeKuttaSecondOrder(deltaT);
 
         // Write state to file
         chain.Serialize(fout);

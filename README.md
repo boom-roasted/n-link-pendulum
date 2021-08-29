@@ -1,6 +1,6 @@
 # n-Link Pendulum
 
-A simulation of an n-link pendulum system demonstrating numerical analysis with the Runga Kutta method.
+A simulation of an n-link pendulum system demonstrating numerical analysis with the Runge Kutta method.
 
 ## Overview
 
