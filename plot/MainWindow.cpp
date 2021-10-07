@@ -23,12 +23,16 @@ MainWindow::init()
     bool success = true;
 
     // Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    {
         printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
         success = false;
-    } else {
+    }
+    else
+    {
         // Set texture filtering to linear
-        if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
+        if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
+        {
             printf("Warning: Linear texture filtering not enabled!");
         }
 
@@ -40,28 +44,35 @@ MainWindow::init()
             screenWidth_,
             screenHeight_,
             SDL_WINDOW_SHOWN);
-        if (window_ == NULL) {
+        if (window_ == NULL)
+        {
             printf(
                 "Window could not be created! SDL Error: %s\n", SDL_GetError());
             success = false;
-        } else {
+        }
+        else
+        {
             // Create vsynced renderer for window
             renderer_ = SDL_CreateRenderer(
                 window_,
                 -1,
                 SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-            if (renderer_ == NULL) {
+            if (renderer_ == NULL)
+            {
                 printf(
                     "Renderer could not be created! SDL Error: %s\n",
                     SDL_GetError());
                 success = false;
-            } else {
+            }
+            else
+            {
                 // Initialize renderer color
                 SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
 
                 // Initialize PNG loading
                 int imgFlags = IMG_INIT_PNG;
-                if (!(IMG_Init(imgFlags) & imgFlags)) {
+                if (!(IMG_Init(imgFlags) & imgFlags))
+                {
                     printf(
                         "SDL_image could not initialize! SDL_image Error: %s\n",
                         IMG_GetError());
@@ -81,7 +92,8 @@ MainWindow::loadMedia()
     bool success = true;
 
     // Load dot texture
-    if (!dotTexture_.loadFromFile("dot.bmp", renderer_)) {
+    if (!dotTexture_.loadFromFile("dot.bmp", renderer_))
+    {
         printf("Failed to load dot texture!\n");
         success = false;
     }
@@ -110,13 +122,19 @@ int
 MainWindow::runLoop()
 {
     // Start up SDL and create window
-    if (!init()) {
+    if (!init())
+    {
         printf("Failed to initialize!\n");
-    } else {
+    }
+    else
+    {
         // Load media
-        if (!loadMedia()) {
+        if (!loadMedia())
+        {
             printf("Failed to load media!\n");
-        } else {
+        }
+        else
+        {
             // Main loop flag
             bool quit = false;
 
@@ -127,13 +145,16 @@ MainWindow::runLoop()
             Dot dot(screenWidth_, screenHeight_);
 
             // While application is running
-            while (!quit) {
+            while (!quit)
+            {
                 // Handle events on queue
-                while (SDL_PollEvent(&e) != 0) {
+                while (SDL_PollEvent(&e) != 0)
+                {
                     // User requests quit
                     if (e.type == SDL_QUIT ||
                         (e.type == SDL_KEYUP && e.key.repeat == 0 &&
-                         e.key.keysym.sym == SDLK_q)) {
+                         e.key.keysym.sym == SDLK_q))
+                    {
                         quit = true;
                     }
 

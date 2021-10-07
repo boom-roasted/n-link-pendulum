@@ -15,7 +15,8 @@ struct Pin
     Pin(double x, double y)
         : x(x)
         , y(y)
-    {}
+    {
+    }
 };
 
 // Vector in the spacial 2D sense of the word
@@ -27,7 +28,8 @@ struct Vector
     Vector(double x, double y)
         : x(x)
         , y(y)
-    {}
+    {
+    }
 
     double Dot(const Vector& other) const { return x * other.x + y * other.y; }
 
@@ -60,7 +62,8 @@ struct State
         , y(y)
         , xdot(xdot)
         , ydot(ydot)
-    {}
+    {
+    }
 
     State operator*(double k) const
     {
@@ -89,7 +92,8 @@ struct Node
         , k(k)
         , c(c)
         , state(state)
-    {}
+    {
+    }
 
     Node(
         double m,
@@ -105,11 +109,13 @@ struct Node
         , k(k)
         , c(c)
         , state(x0, y0, xdot0, ydot0)
-    {}
+    {
+    }
 
     Node()
         : Node(0, 0, 0, 0, 0, 0, 0, 0)
-    {} // Requried for reading binary file
+    {
+    } // Requried for reading binary file
 
     Node WithState(const State& newState) const
     {
@@ -123,7 +129,8 @@ operator*(const std::vector<State>& states, double k)
     auto s = std::vector<State>();
     s.reserve(states.size());
 
-    for (const auto& state : states) {
+    for (const auto& state : states)
+    {
         s.push_back(state * k);
     }
 
@@ -140,7 +147,8 @@ operator+(const std::vector<Node>& nodes, const std::vector<State>& states)
     auto s = std::vector<Node>();
     s.reserve(nodes.size());
 
-    for (std::size_t i = 0; i < nodes.size(); i++) {
+    for (std::size_t i = 0; i < nodes.size(); i++)
+    {
         s.push_back(nodes[i].WithState(nodes[i].state + states[i]));
     }
 
@@ -158,7 +166,8 @@ operator+(
     auto s = std::vector<State>();
     s.reserve(statesLHS.size());
 
-    for (std::size_t i = 0; i < statesLHS.size(); i++) {
+    for (std::size_t i = 0; i < statesLHS.size(); i++)
+    {
         s.push_back(statesLHS[i] + statesRHS[i]);
     }
 
@@ -179,7 +188,8 @@ ComputeState(const Pin& pin, const std::vector<Node>& nodes)
     double xForceNext = 0.0;
     double yForceNext = 0.0;
 
-    for (int n = nodes.size() - 1; n >= 0; --n) {
+    for (int n = nodes.size() - 1; n >= 0; --n)
+    {
         const auto& node = nodes[n];
 
         // The first node is connected to the pin rather than another node
@@ -239,7 +249,8 @@ class Chain
         : ts_(ts)
         , pin_(pin)
         , nodes(nodes)
-    {}
+    {
+    }
 
 public:
     enum class Layout
@@ -261,11 +272,13 @@ public:
         auto nodes = std::vector<Node>();
         nodes.reserve(numNodes);
 
-        for (int n = 0; n < numNodes; n++) {
+        for (int n = 0; n < numNodes; n++)
+        {
             double x0;
             double y0;
 
-            switch (layout) {
+            switch (layout)
+            {
                 case Layout::Line:
                     x0 = pin.x + l * (n + 1);
                     y0 = pin.y;
@@ -299,7 +312,8 @@ public:
         const auto f2 = ComputeState(pin_, z2);
 
         // Update node states
-        for (std::size_t n = 0; n < nodes.size(); n++) {
+        for (std::size_t n = 0; n < nodes.size(); n++)
+        {
             auto& node = nodes[n];
 
             // Function evaluation at specific node
@@ -346,7 +360,8 @@ public:
         auto chains = std::vector<Chain>();
 
         // Read all chains available
-        while (!f.eof()) {
+        while (!f.eof())
+        {
             // Current time
             double currentTime;
             f.read(reinterpret_cast<char*>(&currentTime), sizeof(currentTime));
@@ -384,7 +399,8 @@ public:
     {
         std::cout << "t = " << ts_;
 
-        for (std::size_t n = 0; n < nodes.size(); n++) {
+        for (std::size_t n = 0; n < nodes.size(); n++)
+        {
             const auto& node = nodes[n];
             std::cout << "\t"
                       << "Node(x: " << node.state.x << ", y: " << node.state.y

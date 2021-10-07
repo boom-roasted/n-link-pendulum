@@ -21,9 +21,11 @@ void
 Dot::handleEvent(SDL_Event& e)
 {
     // If a key was pressed
-    if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
+    if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
+    {
         // Adjust the velocity
-        switch (e.key.keysym.sym) {
+        switch (e.key.keysym.sym)
+        {
             case SDLK_UP:
                 velY_ -= DOT_VEL;
                 break;
@@ -39,9 +41,11 @@ Dot::handleEvent(SDL_Event& e)
         }
     }
     // If a key was released
-    else if (e.type == SDL_KEYUP && e.key.repeat == 0) {
+    else if (e.type == SDL_KEYUP && e.key.repeat == 0)
+    {
         // Adjust the velocity
-        switch (e.key.keysym.sym) {
+        switch (e.key.keysym.sym)
+        {
             case SDLK_UP:
                 velY_ += DOT_VEL;
                 break;
@@ -65,7 +69,8 @@ Dot::move()
     posX_ += velX_;
 
     // If the dot went too far to the left or right
-    if ((posX_ < 0) || (posX_ + DOT_WIDTH > boundingWidth_)) {
+    if ((posX_ < 0) || (posX_ + DOT_WIDTH > boundingWidth_))
+    {
         // Move back
         posX_ -= velX_;
     }
@@ -74,7 +79,8 @@ Dot::move()
     posY_ += velY_;
 
     // If the dot went too far up or down
-    if ((posY_ < 0) || (posY_ + DOT_HEIGHT > boundingHeight_)) {
+    if ((posY_ < 0) || (posY_ + DOT_HEIGHT > boundingHeight_))
+    {
         // Move back
         posY_ -= velY_;
     }

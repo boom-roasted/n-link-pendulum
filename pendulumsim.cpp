@@ -25,7 +25,8 @@ main(int argc, char* argv[])
 
     // Data storage
     auto fout = std::ofstream(fp, std::ios::out | std::ios::binary);
-    if (!fout) {
+    if (!fout)
+    {
         std::cout << "Cannot open file for writing!" << std::endl;
         return 1;
     }
@@ -34,7 +35,8 @@ main(int argc, char* argv[])
     chain.Serialize(fout);
 
     // Main simulation loop
-    for (int i = 0; i < iterations; i++) {
+    for (int i = 0; i < iterations; i++)
+    {
         // Increment time
         chain.RungeKuttaSecondOrder(deltaT);
 
@@ -42,12 +44,14 @@ main(int argc, char* argv[])
         chain.Serialize(fout);
 
         // Display progress
-        if (i % 1000 == 0) {
+        if (i % 1000 == 0)
+        {
             double progress = i / static_cast<double>(iterations);
             const int barWidth = 70;
             std::cout << "[";
             int barPosition = barWidth * progress;
-            for (int i = 0; i < barWidth; ++i) {
+            for (int i = 0; i < barWidth; ++i)
+            {
                 if (i <= barPosition)
                     std::cout << "#";
                 else
@@ -66,10 +70,12 @@ main(int argc, char* argv[])
 
     // Read output file and print resultant data to demonstrate integrety
     constexpr bool printResult = false;
-    if (printResult) {
+    if (printResult)
+    {
         const auto resultChains = Chain::Deserialize(fp);
 
-        for (const auto& c : resultChains) {
+        for (const auto& c : resultChains)
+        {
             std::cout << "r: ";
             c.PrintState();
         }
