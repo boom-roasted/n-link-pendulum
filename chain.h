@@ -228,13 +228,13 @@ ComputeState(const Pin& pin, const std::vector<Node>& nodes)
 
 class Chain
 {
-    double ts; // Time stamp
-    Pin pin;
+    double ts_; // Time stamp
+    Pin pin_;
     std::vector<Node> nodes;
 
     Chain(double ts, const Pin& pin, const std::vector<Node>& nodes)
-      : ts(ts)
-      , pin(pin)
+      : ts_(ts)
+      , pin_(pin)
       , nodes(nodes)
     {}
 
@@ -289,15 +289,15 @@ public:
     void RungeKuttaSecondOrder(double deltaT)
     {
         // Update time
-        ts += deltaT;
+        ts_ += deltaT;
 
         const auto z1 = nodes;
-        const auto f1 = ComputeState(pin, z1);
+        const auto f1 = ComputeState(pin_, z1);
 
         const auto deltaZ1 = f1 * deltaT;
 
         const auto z2 = z1 + deltaZ1;
-        const auto f2 = ComputeState(pin, z2);
+        const auto f2 = ComputeState(pin_, z2);
 
         // Update node states
         for (std::size_t n = 0; n < nodes.size(); n++) {
@@ -318,11 +318,11 @@ public:
     void Serialize(std::ofstream& f)
     {
         // Current time
-        f.write(reinterpret_cast<char*>(&ts), sizeof(ts));
+        f.write(reinterpret_cast<char*>(&ts_), sizeof(ts_));
 
         // Pin x, pin y
-        f.write(reinterpret_cast<char*>(&pin.x), sizeof(pin.x));
-        f.write(reinterpret_cast<char*>(&pin.y), sizeof(pin.y));
+        f.write(reinterpret_cast<char*>(&pin_.x), sizeof(pin_.x));
+        f.write(reinterpret_cast<char*>(&pin_.y), sizeof(pin_.y));
 
         // Number of nodes
         auto numNodes = nodes.size();
@@ -351,7 +351,7 @@ public:
             double currentTime;
             f.read(reinterpret_cast<char*>(&currentTime), sizeof(currentTime));
 
-            // Pinx, pin y
+            // Pin x, pin y
             double xPin;
             double yPin;
             f.read(reinterpret_cast<char*>(&xPin), sizeof(xPin));
@@ -381,7 +381,7 @@ public:
 
     void PrintState() const
     {
-        std::cout << "t = " << ts;
+        std::cout << "t = " << ts_;
 
         for (std::size_t n = 0; n < nodes.size(); n++) {
             const auto& node = nodes[n];

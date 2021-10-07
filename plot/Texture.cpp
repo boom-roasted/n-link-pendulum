@@ -3,9 +3,9 @@
 Texture::Texture()
 {
     // Initialize
-    mTexture = NULL;
-    mWidth = 0;
-    mHeight = 0;
+    texture_ = NULL;
+    width_ = 0;
+    height_ = 0;
 }
 
 Texture::~Texture()
@@ -43,8 +43,8 @@ Texture::loadFromFile(const std::string& path, SDL_Renderer* renderer)
                    SDL_GetError());
         } else {
             // Get image dimensions
-            mWidth = loadedSurface->w;
-            mHeight = loadedSurface->h;
+            width_ = loadedSurface->w;
+            height_ = loadedSurface->h;
         }
 
         // Get rid of old loaded surface
@@ -52,13 +52,13 @@ Texture::loadFromFile(const std::string& path, SDL_Renderer* renderer)
     }
 
     // Return success
-    mTexture = newTexture;
-    return mTexture != NULL;
+    texture_ = newTexture;
+    return texture_ != NULL;
 }
 
 #if defined(SDL_TTF_MAJOR_VERSION)
 bool
-Texture::loadFromRenderedText(std::string textureText, SDL_Color textColor)
+Texture::loadFromRenderedText(const std::string& textureText, SDL_Color textColor)
 {
     // Get rid of preexisting texture
     free();
@@ -68,15 +68,15 @@ Texture::loadFromRenderedText(std::string textureText, SDL_Color textColor)
       TTF_RenderText_Solid(gFont, textureText.c_str(), textColor);
     if (textSurface != NULL) {
         // Create texture from surface pixels
-        mTexture = SDL_CreateTextureFromSurface(gRenderer, textSurface);
-        if (mTexture == NULL) {
+        texture_ = SDL_CreateTextureFromSurface(renderer_, textSurface);
+        if (texture_ == NULL) {
             printf(
               "Unable to create texture from rendered text! SDL Error: %s\n",
               SDL_GetError());
         } else {
             // Get image dimensions
-            mWidth = textSurface->w;
-            mHeight = textSurface->h;
+            width_ = textSurface->w;
+            height_ = textSurface->h;
         }
 
         // Get rid of old surface
@@ -87,7 +87,7 @@ Texture::loadFromRenderedText(std::string textureText, SDL_Color textColor)
     }
 
     // Return success
-    return mTexture != NULL;
+    return texture_ != NULL;
 }
 #endif
 
@@ -95,11 +95,11 @@ void
 Texture::free()
 {
     // Free texture if it exists
-    if (mTexture != NULL) {
-        SDL_DestroyTexture(mTexture);
-        mTexture = NULL;
-        mWidth = 0;
-        mHeight = 0;
+    if (texture_ != NULL) {
+        SDL_DestroyTexture(texture_);
+        texture_ = NULL;
+        width_ = 0;
+        height_ = 0;
     }
 }
 
@@ -107,21 +107,21 @@ void
 Texture::setColor(Uint8 red, Uint8 green, Uint8 blue)
 {
     // Modulate texture rgb
-    SDL_SetTextureColorMod(mTexture, red, green, blue);
+    SDL_SetTextureColorMod(texture_, red, green, blue);
 }
 
 void
 Texture::setBlendMode(SDL_BlendMode blending)
 {
     // Set blending function
-    SDL_SetTextureBlendMode(mTexture, blending);
+    SDL_SetTextureBlendMode(texture_, blending);
 }
 
 void
 Texture::setAlpha(Uint8 alpha)
 {
     // Modulate texture alpha
-    SDL_SetTextureAlphaMod(mTexture, alpha);
+    SDL_SetTextureAlphaMod(texture_, alpha);
 }
 
 void
@@ -134,7 +134,7 @@ Texture::render(int x,
                 SDL_RendererFlip flip)
 {
     // Set rendering space and render to screen
-    SDL_Rect renderQuad = { x, y, mWidth, mHeight };
+    SDL_Rect renderQuad = { x, y, width_, height_ };
 
     // Set clip rendering dimensions
     if (clip != NULL) {
@@ -144,17 +144,17 @@ Texture::render(int x,
 
     // Render to screen
     SDL_RenderCopyEx(
-      renderer, mTexture, clip, &renderQuad, angle, center, flip);
+      renderer, texture_, clip, &renderQuad, angle, center, flip);
 }
 
 int
 Texture::getWidth()
 {
-    return mWidth;
+    return width_;
 }
 
 int
 Texture::getHeight()
 {
-    return mHeight;
+    return height_;
 }

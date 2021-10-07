@@ -27,17 +27,17 @@ public:
 
 private:
     // The window we'll be rendering to
-    SDL_Window* gWindow;
+    SDL_Window* window_;
 
     // The window renderer
-    SDL_Renderer* gRenderer;
+    SDL_Renderer* renderer_;
 
     // Scene textures
-    Texture gDotTexture;
+    Texture dotTexture_;
 
     // Screen dimensions
-    int screenWidth;
-    int screenHeight;
+    int screenWidth_;
+    int screenHeight_;
 };
 
 #endif // MAINWINDOW_H

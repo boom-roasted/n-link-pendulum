@@ -19,7 +19,7 @@ public:
 
 #if defined(SDL_TTF_MAJOR_VERSION)
     // Creates image from font string
-    bool loadFromRenderedText(std::string textureText, SDL_Color textColor);
+    bool loadFromRenderedText(const std::string& textureText, SDL_Color textColor);
 #endif
 
     // Deallocates texture
@@ -49,11 +49,11 @@ public:
 
 private:
     // The actual hardware texture
-    SDL_Texture* mTexture;
+    SDL_Texture* texture_;
 
     // Image dimensions
-    int mWidth;
-    int mHeight;
+    int width_;
+    int height_;
 };
 
 #endif // TEXTURE_H

@@ -4,11 +4,11 @@
 
 MainWindow::MainWindow(int w, int h)
 {
-    gWindow = NULL;
-    gRenderer = NULL;
-    gDotTexture = Texture();
-    screenWidth = w;
-    screenHeight = h;
+    window_ = NULL;
+    renderer_ = NULL;
+    dotTexture_ = Texture();
+    screenWidth_ = w;
+    screenHeight_ = h;
 }
 
 MainWindow::~MainWindow()
@@ -33,29 +33,29 @@ MainWindow::init()
         }
 
         // Create window
-        gWindow = SDL_CreateWindow("SDL Tutorial",
+        window_ = SDL_CreateWindow("SDL Tutorial",
                                    SDL_WINDOWPOS_UNDEFINED,
                                    SDL_WINDOWPOS_UNDEFINED,
-                                   screenWidth,
-                                   screenHeight,
+                                   screenWidth_,
+                                   screenHeight_,
                                    SDL_WINDOW_SHOWN);
-        if (gWindow == NULL) {
+        if (window_ == NULL) {
             printf("Window could not be created! SDL Error: %s\n",
                    SDL_GetError());
             success = false;
         } else {
             // Create vsynced renderer for window
-            gRenderer = SDL_CreateRenderer(gWindow,
+            renderer_ = SDL_CreateRenderer(window_,
                                            -1,
                                            SDL_RENDERER_ACCELERATED |
                                              SDL_RENDERER_PRESENTVSYNC);
-            if (gRenderer == NULL) {
+            if (renderer_ == NULL) {
                 printf("Renderer could not be created! SDL Error: %s\n",
                        SDL_GetError());
                 success = false;
             } else {
                 // Initialize renderer color
-                SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+                SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
 
                 // Initialize PNG loading
                 int imgFlags = IMG_INIT_PNG;
@@ -79,7 +79,7 @@ MainWindow::loadMedia()
     bool success = true;
 
     // Load dot texture
-    if (!gDotTexture.loadFromFile("dot.bmp", gRenderer)) {
+    if (!dotTexture_.loadFromFile("dot.bmp", renderer_)) {
         printf("Failed to load dot texture!\n");
         success = false;
     }
@@ -91,13 +91,13 @@ void
 MainWindow::Close()
 {
     // Free loaded images
-    gDotTexture.free();
+    dotTexture_.free();
 
     // Destroy window
-    SDL_DestroyRenderer(gRenderer);
-    SDL_DestroyWindow(gWindow);
-    gWindow = NULL;
-    gRenderer = NULL;
+    SDL_DestroyRenderer(renderer_);
+    SDL_DestroyWindow(window_);
+    window_ = NULL;
+    renderer_ = NULL;
 
     // Quit SDL subsystems
     IMG_Quit();
@@ -122,7 +122,7 @@ MainWindow::MainLoop()
             SDL_Event e;
 
             // The dot that will be moving around on the screen
-            Dot dot(screenWidth, screenHeight);
+            Dot dot(screenWidth_, screenHeight_);
 
             // While application is running
             while (!quit) {
@@ -143,14 +143,14 @@ MainWindow::MainLoop()
                 dot.move();
 
                 // Clear screen
-                SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-                SDL_RenderClear(gRenderer);
+                SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
+                SDL_RenderClear(renderer_);
 
                 // Render objects
-                dot.render(gDotTexture, gRenderer);
+                dot.render(dotTexture_, renderer_);
 
                 // Update screen
-                SDL_RenderPresent(gRenderer);
+                SDL_RenderPresent(renderer_);
             }
         }
     }
