@@ -19,7 +19,9 @@ public:
 
 #if defined(SDL_TTF_MAJOR_VERSION)
     // Creates image from font string
-    bool loadFromRenderedText(const std::string& textureText, SDL_Color textColor);
+    bool loadFromRenderedText(
+        const std::string& textureText,
+        SDL_Color textColor);
 #endif
 
     // Deallocates texture
@@ -35,13 +37,14 @@ public:
     void setAlpha(Uint8 alpha);
 
     // Renders texture at given point
-    void render(int x,
-                int y,
-                SDL_Renderer* renderer,
-                SDL_Rect* clip = NULL,
-                double angle = 0.0,
-                SDL_Point* center = NULL,
-                SDL_RendererFlip flip = SDL_FLIP_NONE);
+    void render(
+        int x,
+        int y,
+        SDL_Renderer* renderer,
+        SDL_Rect* clip = NULL,
+        double angle = 0.0,
+        SDL_Point* center = NULL,
+        SDL_RendererFlip flip = SDL_FLIP_NONE);
 
     // Gets image dimensions
     int getWidth();

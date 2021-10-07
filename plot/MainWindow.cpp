@@ -33,25 +33,27 @@ MainWindow::init()
         }
 
         // Create window
-        window_ = SDL_CreateWindow("SDL Tutorial",
-                                   SDL_WINDOWPOS_UNDEFINED,
-                                   SDL_WINDOWPOS_UNDEFINED,
-                                   screenWidth_,
-                                   screenHeight_,
-                                   SDL_WINDOW_SHOWN);
+        window_ = SDL_CreateWindow(
+            "SDL Tutorial",
+            SDL_WINDOWPOS_UNDEFINED,
+            SDL_WINDOWPOS_UNDEFINED,
+            screenWidth_,
+            screenHeight_,
+            SDL_WINDOW_SHOWN);
         if (window_ == NULL) {
-            printf("Window could not be created! SDL Error: %s\n",
-                   SDL_GetError());
+            printf(
+                "Window could not be created! SDL Error: %s\n", SDL_GetError());
             success = false;
         } else {
             // Create vsynced renderer for window
-            renderer_ = SDL_CreateRenderer(window_,
-                                           -1,
-                                           SDL_RENDERER_ACCELERATED |
-                                             SDL_RENDERER_PRESENTVSYNC);
+            renderer_ = SDL_CreateRenderer(
+                window_,
+                -1,
+                SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
             if (renderer_ == NULL) {
-                printf("Renderer could not be created! SDL Error: %s\n",
-                       SDL_GetError());
+                printf(
+                    "Renderer could not be created! SDL Error: %s\n",
+                    SDL_GetError());
                 success = false;
             } else {
                 // Initialize renderer color
@@ -61,8 +63,8 @@ MainWindow::init()
                 int imgFlags = IMG_INIT_PNG;
                 if (!(IMG_Init(imgFlags) & imgFlags)) {
                     printf(
-                      "SDL_image could not initialize! SDL_image Error: %s\n",
-                      IMG_GetError());
+                        "SDL_image could not initialize! SDL_image Error: %s\n",
+                        IMG_GetError());
                     success = false;
                 }
             }

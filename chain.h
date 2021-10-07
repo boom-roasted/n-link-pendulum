@@ -13,8 +13,8 @@ struct Pin
     double y;
 
     Pin(double x, double y)
-      : x(x)
-      , y(y)
+        : x(x)
+        , y(y)
     {}
 };
 
@@ -25,8 +25,8 @@ struct Vector
     double y;
 
     Vector(double x, double y)
-      : x(x)
-      , y(y)
+        : x(x)
+        , y(y)
     {}
 
     double Dot(const Vector& other) const { return x * other.x + y * other.y; }
@@ -56,10 +56,10 @@ struct State
     double ydot; // Y velocity
 
     State(double x, double y, double xdot, double ydot)
-      : x(x)
-      , y(y)
-      , xdot(xdot)
-      , ydot(ydot)
+        : x(x)
+        , y(y)
+        , xdot(xdot)
+        , ydot(ydot)
     {}
 
     State operator*(double k) const
@@ -70,7 +70,7 @@ struct State
     State operator+(const State& other) const
     {
         return State(
-          x + other.x, y + other.y, xdot + other.xdot, ydot + other.ydot);
+            x + other.x, y + other.y, xdot + other.xdot, ydot + other.ydot);
     }
 };
 
@@ -84,30 +84,31 @@ struct Node
     State state; // State variables
 
     Node(double m, double l, double k, double c, const State& state)
-      : m(m)
-      , l(l)
-      , k(k)
-      , c(c)
-      , state(state)
+        : m(m)
+        , l(l)
+        , k(k)
+        , c(c)
+        , state(state)
     {}
 
-    Node(double m,
-         double l,
-         double k,
-         double c,
-         double x0,
-         double y0,
-         double xdot0,
-         double ydot0)
-      : m(m)
-      , l(l)
-      , k(k)
-      , c(c)
-      , state(x0, y0, xdot0, ydot0)
+    Node(
+        double m,
+        double l,
+        double k,
+        double c,
+        double x0,
+        double y0,
+        double xdot0,
+        double ydot0)
+        : m(m)
+        , l(l)
+        , k(k)
+        , c(c)
+        , state(x0, y0, xdot0, ydot0)
     {}
 
     Node()
-      : Node(0, 0, 0, 0, 0, 0, 0, 0)
+        : Node(0, 0, 0, 0, 0, 0, 0, 0)
     {} // Requried for reading binary file
 
     Node WithState(const State& newState) const
@@ -134,7 +135,7 @@ operator+(const std::vector<Node>& nodes, const std::vector<State>& states)
 {
     if (nodes.size() != states.size())
         throw std::runtime_error(
-          "Cannot add state list to node list of different sizes");
+            "Cannot add state list to node list of different sizes");
 
     auto s = std::vector<Node>();
     s.reserve(nodes.size());
@@ -147,8 +148,9 @@ operator+(const std::vector<Node>& nodes, const std::vector<State>& states)
 }
 
 inline std::vector<State>
-operator+(const std::vector<State>& statesLHS,
-          const std::vector<State>& statesRHS)
+operator+(
+    const std::vector<State>& statesLHS,
+    const std::vector<State>& statesRHS)
 {
     if (statesLHS.size() != statesRHS.size())
         throw std::runtime_error("Cannot add state lists of different sizes");
@@ -185,9 +187,9 @@ ComputeState(const Pin& pin, const std::vector<Node>& nodes)
         const double yPrev = n == 0 ? pin.y : nodes[n - 1].state.y;
 
         // Distance from this node to the previous one
-        const auto dist =
-          std::sqrt((node.state.x - xPrev) * (node.state.x - xPrev) +
-                    (node.state.y - yPrev) * (node.state.y - yPrev));
+        const auto dist = std::sqrt(
+            (node.state.x - xPrev) * (node.state.x - xPrev) +
+            (node.state.y - yPrev) * (node.state.y - yPrev));
 
         // Difference in distance from initial link length
         const auto deltaS = dist - node.l;
@@ -197,8 +199,9 @@ ComputeState(const Pin& pin, const std::vector<Node>& nodes)
 
         // Velocity of link expansion is the portion of velocity along the link
         const auto linkExpansionV =
-          Vector(node.state.xdot, node.state.ydot)
-            .ProjectOnto(Vector(node.state.x - xPrev, node.state.y - yPrev));
+            Vector(node.state.xdot, node.state.ydot)
+                .ProjectOnto(
+                    Vector(node.state.x - xPrev, node.state.y - yPrev));
 
         // Damper force of link on node
         const auto cForce = (node.c * linkExpansionV).Magnitude();
@@ -220,7 +223,7 @@ ComputeState(const Pin& pin, const std::vector<Node>& nodes)
 
         // Assign updated state variables
         states.push_back(
-          State(node.state.xdot, node.state.ydot, xdotdot, ydotdot));
+            State(node.state.xdot, node.state.ydot, xdotdot, ydotdot));
     }
 
     return states;
@@ -233,9 +236,9 @@ class Chain
     std::vector<Node> nodes;
 
     Chain(double ts, const Pin& pin, const std::vector<Node>& nodes)
-      : ts_(ts)
-      , pin_(pin)
-      , nodes(nodes)
+        : ts_(ts)
+        , pin_(pin)
+        , nodes(nodes)
     {}
 
 public:
@@ -245,12 +248,8 @@ public:
         LShape,
     };
 
-    static Chain Create(int numNodes,
-                        double m,
-                        double l,
-                        double k,
-                        double c,
-                        Layout layout)
+    static Chain
+    Create(int numNodes, double m, double l, double k, double c, Layout layout)
     {
         // Defaults
         const double currentTime = 0;
@@ -330,8 +329,9 @@ public:
 
         // This should work because vector data should be contiguous.
         // Point to the first item, then write out the size of all items.
-        f.write(reinterpret_cast<char*>(&nodes[0]),
-                nodes.size() * sizeof(nodes[0])); // Node data
+        f.write(
+            reinterpret_cast<char*>(&nodes[0]),
+            nodes.size() * sizeof(nodes[0])); // Node data
     }
 
     // Read in a binary file of many chains
@@ -363,8 +363,9 @@ public:
 
             // Nodes vector
             std::vector<Node> nodes(numNodes);
-            f.read(reinterpret_cast<char*>(nodes.data()),
-                   nodes.size() * sizeof(Node));
+            f.read(
+                reinterpret_cast<char*>(nodes.data()),
+                nodes.size() * sizeof(Node));
 
             // Store chain
             chains.push_back(Chain(currentTime, Pin(xPin, yPin), nodes));
@@ -388,9 +389,10 @@ public:
             std::cout << "\t"
                       << "Node(x: " << node.state.x << ", y: " << node.state.y
                       <<
-              // ", xdot: " << node.state.xdot << ", ydot: " << node.state.ydot
-              // <<
-              ")";
+                // ", xdot: " << node.state.xdot << ", ydot: " <<
+                // node.state.ydot
+                // <<
+                ")";
         }
 
         std::cout << std::endl;

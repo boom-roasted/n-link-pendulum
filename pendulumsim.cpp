@@ -18,7 +18,7 @@ main(int argc, char* argv[])
     const double c = 0.0001;
 
     const double deltaT =
-      1.0 / 200.0 * 1.0 / std::sqrt(k / m); // Time step increment
+        1.0 / 200.0 * 1.0 / std::sqrt(k / m); // Time step increment
     const int iterations = std::lround(simTime / deltaT);
 
     auto chain = Chain::Create(numLinks, m, l, k, c, Chain::Layout::Line);
