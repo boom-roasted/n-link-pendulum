@@ -1,5 +1,5 @@
 SDL_LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf
-PLOT_SOURCES = pendulumplot.cpp plot/Texture.cpp plot/Dot.cpp
+PLOT_SOURCES = pendulumplot.cpp plot/Texture.cpp plot/Dot.cpp plot/MainWindow.cpp
 
 build:
 	g++ pendulumsim.cpp -o pendulumsim -Wall
