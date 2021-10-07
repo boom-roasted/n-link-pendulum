@@ -3,6 +3,7 @@
 Project*/
 
 pendulumsim
+pendulumplot
 
 compile_commands.json
 *.bin
