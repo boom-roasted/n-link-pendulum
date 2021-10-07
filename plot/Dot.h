@@ -16,10 +16,6 @@ class Dot
 		//Maximum axis velocity of the dot
 		static const int DOT_VEL = 10;
 
-        // Bounds of the dot
-        int boundingWidth;
-        int boundingHeight;
-
 		//Initializes the variables
 		Dot(int boundingWidth, int boundingHeight);
 
@@ -34,10 +30,14 @@ class Dot
 
     private:
 		//The X and Y offsets of the dot
-		int mPosX, mPosY;
+		int posX_, posY_;
 
 		//The velocity of the dot
-		int mVelX, mVelY;
+		int velX_, velY_;
+
+        // Bounds of the dot
+        int boundingWidth_;
+        int boundingHeight_;
 };
 
 #endif // DOT_H

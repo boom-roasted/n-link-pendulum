@@ -5,16 +5,16 @@
 Dot::Dot(int boundingWidth, int boundingHeight)
 {
     // Set bounds
-    this->boundingWidth = boundingWidth;
-    this->boundingHeight = boundingHeight;
+    boundingWidth_ = boundingWidth;
+    boundingHeight_ = boundingHeight;
 
     //Initialize the offsets
-    mPosX = 0;
-    mPosY = 0;
+    posX_ = 0;
+    posY_ = 0;
 
     //Initialize the velocity
-    mVelX = 0;
-    mVelY = 0;
+    velX_ = 0;
+    velY_ = 0;
 }
 
 void Dot::handleEvent( SDL_Event& e )
@@ -25,10 +25,10 @@ void Dot::handleEvent( SDL_Event& e )
         //Adjust the velocity
         switch( e.key.keysym.sym )
         {
-            case SDLK_UP: mVelY -= DOT_VEL; break;
-            case SDLK_DOWN: mVelY += DOT_VEL; break;
-            case SDLK_LEFT: mVelX -= DOT_VEL; break;
-            case SDLK_RIGHT: mVelX += DOT_VEL; break;
+            case SDLK_UP: velY_ -= DOT_VEL; break;
+            case SDLK_DOWN: velY_ += DOT_VEL; break;
+            case SDLK_LEFT: velX_ -= DOT_VEL; break;
+            case SDLK_RIGHT: velX_ += DOT_VEL; break;
         }
     }
     //If a key was released
@@ -37,10 +37,10 @@ void Dot::handleEvent( SDL_Event& e )
         //Adjust the velocity
         switch( e.key.keysym.sym )
         {
-            case SDLK_UP: mVelY += DOT_VEL; break;
-            case SDLK_DOWN: mVelY -= DOT_VEL; break;
-            case SDLK_LEFT: mVelX += DOT_VEL; break;
-            case SDLK_RIGHT: mVelX -= DOT_VEL; break;
+            case SDLK_UP: velY_ += DOT_VEL; break;
+            case SDLK_DOWN: velY_ -= DOT_VEL; break;
+            case SDLK_LEFT: velX_ += DOT_VEL; break;
+            case SDLK_RIGHT: velX_ -= DOT_VEL; break;
         }
     }
 }
@@ -48,28 +48,28 @@ void Dot::handleEvent( SDL_Event& e )
 void Dot::move()
 {
     // Move the dot left or right
-    mPosX += mVelX;
+    posX_ += velX_;
 
     // If the dot went too far to the left or right
-    if( ( mPosX < 0 ) || ( mPosX + DOT_WIDTH > boundingWidth ) )
+    if( ( posX_ < 0 ) || ( posX_ + DOT_WIDTH > boundingWidth_ ) )
     {
         //Move back
-        mPosX -= mVelX;
+        posX_ -= velX_;
     }
 
     // Move the dot up or down
-    mPosY += mVelY;
+    posY_ += velY_;
 
     // If the dot went too far up or down
-    if( ( mPosY < 0 ) || ( mPosY + DOT_HEIGHT > boundingHeight ) )
+    if( ( posY_ < 0 ) || ( posY_ + DOT_HEIGHT > boundingHeight_ ) )
     {
         // Move back
-        mPosY -= mVelY;
+        posY_ -= velY_;
     }
 }
 
 void Dot::render(Texture& texture, SDL_Renderer* renderer)
 {
     // Show the dot
-	texture.render( mPosX, mPosY, renderer );
+	texture.render( posX_, posY_, renderer );
 }
