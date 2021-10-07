@@ -6,7 +6,7 @@ MainWindow::MainWindow(int w, int h)
 {
 	gWindow = NULL;
 	gRenderer = NULL;
-	gDotTexture = LTexture();
+	gDotTexture = Texture();
 	screenWidth = w;
 	screenHeight = h;
 }

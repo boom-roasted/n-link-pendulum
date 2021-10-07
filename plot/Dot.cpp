@@ -68,7 +68,7 @@ void Dot::move()
     }
 }
 
-void Dot::render(LTexture& texture, SDL_Renderer* renderer)
+void Dot::render(Texture& texture, SDL_Renderer* renderer)
 {
     // Show the dot
 	texture.render( mPosX, mPosY, renderer );

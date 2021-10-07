@@ -6,13 +6,13 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-class LTexture
+class Texture
 {
 	public:
-		LTexture();
+		Texture();
 
 		// Deallocates memory
-		~LTexture();
+		~Texture();
 
 		// Loads image at specified path
 		bool loadFromFile(const std::string& path, SDL_Renderer* renderer);

@@ -33,7 +33,7 @@ class MainWindow
         SDL_Renderer* gRenderer;
 
         //Scene textures
-        LTexture gDotTexture;
+        Texture gDotTexture;
 
 		// Screen dimensions
 		int screenWidth;
