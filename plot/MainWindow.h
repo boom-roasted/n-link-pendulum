@@ -7,37 +7,37 @@
 
 class MainWindow
 {
-    public:
-		MainWindow(int w, int h);
+public:
+    MainWindow(int w, int h);
 
-		// Deallocates memory
-		~MainWindow();
+    // Deallocates memory
+    ~MainWindow();
 
-        //Starts up SDL and creates window
-        bool init();
+    // Starts up SDL and creates window
+    bool init();
 
-        //Loads media
-        bool loadMedia();
+    // Loads media
+    bool loadMedia();
 
-        //Frees media and shuts down SDL
-		void Close();
+    // Frees media and shuts down SDL
+    void Close();
 
-        // Main event loop
-        int MainLoop();
+    // Main event loop
+    int MainLoop();
 
-	private:
-        //The window we'll be rendering to
-        SDL_Window* gWindow;
+private:
+    // The window we'll be rendering to
+    SDL_Window* gWindow;
 
-        //The window renderer
-        SDL_Renderer* gRenderer;
+    // The window renderer
+    SDL_Renderer* gRenderer;
 
-        //Scene textures
-        Texture gDotTexture;
+    // Scene textures
+    Texture gDotTexture;
 
-		// Screen dimensions
-		int screenWidth;
-		int screenHeight;
+    // Screen dimensions
+    int screenWidth;
+    int screenHeight;
 };
 
 #endif // MAINWINDOW_H

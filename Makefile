@@ -17,3 +17,8 @@ plot:
 
 plottest:
 	./pendulumplot
+
+format:
+	# To create format file:
+	# clang-format -style=Mozilla -dump-config > .clang-format
+	clang-format -i *.cpp *.h **/*.cpp **/*.h

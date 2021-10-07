@@ -12,12 +12,12 @@
 constexpr int SCREEN_WIDTH = 640;
 constexpr int SCREEN_HEIGHT = 480;
 
-int main( int argc, char* args[] )
+int
+main(int argc, char* args[])
 {
-	auto mainWindow = MainWindow(SCREEN_WIDTH, SCREEN_HEIGHT);
+    auto mainWindow = MainWindow(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	mainWindow.MainLoop();
+    mainWindow.MainLoop();
 
-	return 0;
+    return 0;
 }
-
