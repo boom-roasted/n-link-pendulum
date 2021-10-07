@@ -20,10 +20,10 @@ public:
     bool loadMedia();
 
     // Frees media and shuts down SDL
-    void Close();
+    void close();
 
     // Main event loop
-    int MainLoop();
+    int runLoop();
 
 private:
     // The window we'll be rendering to

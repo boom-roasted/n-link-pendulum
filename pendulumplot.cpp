@@ -17,7 +17,7 @@ main(int argc, char* args[])
 {
     auto mainWindow = MainWindow(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    mainWindow.MainLoop();
+    mainWindow.runLoop();
 
     return 0;
 }

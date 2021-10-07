@@ -13,7 +13,7 @@ MainWindow::MainWindow(int w, int h)
 
 MainWindow::~MainWindow()
 {
-    Close();
+    close();
 }
 
 bool
@@ -90,7 +90,7 @@ MainWindow::loadMedia()
 }
 
 void
-MainWindow::Close()
+MainWindow::close()
 {
     // Free loaded images
     dotTexture_.free();
@@ -107,7 +107,7 @@ MainWindow::Close()
 }
 
 int
-MainWindow::MainLoop()
+MainWindow::runLoop()
 {
     // Start up SDL and create window
     if (!init()) {
@@ -157,8 +157,7 @@ MainWindow::MainLoop()
         }
     }
 
-    // Free resources and close SDL
-    // close(); called on destruction
+    // Resources are freeded and SDL is closed on destruction
 
     return 0;
 }
