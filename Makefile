@@ -1,23 +1,16 @@
 SDL_LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf
 PLOT_SOURCES = pendulumplot.cpp plot/Texture.cpp plot/Dot.cpp plot/MainWindow.cpp
 
-.PHONY: sim clean pyplot plot format check-format
+.PHONY: build run clean format check-format
 
-sim:
-	g++ pendulumsim.cpp -o pendulumsim -Wall
-	./pendulumsim
+build:
+	g++ $(PLOT_SOURCES) $(SDL_LINKER_FLAGS) -o pendulumplot -Wall
+
+run:
+	./pendulumplot
 
 clean:
-	rm -f pendulumsim
 	rm -f pendulumplot
-	rm -f data.bin
-
-pyplot:
-	python pendulumplot.py data.bin
-
-plot:
-	g++ $(PLOT_SOURCES) $(SDL_LINKER_FLAGS) -o pendulumplot -Wall
-	./pendulumplot
 
 # To create format file:
 # clang-format -style=Mozilla -dump-config > .clang-format

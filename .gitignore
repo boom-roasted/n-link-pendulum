@@ -2,7 +2,7 @@
 .cache/
 Project*/
 
-pendulumsim
+main
 pendulumplot
 
 compile_commands.json

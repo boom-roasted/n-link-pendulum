@@ -1,7 +1,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "chain.h"
+#include "../chain.h"
 
 int
 main(int argc, char* argv[])
