@@ -11,6 +11,7 @@ public:
     MainWindow(int w, int h);
 
     // Deallocates memory
+    // Frees media and shuts down SDL
     ~MainWindow();
 
     // Starts up SDL and creates window
@@ -19,11 +20,8 @@ public:
     // Loads media
     bool loadMedia();
 
-    // Frees media and shuts down SDL
-    void close();
-
     // Main event loop
-    int runLoop();
+    void runLoop();
 
 private:
     // The window we'll be rendering to
@@ -36,8 +34,8 @@ private:
     Texture dotTexture_;
 
     // Screen dimensions
-    int screenWidth_;
-    int screenHeight_;
+    int w_;
+    int h_;
 };
 
 #endif // MAINWINDOW_H

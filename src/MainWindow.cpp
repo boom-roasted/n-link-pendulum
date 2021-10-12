@@ -7,13 +7,24 @@ MainWindow::MainWindow(int w, int h)
     window_ = NULL;
     renderer_ = NULL;
     dotTexture_ = Texture();
-    screenWidth_ = w;
-    screenHeight_ = h;
+    w_ = w;
+    h_ = h;
 }
 
 MainWindow::~MainWindow()
 {
-    close();
+    // Free loaded images
+    dotTexture_.free();
+
+    // Destroy window
+    SDL_DestroyRenderer(renderer_);
+    SDL_DestroyWindow(window_);
+    window_ = NULL;
+    renderer_ = NULL;
+
+    // Quit SDL subsystems
+    IMG_Quit();
+    SDL_Quit();
 }
 
 bool
@@ -41,8 +52,8 @@ MainWindow::init()
             "SDL Tutorial",
             SDL_WINDOWPOS_UNDEFINED,
             SDL_WINDOWPOS_UNDEFINED,
-            screenWidth_,
-            screenHeight_,
+            w_,
+            h_,
             SDL_WINDOW_SHOWN);
         if (window_ == NULL)
         {
@@ -102,23 +113,6 @@ MainWindow::loadMedia()
 }
 
 void
-MainWindow::close()
-{
-    // Free loaded images
-    dotTexture_.free();
-
-    // Destroy window
-    SDL_DestroyRenderer(renderer_);
-    SDL_DestroyWindow(window_);
-    window_ = NULL;
-    renderer_ = NULL;
-
-    // Quit SDL subsystems
-    IMG_Quit();
-    SDL_Quit();
-}
-
-int
 MainWindow::runLoop()
 {
     // Start up SDL and create window
@@ -142,7 +136,7 @@ MainWindow::runLoop()
             SDL_Event e;
 
             // The dot that will be moving around on the screen
-            Dot dot(screenWidth_, screenHeight_);
+            Dot dot(w_, h_);
 
             // While application is running
             while (!quit)
@@ -179,6 +173,4 @@ MainWindow::runLoop()
     }
 
     // Resources are freeded and SDL is closed on destruction
-
-    return 0;
 }
