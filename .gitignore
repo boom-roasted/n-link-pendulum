@@ -3,7 +3,7 @@
 Project*/
 
 main
-pendulumplot
+nlinkpendulum
 
 compile_commands.json
 *.bin

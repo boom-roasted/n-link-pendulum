@@ -6,7 +6,7 @@
 #include <SDL2/SDL_image.h>
 
 #include "chain.h"
-#include "plot/MainWindow.h"
+#include "src/MainWindow.h"
 
 // Screen dimension constants
 constexpr int SCREEN_WIDTH = 640;

@@ -1,16 +1,17 @@
-SDL_LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf
-PLOT_SOURCES = pendulumplot.cpp plot/Texture.cpp plot/Dot.cpp plot/MainWindow.cpp
+EXE = nlinkpendulum
+LFLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf
+SOURCES = main.cpp src/Texture.cpp src/Dot.cpp src/MainWindow.cpp
 
 .PHONY: build run clean format check-format
 
 build:
-	g++ $(PLOT_SOURCES) $(SDL_LINKER_FLAGS) -o pendulumplot -Wall
+	g++ $(SOURCES) $(LFLAGS) -o $(EXE) -Wall
 
 run:
-	./pendulumplot
+	./$(EXE)
 
 clean:
-	rm -f pendulumplot
+	rm -f $(EXE)
 
 # To create format file:
 # clang-format -style=Mozilla -dump-config > .clang-format
