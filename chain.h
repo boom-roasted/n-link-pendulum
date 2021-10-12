@@ -243,12 +243,12 @@ class Chain
 {
     double ts_; // Time stamp
     Pin pin_;
-    std::vector<Node> nodes;
+    std::vector<Node> nodes_;
 
     Chain(double ts, const Pin& pin, const std::vector<Node>& nodes)
         : ts_(ts)
         , pin_(pin)
-        , nodes(nodes)
+        , nodes_(nodes)
     {
     }
 
@@ -258,6 +258,9 @@ public:
         Line,
         LShape,
     };
+
+    std::vector<Node> nodes() const { return nodes_; }
+    Pin pin() const { return pin_; }
 
     static Chain
     Create(int numNodes, double m, double l, double k, double c, Layout layout)
@@ -303,7 +306,7 @@ public:
         // Update time
         ts_ += deltaT;
 
-        const auto z1 = nodes;
+        const auto z1 = nodes_;
         const auto f1 = ComputeState(pin_, z1);
 
         const auto deltaZ1 = f1 * deltaT;
@@ -312,9 +315,9 @@ public:
         const auto f2 = ComputeState(pin_, z2);
 
         // Update node states
-        for (std::size_t n = 0; n < nodes.size(); n++)
+        for (std::size_t n = 0; n < nodes_.size(); n++)
         {
-            auto& node = nodes[n];
+            auto& node = nodes_[n];
 
             // Function evaluation at specific node
             const auto& f1n = f1[n];
@@ -338,14 +341,14 @@ public:
         f.write(reinterpret_cast<char*>(&pin_.y), sizeof(pin_.y));
 
         // Number of nodes
-        auto numNodes = nodes.size();
+        auto numNodes = nodes_.size();
         f.write(reinterpret_cast<char*>(&numNodes), sizeof(numNodes));
 
         // This should work because vector data should be contiguous.
         // Point to the first item, then write out the size of all items.
         f.write(
-            reinterpret_cast<char*>(&nodes[0]),
-            nodes.size() * sizeof(nodes[0])); // Node data
+            reinterpret_cast<char*>(&nodes_[0]),
+            nodes_.size() * sizeof(nodes_[0])); // Node data
     }
 
     // Read in a binary file of many chains
@@ -399,9 +402,9 @@ public:
     {
         std::cout << "t = " << ts_;
 
-        for (std::size_t n = 0; n < nodes.size(); n++)
+        for (std::size_t n = 0; n < nodes_.size(); n++)
         {
-            const auto& node = nodes[n];
+            const auto& node = nodes_[n];
             std::cout << "\t"
                       << "Node(x: " << node.state.x << ", y: " << node.state.y
                       <<

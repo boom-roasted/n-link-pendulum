@@ -1,6 +1,6 @@
 EXE = nlinkpendulum
 LFLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf
-SOURCES = main.cpp src/Texture.cpp src/Dot.cpp src/MainWindow.cpp
+SOURCES = main.cpp src/Texture.cpp src/Dot.cpp src/MainWindow.cpp src/RenderableChain.cpp
 
 .PHONY: build run clean format check-format
 

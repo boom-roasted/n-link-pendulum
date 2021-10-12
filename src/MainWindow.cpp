@@ -7,6 +7,7 @@ MainWindow::MainWindow(int w, int h)
     window_ = NULL;
     renderer_ = NULL;
     dotTexture_ = Texture();
+    renderableChain_ = RenderableChain();
     w_ = w;
     h_ = h;
 }
@@ -109,6 +110,15 @@ MainWindow::loadMedia()
         success = false;
     }
 
+    // Load chain
+    if (!renderableChain_.loadFromFile("data.bin"))
+    {
+        printf("Failed to load chain data!\n");
+        success = false;
+    }
+
+    renderableChain_.loadTextures(renderer_);
+
     return success;
 }
 
@@ -159,12 +169,16 @@ MainWindow::runLoop()
                 // Move the dot
                 dot.move();
 
+                // Increment the chain position
+                renderableChain_.increment(500);
+
                 // Clear screen
                 SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
                 SDL_RenderClear(renderer_);
 
                 // Render objects
                 dot.render(dotTexture_, renderer_);
+                renderableChain_.render(renderer_, 0.5 * w_, 0.15 * h_, 50);
 
                 // Update screen
                 SDL_RenderPresent(renderer_);

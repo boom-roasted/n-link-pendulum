@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 
+#include "RenderableChain.h"
 #include "Texture.h"
 
 class MainWindow
@@ -32,6 +33,9 @@ private:
 
     // Scene textures
     Texture dotTexture_;
+
+    // The pendulum
+    RenderableChain renderableChain_;
 
     // Screen dimensions
     int w_;
