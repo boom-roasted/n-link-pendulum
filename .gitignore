@@ -1,10 +1,10 @@
 .vscode/
 .cache/
+.venv/
 Project*/
 build/
 
 main
 nlinkpendulum
 
-compile_commands.json
 *.bin

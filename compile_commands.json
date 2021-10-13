@@ -1,0 +1,72 @@
+[
+ {
+  "directory": "/home/noah/projects/n-link-pendulum",
+  "arguments": [
+   "g++",
+   "-Isrc",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/main.cpp",
+   "-o",
+   "build/main.cpp.o"
+  ],
+  "file": "src/main.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/n-link-pendulum",
+  "arguments": [
+   "g++",
+   "-Isrc",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/Texture.cpp",
+   "-o",
+   "build/Texture.cpp.o"
+  ],
+  "file": "src/Texture.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/n-link-pendulum",
+  "arguments": [
+   "g++",
+   "-Isrc",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/Dot.cpp",
+   "-o",
+   "build/Dot.cpp.o"
+  ],
+  "file": "src/Dot.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/n-link-pendulum",
+  "arguments": [
+   "g++",
+   "-Isrc",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/MainWindow.cpp",
+   "-o",
+   "build/MainWindow.cpp.o"
+  ],
+  "file": "src/MainWindow.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/n-link-pendulum",
+  "arguments": [
+   "g++",
+   "-Isrc",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/RenderableChain.cpp",
+   "-o",
+   "build/RenderableChain.cpp.o"
+  ],
+  "file": "src/RenderableChain.cpp"
+ }
+]
