@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "../chain.h"
 #include "Texture.h"
+#include "Chain.h"
 
 class RenderableChain
 {
