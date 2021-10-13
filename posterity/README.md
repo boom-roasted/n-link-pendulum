@@ -6,10 +6,16 @@ Perhaps this is worth keeping around as a fun example project.
 
 ## Building and Running Everything
 
+### TL;DR
+
+`cd` into this directory and run `make plot` in your terminal.
+
 ```console
-make build sim plot
+make plot
 ```
 
-* `build` will build the executable.
-* `sim` will run the executable, effectively running the simulation and creating the binary output file `data.bin`.
-* `plot` will call the python script on the `data.bin` file, which pulls up a tkinter window and plots the simulation with a few options for pausing and re-starting.
+### Details and More Options
+
+* `make` will build the executable.
+* `make sim` will run the simulation (with a nice progress bar no less). Recompiles if necessary.
+* `make plot` will launch the plotting window. Recompiles and re-simulates if necessary.
