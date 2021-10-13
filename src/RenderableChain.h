@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "Texture.h"
 #include "Chain.h"
+#include "Texture.h"
 
 class RenderableChain
 {
@@ -34,6 +34,18 @@ private:
     Texture nodeTexture_;
 
     int currentChainIndex_;
+
+    struct Point
+    {
+        double x;
+        double y;
+
+        Point(double x, double y)
+            : x(x)
+            , y(y)
+        {
+        }
+    };
 };
 
 #endif // RENDERABLECHAIN_H

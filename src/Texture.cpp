@@ -148,13 +148,16 @@ Texture::render(
     int x,
     int y,
     SDL_Renderer* renderer,
+    bool shouldCenter,
     SDL_Rect* clip,
     double angle,
     SDL_Point* center,
     SDL_RendererFlip flip)
 {
     // Set rendering space and render to screen
-    SDL_Rect renderQuad = { x, y, width_, height_ };
+    const int topLeftX = shouldCenter ? x - 0.5 * width_ : x;
+    const int topLeftY = shouldCenter ? y - 0.5 * height_ : y;
+    SDL_Rect renderQuad = { topLeftX, topLeftY, width_, height_ };
 
     // Set clip rendering dimensions
     if (clip != NULL)

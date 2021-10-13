@@ -41,6 +41,7 @@ public:
         int x,
         int y,
         SDL_Renderer* renderer,
+        bool shouldCenter = false,
         SDL_Rect* clip = NULL,
         double angle = 0.0,
         SDL_Point* center = NULL,
