@@ -1,6 +1,6 @@
 CXX := g++
 SOURCES := main.cpp
-SOURCES += Texture.cpp Dot.cpp MainWindow.cpp RenderableChain.cpp
+SOURCES += Texture.cpp Dot.cpp MainWindow.cpp RenderableChain.cpp Timer.cpp
 SOURCE_DIR := src
 
 # Linker flags

@@ -5,6 +5,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 class Texture
 {
@@ -20,7 +21,9 @@ public:
 #if defined(SDL_TTF_MAJOR_VERSION)
     // Creates image from font string
     bool loadFromRenderedText(
+        SDL_Renderer* renderer,
         const std::string& textureText,
+        TTF_Font* font,
         SDL_Color textColor);
 #endif
 

@@ -33,6 +33,10 @@ private:
 
     // Scene textures
     Texture dotTexture_;
+    Texture fpsTextTexture_;
+
+    // Fonts
+    TTF_Font* fpsFont_;
 
     // The pendulum
     RenderableChain renderableChain_;
