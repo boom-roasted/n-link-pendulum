@@ -63,10 +63,24 @@
    "-MMD",
    "-MP",
    "-c",
-   "src/RenderableChain.cpp",
+   "src/PendulumProvider.cpp",
    "-o",
-   "build/RenderableChain.cpp.o"
+   "build/PendulumProvider.cpp.o"
   ],
-  "file": "src/RenderableChain.cpp"
+  "file": "src/PendulumProvider.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/n-link-pendulum",
+  "arguments": [
+   "g++",
+   "-Isrc",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/Timer.cpp",
+   "-o",
+   "build/Timer.cpp.o"
+  ],
+  "file": "src/Timer.cpp"
  }
 ]

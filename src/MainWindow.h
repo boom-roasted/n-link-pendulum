@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 
-#include "RenderableChain.h"
+#include "PendulumProvider.h"
 #include "Texture.h"
 
 class MainWindow
@@ -39,7 +39,7 @@ private:
     TTF_Font* fpsFont_;
 
     // The pendulum
-    RenderableChain renderableChain_;
+    PendulumProvider pendulumProvider_;
 
     // Screen dimensions
     int w_;

@@ -12,7 +12,7 @@ MainWindow::MainWindow(int w, int h)
     dotTexture_ = Texture();
     fpsTextTexture_ = Texture();
     fpsFont_ = NULL;
-    renderableChain_ = RenderableChain();
+    pendulumProvider_ = PendulumProvider();
     w_ = w;
     h_ = h;
 }
@@ -139,13 +139,13 @@ MainWindow::loadMedia()
     }
 
     // Load chain
-    if (!renderableChain_.loadFromFile("data.bin"))
+    if (!pendulumProvider_.loadFromFile("data.bin"))
     {
         printf("Failed to load chain data!\n");
         success = false;
     }
 
-    renderableChain_.loadTextures(renderer_);
+    pendulumProvider_.loadTextures(renderer_);
 
     return success;
 }
@@ -217,7 +217,7 @@ MainWindow::runLoop()
                 dot.move();
 
                 // Increment the chain position
-                renderableChain_.incrementTime(deltaT);
+                pendulumProvider_.incrementTime(deltaT);
 
                 // Clear screen
                 SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -227,7 +227,7 @@ MainWindow::runLoop()
                 dot.render(dotTexture_, renderer_);
 
                 // Render pendulum
-                renderableChain_.render(renderer_, 0.5 * w_, 0.15 * h_, 50);
+                pendulumProvider_.render(renderer_, 0.5 * w_, 0.15 * h_, 50);
 
                 // Render fps text
                 // Set text to be rendered

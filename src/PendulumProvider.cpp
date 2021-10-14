@@ -1,8 +1,8 @@
-#include "RenderableChain.h"
+#include "PendulumProvider.h"
 
 #include <filesystem>
 
-RenderableChain::RenderableChain()
+PendulumProvider::PendulumProvider()
 {
     pendulumOverTime = Pendulum::OverTime();
     pinTexture_ = Texture();
@@ -11,10 +11,10 @@ RenderableChain::RenderableChain()
     lastFrame_ = 0;
 }
 
-RenderableChain::~RenderableChain() {}
+PendulumProvider::~PendulumProvider() {}
 
 bool
-RenderableChain::loadFromFile(const std::string& p)
+PendulumProvider::loadFromFile(const std::string& p)
 {
     bool success = true;
 
@@ -37,7 +37,7 @@ RenderableChain::loadFromFile(const std::string& p)
 }
 
 void
-RenderableChain::loadTextures(SDL_Renderer* renderer)
+PendulumProvider::loadTextures(SDL_Renderer* renderer)
 {
     pinTexture_.loadFromFile("res/dot.bmp", renderer);
     nodeTexture_.loadFromFile("res/dot.bmp", renderer);
@@ -45,13 +45,13 @@ RenderableChain::loadTextures(SDL_Renderer* renderer)
 }
 
 Pendulum::Pendulum
-RenderableChain::currentPendulum()
+PendulumProvider::currentPendulum()
 {
     return pendulumOverTime[currentPendulumIndex_];
 }
 
 void
-RenderableChain::incrementFrame(int by)
+PendulumProvider::incrementFrame(int by)
 {
     if (currentPendulumIndex_ + by < lastFrame_)
         currentPendulumIndex_ += by;
@@ -59,7 +59,7 @@ RenderableChain::incrementFrame(int by)
         currentPendulumIndex_ = 0; // Reset
 }
 
-void RenderableChain::incrementTime(double by)
+void PendulumProvider::incrementTime(double by)
 {
     const auto targetTime = currentPendulum().time() + by;
 
@@ -79,7 +79,7 @@ void RenderableChain::incrementTime(double by)
 }
 
 void
-RenderableChain::render(
+PendulumProvider::render(
     SDL_Renderer* renderer,
     double offsetX,
     double offsetY,

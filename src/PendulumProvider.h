@@ -1,5 +1,5 @@
-#ifndef RENDERABLECHAIN_H
-#define RENDERABLECHAIN_H
+#ifndef PENDULUMPROVIDER_H
+#define PENDULUMPROVIDER_H
 
 #include <SDL2/SDL.h>
 #include <string>
@@ -8,12 +8,12 @@
 #include "Pendulum.h"
 #include "Texture.h"
 
-class RenderableChain
+class PendulumProvider
 {
 public:
-    RenderableChain();
+    PendulumProvider();
 
-    ~RenderableChain();
+    ~PendulumProvider();
 
     bool loadFromFile(const std::string& p);
 
@@ -50,4 +50,4 @@ private:
     };
 };
 
-#endif // RENDERABLECHAIN_H
+#endif // PENDULUMPROVIDER_H
