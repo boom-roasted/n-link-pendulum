@@ -73,6 +73,12 @@ Timer::unpause()
     }
 }
 
+void
+Timer::restart()
+{
+    start();
+}
+
 Uint32
 Timer::getTicks()
 {

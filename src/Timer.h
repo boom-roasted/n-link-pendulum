@@ -1,3 +1,6 @@
+#ifndef TIMER_H
+#define TIMER_H
+
 #include <SDL2/SDL.h>
 
 class Timer
@@ -10,6 +13,7 @@ public:
     void stop();
     void pause();
     void unpause();
+    void restart();
 
     // Gets the timer's time
     Uint32 getTicks();
@@ -35,3 +39,5 @@ private:
     bool isPaused_;
     bool isStarted_;
 };
+
+#endif // TIMER_H

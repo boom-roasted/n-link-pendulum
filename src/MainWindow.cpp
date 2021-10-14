@@ -1,8 +1,7 @@
 #include "MainWindow.h"
 
-#include <sstream>
-
 #include "Dot.h"
+#include "FpsCounter.h"
 #include "Timer.h"
 
 MainWindow::MainWindow(int w, int h)
@@ -10,7 +9,6 @@ MainWindow::MainWindow(int w, int h)
     window_ = NULL;
     renderer_ = NULL;
     dotTexture_ = Texture();
-    fpsTextTexture_ = Texture();
     mainFont_ = NULL;
     pendulumProvider_ = PendulumProvider();
     menus_ = std::vector<MainMenu>();
@@ -22,7 +20,6 @@ MainWindow::~MainWindow()
 {
     // Free loaded images
     dotTexture_.free();
-    fpsTextTexture_.free();
 
     // Free fonts
     TTF_CloseFont(mainFont_);
@@ -177,10 +174,12 @@ MainWindow::runLoop()
             SDL_Event e;
 
             // Timer
-            int countedFrames = 0;
-            Timer fpsTimer;
-            fpsTimer.start();
-            std::stringstream fpsText;
+            Timer timer;
+            timer.start();
+
+            // Fps counter
+            FpsCounter fpsCounter({ 0, 0, w_, h_ });
+            fpsCounter.start();
 
             // Text color
             SDL_Color textColor = { 0, 0, 0, 255 };
@@ -248,16 +247,8 @@ MainWindow::runLoop()
                         dot.handleEvent(e);
                 }
 
-                // Calculate fps. If there was a very small time delta, fps
-                // might be too high.
-                float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
-                if (avgFPS > 2000000)
-                {
-                    avgFPS = 0;
-                }
-
                 // Time since last render frame (seconds)
-                float deltaT = fpsTimer.lap() / 1000.f;
+                float deltaT = timer.lap() / 1000.f;
 
                 // Freeze scene interaction when menus are presented
                 if (menus_.empty())
@@ -279,33 +270,17 @@ MainWindow::runLoop()
                 // Render pendulum
                 pendulumProvider_.render(renderer_, 0.5 * w_, 0.15 * h_, 50);
 
-                // Render fps text
-                // Set text to be rendered
-                fpsText.str("");
-                fpsText << "Avg FPS " << avgFPS;
-
-                // Render text
-                if (!fpsTextTexture_.loadFromRenderedText(
-                        renderer_, fpsText.str().c_str(), mainFont_, textColor))
-                {
-                    printf("Unable to render FPS texture!\n");
-                }
-
-                // Render fps text, aligned to the bottom left
-                fpsTextTexture_.render(
-                    20, -20 + (h_ - fpsTextTexture_.getHeight()), renderer_);
-
                 // Render any menus
                 if (!menus_.empty())
                 {
                     (menus_.back()).render(renderer_, mainFont_);
                 }
 
+                // Render fps counter
+                fpsCounter.render(renderer_, mainFont_);
+
                 // Update screen
                 SDL_RenderPresent(renderer_);
-
-                // Count this frame. TODO what if this overflows the int?
-                ++countedFrames;
             }
         }
     }
