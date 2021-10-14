@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "Chain.h"
+#include "Pendulum.h"
 #include "Texture.h"
 
 class RenderableChain
@@ -19,7 +19,7 @@ public:
 
     void loadTextures(SDL_Renderer* renderer);
 
-    Chain currentChain();
+    Pendulum::Pendulum currentPendulum();
 
     void increment(int by);
 
@@ -27,13 +27,13 @@ public:
     render(SDL_Renderer* renderer, double offsetX, double offsetY, double sf);
 
 private:
-    std::vector<Chain> chainOverTime_;
+    Pendulum::OverTime pendulumOverTime;
 
     Texture pinTexture_;
 
     Texture nodeTexture_;
 
-    int currentChainIndex_;
+    int currentPendulumIndex_;
 
     struct Point
     {

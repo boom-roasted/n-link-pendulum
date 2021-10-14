@@ -1,5 +1,5 @@
-#ifndef CHAIN_H
-#define CHAIN_H
+#ifndef PENDULUM_H
+#define PENDULUM_H
 
 #include <cmath>
 #include <fstream>
@@ -7,6 +7,8 @@
 #include <stdexcept>
 #include <vector>
 
+namespace Pendulum
+{
 struct Pin
 {
     double x;
@@ -239,13 +241,13 @@ ComputeState(const Pin& pin, const std::vector<Node>& nodes)
     return states;
 }
 
-class Chain
+class Pendulum
 {
     double ts_; // Time stamp
     Pin pin_;
     std::vector<Node> nodes_;
 
-    Chain(double ts, const Pin& pin, const std::vector<Node>& nodes)
+    Pendulum(double ts, const Pin& pin, const std::vector<Node>& nodes)
         : ts_(ts)
         , pin_(pin)
         , nodes_(nodes)
@@ -262,7 +264,7 @@ public:
     std::vector<Node> nodes() const { return nodes_; }
     Pin pin() const { return pin_; }
 
-    static Chain
+    static Pendulum
     Create(int numNodes, double m, double l, double k, double c, Layout layout)
     {
         // Defaults
@@ -297,7 +299,7 @@ public:
             nodes.push_back(node);
         }
 
-        return Chain(currentTime, pin, nodes);
+        return Pendulum(currentTime, pin, nodes);
     }
 
     // A second order Runge Kutta function
@@ -330,7 +332,7 @@ public:
         }
     }
 
-    // Serialize this chain in it's current state to binary format
+    // Serialize this Pendulum in it's current state to binary format
     void Serialize(std::ofstream& f)
     {
         // Current time
@@ -351,18 +353,18 @@ public:
             nodes_.size() * sizeof(nodes_[0])); // Node data
     }
 
-    // Read in a binary file of many chains
-    static std::vector<Chain> Deserialize(const std::string& p)
+    // Read in a binary file of many Pendulums
+    static std::vector<Pendulum> Deserialize(const std::string& p)
     {
         // Open file for reading
         auto f = std::ifstream(p, std::ios::in | std::ios::binary);
         if (!f)
             throw std::runtime_error("Cannot open file for reading");
 
-        // Initialize chain vector
-        auto chains = std::vector<Chain>();
+        // Initialize Pendulum vector
+        auto pendulumOverTime = std::vector<Pendulum>();
 
-        // Read all chains available
+        // Read all pendulums available
         while (!f.eof())
         {
             // Current time
@@ -385,17 +387,18 @@ public:
                 reinterpret_cast<char*>(nodes.data()),
                 nodes.size() * sizeof(Node));
 
-            // Store chain
-            chains.push_back(Chain(currentTime, Pin(xPin, yPin), nodes));
+            // Store pendulum
+            pendulumOverTime.push_back(
+                Pendulum(currentTime, Pin(xPin, yPin), nodes));
         }
 
         // Close input file
         f.close();
 
         // TODO The last value appears to be trash.
-        chains.pop_back();
+        pendulumOverTime.pop_back();
 
-        return chains;
+        return pendulumOverTime;
     }
 
     void PrintState() const
@@ -418,4 +421,7 @@ public:
     }
 };
 
-#endif // CHAIN_H
+using OverTime = std::vector<Pendulum>;
+}
+
+#endif // PENDULUM_H

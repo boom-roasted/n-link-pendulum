@@ -4,10 +4,10 @@
 
 RenderableChain::RenderableChain()
 {
-    chainOverTime_ = std::vector<Chain>();
+    pendulumOverTime = Pendulum::OverTime();
     pinTexture_ = Texture();
     nodeTexture_ = Texture();
-    currentChainIndex_ = 0;
+    currentPendulumIndex_ = 0;
 }
 
 RenderableChain::~RenderableChain() {}
@@ -17,7 +17,7 @@ RenderableChain::loadFromFile(const std::string& p)
 {
     bool success = true;
 
-    if (!chainOverTime_.empty())
+    if (!pendulumOverTime.empty())
     {
         success = false;
     }
@@ -27,7 +27,7 @@ RenderableChain::loadFromFile(const std::string& p)
     }
     else
     {
-        chainOverTime_ = Chain::Deserialize(p);
+        pendulumOverTime = Pendulum::Pendulum::Deserialize(p);
     }
 
     return success;
@@ -41,20 +41,20 @@ RenderableChain::loadTextures(SDL_Renderer* renderer)
     // TODO add asserts or something
 }
 
-Chain
-RenderableChain::currentChain()
+Pendulum::Pendulum
+RenderableChain::currentPendulum()
 {
-    return chainOverTime_[currentChainIndex_];
+    return pendulumOverTime[currentPendulumIndex_];
 }
 
 void
 RenderableChain::increment(int by)
 {
-    const auto maxIndex = static_cast<int>(chainOverTime_.size());
-    if (currentChainIndex_ + by < maxIndex)
-        currentChainIndex_ += by;
+    const auto maxIndex = static_cast<int>(pendulumOverTime.size());
+    if (currentPendulumIndex_ + by < maxIndex)
+        currentPendulumIndex_ += by;
     else
-        currentChainIndex_ = 0; // Reset
+        currentPendulumIndex_ = 0; // Reset
 }
 
 void
@@ -64,10 +64,10 @@ RenderableChain::render(
     double offsetY,
     double sf)
 {
-    if (chainOverTime_.empty())
+    if (pendulumOverTime.empty())
         return;
 
-    const auto& chain = currentChain();
+    const auto& chain = currentPendulum();
 
     const auto applyScalingX = [offsetX, sf](double x)
     { return x * sf + offsetX; };
