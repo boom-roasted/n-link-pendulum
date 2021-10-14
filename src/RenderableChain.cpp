@@ -36,8 +36,8 @@ RenderableChain::loadFromFile(const std::string& p)
 void
 RenderableChain::loadTextures(SDL_Renderer* renderer)
 {
-    pinTexture_.loadFromFile("dot.bmp", renderer);
-    nodeTexture_.loadFromFile("dot.bmp", renderer);
+    pinTexture_.loadFromFile("res/dot.bmp", renderer);
+    nodeTexture_.loadFromFile("res/dot.bmp", renderer);
     // TODO add asserts or something
 }
 

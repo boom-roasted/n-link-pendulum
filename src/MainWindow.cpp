@@ -123,7 +123,7 @@ MainWindow::loadMedia()
     bool success = true;
 
     // Load dot texture
-    if (!dotTexture_.loadFromFile("dot.bmp", renderer_))
+    if (!dotTexture_.loadFromFile("res/dot.bmp", renderer_))
     {
         printf("Failed to load dot texture!\n");
         success = false;
