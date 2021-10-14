@@ -220,6 +220,29 @@ MainWindow::runLoop()
                         }
                     }
 
+                    if (e.type == SDL_WINDOWEVENT)
+                    {
+                        switch (e.window.event)
+                        {
+                            // TODO consider not rendering as much when window
+                            // is minimized or something
+                            case SDL_WINDOWEVENT_RESIZED:
+                            case SDL_WINDOWEVENT_SIZE_CHANGED:
+                                SDL_LogInfo(
+                                    SDL_LOG_CATEGORY_APPLICATION,
+                                    "Window %d resized to %dx%d\n",
+                                    e.window.windowID,
+                                    e.window.data1,
+                                    e.window.data2);
+                                w_ = e.window.data1;
+                                h_ = e.window.data2;
+                                dot.setBounds(w_, h_);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
                     // Handle input for the dot
                     if (menus_.empty())
                         dot.handleEvent(e);

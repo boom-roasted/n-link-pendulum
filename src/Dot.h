@@ -1,5 +1,5 @@
 #ifndef DOT_H
-#define DOT_h
+#define DOT_H
 
 #include <SDL2/SDL.h>
 
@@ -24,6 +24,10 @@ public:
 
     // Moves the dot
     void move();
+
+    // (Re)set the bounds of the dot
+    // If reducing in size, dot is moved to fit within new bounds
+    void setBounds(int w, int h);
 
     // Shows the dot on the screen
     void render(Texture& texture, SDL_Renderer* renderer);

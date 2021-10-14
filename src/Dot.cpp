@@ -87,6 +87,21 @@ Dot::move()
 }
 
 void
+Dot::setBounds(int w, int h)
+{
+    boundingWidth_ = w;
+    boundingHeight_ = h;
+
+    // Fit within new width
+    if (posX_ + DOT_WIDTH > boundingWidth_)
+        posX_ = boundingWidth_ - DOT_WIDTH;
+
+    // Fit within new height
+    if (posY_ + DOT_HEIGHT > boundingHeight_)
+        posY_ = boundingHeight_ - DOT_HEIGHT;
+}
+
+void
 Dot::render(Texture& texture, SDL_Renderer* renderer)
 {
     // Show the dot
