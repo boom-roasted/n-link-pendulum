@@ -21,7 +21,8 @@ public:
 
     Pendulum::Pendulum currentPendulum();
 
-    void increment(int by);
+    void incrementFrame(int by);
+    void incrementTime(double by);
 
     void
     render(SDL_Renderer* renderer, double offsetX, double offsetY, double sf);
@@ -34,6 +35,7 @@ private:
     Texture nodeTexture_;
 
     int currentPendulumIndex_;
+    int lastFrame_;
 
     struct Point
     {

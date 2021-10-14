@@ -7,6 +7,7 @@ Timer::Timer()
     // timer is not started.
     startTicks_ = 0;
     pausedTicks_ = 0;
+    lapTicks_ = 0;
 
     isPaused_ = false;
     isStarted_ = false;
@@ -95,6 +96,28 @@ Timer::getTicks()
     }
 
     return time;
+}
+
+Uint32
+Timer::lap()
+{
+    Uint32 lapTime = 0;
+    if (isStarted_)
+    {
+        if (isPaused_)
+        {
+            // Time between the last lap and when we paused
+            lapTime = pausedTicks_ - lapTicks_;
+            lapTicks_ = pausedTicks_;
+        }
+        else
+        {
+            auto currentTicks = SDL_GetTicks();
+            lapTime = currentTicks - lapTicks_;
+            lapTicks_ = currentTicks;
+        }
+    }
+    return lapTime;
 }
 
 bool

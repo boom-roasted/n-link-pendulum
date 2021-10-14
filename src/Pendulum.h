@@ -261,6 +261,7 @@ public:
         LShape,
     };
 
+    double time() const { return ts_; }
     std::vector<Node> nodes() const { return nodes_; }
     Pin pin() const { return pin_; }
 

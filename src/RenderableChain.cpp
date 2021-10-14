@@ -8,6 +8,7 @@ RenderableChain::RenderableChain()
     pinTexture_ = Texture();
     nodeTexture_ = Texture();
     currentPendulumIndex_ = 0;
+    lastFrame_ = 0;
 }
 
 RenderableChain::~RenderableChain() {}
@@ -30,6 +31,8 @@ RenderableChain::loadFromFile(const std::string& p)
         pendulumOverTime = Pendulum::Pendulum::Deserialize(p);
     }
 
+    lastFrame_ = static_cast<int>(pendulumOverTime.size());
+
     return success;
 }
 
@@ -48,13 +51,31 @@ RenderableChain::currentPendulum()
 }
 
 void
-RenderableChain::increment(int by)
+RenderableChain::incrementFrame(int by)
 {
-    const auto maxIndex = static_cast<int>(pendulumOverTime.size());
-    if (currentPendulumIndex_ + by < maxIndex)
+    if (currentPendulumIndex_ + by < lastFrame_)
         currentPendulumIndex_ += by;
     else
         currentPendulumIndex_ = 0; // Reset
+}
+
+void RenderableChain::incrementTime(double by)
+{
+    const auto targetTime = currentPendulum().time() + by;
+
+    for (std::size_t i = currentPendulumIndex_; i < lastFrame_; i++)
+    {
+        if (pendulumOverTime[i].time() > targetTime)
+        {
+            // We found it
+            currentPendulumIndex_ = i;
+            return;
+        }
+    }
+
+    // If we got here, it means the target time is out of bounds of the simulation.
+    // Reset.
+    currentPendulumIndex_ = 0;
 }
 
 void

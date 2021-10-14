@@ -211,11 +211,13 @@ MainWindow::runLoop()
                     avgFPS = 0;
                 }
 
+                float deltaT = fpsTimer.lap() / 1000.f;
+
                 // Move the dot
                 dot.move();
 
                 // Increment the chain position
-                renderableChain_.increment(500);
+                renderableChain_.incrementTime(deltaT);
 
                 // Clear screen
                 SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
