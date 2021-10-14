@@ -256,8 +256,10 @@ MainWindow::runLoop()
                     avgFPS = 0;
                 }
 
+                // Time since last render frame (seconds)
                 float deltaT = fpsTimer.lap() / 1000.f;
 
+                // Freeze scene interaction when menus are presented
                 if (menus_.empty())
                 {
                     // Move the dot
@@ -280,7 +282,7 @@ MainWindow::runLoop()
                 // Render fps text
                 // Set text to be rendered
                 fpsText.str("");
-                fpsText << "Average Frames Per Second " << avgFPS;
+                fpsText << "Avg FPS " << avgFPS;
 
                 // Render text
                 if (!fpsTextTexture_.loadFromRenderedText(
