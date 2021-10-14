@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 
+#include "Menu.h"
 #include "PendulumProvider.h"
 #include "Texture.h"
 
@@ -40,6 +41,9 @@ private:
 
     // The pendulum
     PendulumProvider pendulumProvider_;
+
+    // Menu overlays
+    std::vector<MainMenu> menus_;
 
     // Screen dimensions
     int w_;

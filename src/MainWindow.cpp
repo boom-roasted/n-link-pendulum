@@ -13,6 +13,7 @@ MainWindow::MainWindow(int w, int h)
     fpsTextTexture_ = Texture();
     fpsFont_ = NULL;
     pendulumProvider_ = PendulumProvider();
+    menus_ = std::vector<MainMenu>();
     w_ = w;
     h_ = h;
 }
@@ -26,6 +27,8 @@ MainWindow::~MainWindow()
     // Free fonts
     TTF_CloseFont(fpsFont_);
     fpsFont_ = NULL;
+
+    // Menus should destroy themselves
 
     // Destroy window
     SDL_DestroyRenderer(renderer_);
@@ -199,8 +202,27 @@ MainWindow::runLoop()
                         quit = true;
                     }
 
+                    // User requests main menu
+                    if (e.type == SDL_KEYUP && e.key.repeat == 0 &&
+                        e.key.keysym.sym == SDLK_ESCAPE)
+                    {
+                        if (menus_.empty())
+                        {
+                            // Could use null for automatic whole screen
+                            SDL_Rect screenRect = { 0, 0, w_, h_ };
+
+                            // Constructs menu in place with forwarded params
+                            menus_.emplace_back(screenRect);
+                        }
+                        else
+                        {
+                            menus_.pop_back();
+                        }
+                    }
+
                     // Handle input for the dot
-                    dot.handleEvent(e);
+                    if (menus_.empty())
+                        dot.handleEvent(e);
                 }
 
                 // Calculate fps. If there was a very small time delta, fps
@@ -213,11 +235,14 @@ MainWindow::runLoop()
 
                 float deltaT = fpsTimer.lap() / 1000.f;
 
-                // Move the dot
-                dot.move();
+                if (menus_.empty())
+                {
+                    // Move the dot
+                    dot.move();
 
-                // Increment the chain position
-                pendulumProvider_.incrementTime(deltaT);
+                    // Increment the chain position
+                    pendulumProvider_.incrementTime(deltaT);
+                }
 
                 // Clear screen
                 SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -244,6 +269,12 @@ MainWindow::runLoop()
                 // Render fps text, aligned to the bottom left
                 fpsTextTexture_.render(
                     20, -20 + (h_ - fpsTextTexture_.getHeight()), renderer_);
+
+                // Render any menus
+                if (!menus_.empty())
+                {
+                    (menus_.back()).render(renderer_);
+                }
 
                 // Update screen
                 SDL_RenderPresent(renderer_);

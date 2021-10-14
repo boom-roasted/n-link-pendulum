@@ -1,6 +1,7 @@
 CXX := g++
 SOURCES := main.cpp
 SOURCES += Texture.cpp Dot.cpp MainWindow.cpp PendulumProvider.cpp Timer.cpp
+SOURCES += Rectangle.cpp Menu.cpp
 SOURCE_DIR := src
 
 # Linker flags
