@@ -59,7 +59,8 @@ PendulumProvider::incrementFrame(int by)
         currentPendulumIndex_ = 0; // Reset
 }
 
-void PendulumProvider::incrementTime(double by)
+void
+PendulumProvider::incrementTime(double by)
 {
     const auto targetTime = currentPendulum().time() + by;
 
@@ -73,8 +74,8 @@ void PendulumProvider::incrementTime(double by)
         }
     }
 
-    // If we got here, it means the target time is out of bounds of the simulation.
-    // Reset.
+    // If we got here, it means the target time is out of bounds of the
+    // simulation. Reset.
     currentPendulumIndex_ = 0;
 }
 

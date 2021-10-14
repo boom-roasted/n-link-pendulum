@@ -6,8 +6,8 @@ sim:
 data.bin: main
 	./main
 
-.PHONY: plot
-plot: data.bin
+.PHONY: run
+run: data.bin
 	python plot.py data.bin
 
 .PHONY: clean

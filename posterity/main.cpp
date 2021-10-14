@@ -419,6 +419,7 @@ main(int argc, char* argv[])
     const int numLinks = 2;            // Size of chain
     const std::string fp = "data.bin"; // Output data file
     const double simTime = 20;         // Simulation time, seconds
+    const int saveFrameStep = 500; // Computed frames between every output frame
 
     // Default node properties
     const double m = 0.25;
@@ -449,11 +450,15 @@ main(int argc, char* argv[])
         // Increment time
         chain.RungeKuttaSecondOrder(deltaT);
 
-        // Write state to file
-        chain.Serialize(fout);
+        // Write state to file. Not every frame is written, because
+        // that is too much data.
+        if (i % saveFrameStep == 0)
+        {
+            chain.Serialize(fout);
+        }
 
         // Display progress
-        if (i % 1000 == 0)
+        if (i % (iterations / 20) == 0)
         {
             double progress = i / static_cast<double>(iterations);
             const int barWidth = 70;
