@@ -31,7 +31,7 @@ PendulumProvider::loadFromFile(const std::string& p)
         pendulumOverTime = Pendulum::Pendulum::Deserialize(p);
     }
 
-    lastFrame_ = static_cast<int>(pendulumOverTime.size());
+    lastFrame_ = pendulumOverTime.size();
 
     return success;
 }
@@ -51,7 +51,7 @@ PendulumProvider::currentPendulum()
 }
 
 void
-PendulumProvider::incrementFrame(int by)
+PendulumProvider::incrementFrame(std::size_t by)
 {
     if (currentPendulumIndex_ + by < lastFrame_)
         currentPendulumIndex_ += by;

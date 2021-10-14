@@ -21,7 +21,7 @@ public:
 
     Pendulum::Pendulum currentPendulum();
 
-    void incrementFrame(int by);
+    void incrementFrame(std::size_t by);
     void incrementTime(double by);
 
     void
@@ -34,8 +34,8 @@ private:
 
     Texture nodeTexture_;
 
-    int currentPendulumIndex_;
-    int lastFrame_;
+    std::size_t currentPendulumIndex_;
+    std::size_t lastFrame_;
 
     struct Point
     {

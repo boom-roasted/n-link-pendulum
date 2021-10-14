@@ -181,9 +181,6 @@ MainWindow::runLoop()
             FpsCounter fpsCounter({ 0, 0, w_, h_ });
             fpsCounter.start();
 
-            // Text color
-            SDL_Color textColor = { 0, 0, 0, 255 };
-
             // The dot that will be moving around on the screen
             Dot dot(w_, h_);
 

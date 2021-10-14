@@ -8,6 +8,9 @@ SOURCE_DIR := src
 # Linker flags
 LDFLAGS := -lSDL2 -lSDL2_image -lSDL2_ttf
 
+# C++ flags. Add -g for debugging
+CXXFLAGS := -std=c++17 -Wall -Werror -pedantic
+
 # Where to build to
 OBJDIR := build
 
