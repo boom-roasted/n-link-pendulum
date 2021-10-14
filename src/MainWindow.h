@@ -37,7 +37,7 @@ private:
     Texture fpsTextTexture_;
 
     // Fonts
-    TTF_Font* fpsFont_;
+    TTF_Font* mainFont_;
 
     // The pendulum
     PendulumProvider pendulumProvider_;

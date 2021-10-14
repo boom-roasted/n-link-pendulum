@@ -11,7 +11,7 @@ MainWindow::MainWindow(int w, int h)
     renderer_ = NULL;
     dotTexture_ = Texture();
     fpsTextTexture_ = Texture();
-    fpsFont_ = NULL;
+    mainFont_ = NULL;
     pendulumProvider_ = PendulumProvider();
     menus_ = std::vector<MainMenu>();
     w_ = w;
@@ -25,8 +25,8 @@ MainWindow::~MainWindow()
     fpsTextTexture_.free();
 
     // Free fonts
-    TTF_CloseFont(fpsFont_);
-    fpsFont_ = NULL;
+    TTF_CloseFont(mainFont_);
+    mainFont_ = NULL;
 
     // Menus should destroy themselves
 
@@ -134,8 +134,8 @@ MainWindow::loadMedia()
 
     // Load font
     // Open the font
-    fpsFont_ = TTF_OpenFont("res/DejaVuSerif.ttf", 16);
-    if (fpsFont_ == NULL)
+    mainFont_ = TTF_OpenFont("res/DejaVuSerif.ttf", 16);
+    if (mainFont_ == NULL)
     {
         printf("Failed to load ttf font! SDL_ttf Error: %s\n", TTF_GetError());
         success = false;
@@ -286,7 +286,7 @@ MainWindow::runLoop()
 
                 // Render text
                 if (!fpsTextTexture_.loadFromRenderedText(
-                        renderer_, fpsText.str().c_str(), fpsFont_, textColor))
+                        renderer_, fpsText.str().c_str(), mainFont_, textColor))
                 {
                     printf("Unable to render FPS texture!\n");
                 }
@@ -298,7 +298,7 @@ MainWindow::runLoop()
                 // Render any menus
                 if (!menus_.empty())
                 {
-                    (menus_.back()).render(renderer_);
+                    (menus_.back()).render(renderer_, mainFont_);
                 }
 
                 // Update screen

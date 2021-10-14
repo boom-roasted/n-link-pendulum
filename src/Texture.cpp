@@ -85,6 +85,7 @@ Texture::loadFromRenderedText(
         texture_ = SDL_CreateTextureFromSurface(renderer, textSurface);
         if (texture_ == NULL)
         {
+            // TODO this should probably assert failures
             printf(
                 "Unable to create texture from rendered text! SDL Error: %s\n",
                 SDL_GetError());

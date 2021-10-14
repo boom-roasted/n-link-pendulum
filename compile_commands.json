@@ -82,5 +82,47 @@
    "build/Timer.cpp.o"
   ],
   "file": "src/Timer.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/n-link-pendulum",
+  "arguments": [
+   "g++",
+   "-Isrc",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/Rectangle.cpp",
+   "-o",
+   "build/Rectangle.cpp.o"
+  ],
+  "file": "src/Rectangle.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/n-link-pendulum",
+  "arguments": [
+   "g++",
+   "-Isrc",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/Menu.cpp",
+   "-o",
+   "build/Menu.cpp.o"
+  ],
+  "file": "src/Menu.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/n-link-pendulum",
+  "arguments": [
+   "g++",
+   "-Isrc",
+   "-MMD",
+   "-MP",
+   "-c",
+   "src/Text.cpp",
+   "-o",
+   "build/Text.cpp.o"
+  ],
+  "file": "src/Text.cpp"
  }
 ]
