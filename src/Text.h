@@ -18,6 +18,8 @@ public:
 
     void render(SDL_Renderer* renderer, TTF_Font* font);
 
+    std::string text();
+
 private:
     SDL_Rect rect_;
     Rectangle background_;

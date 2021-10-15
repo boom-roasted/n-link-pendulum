@@ -3,8 +3,8 @@
 
 #include <vector>
 
+#include "Button.h"
 #include "Rectangle.h"
-#include "Text.h"
 
 class MainMenu
 {
@@ -13,9 +13,11 @@ public:
 
     void render(SDL_Renderer* renderer, TTF_Font* font);
 
+    void handleEvent(SDL_Event& e);
+
 private:
     Rectangle background_;
-    std::vector<Text> texts_;
+    std::vector<Button> buttons_;
 };
 
 #endif // MENU_H

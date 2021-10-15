@@ -239,9 +239,17 @@ MainWindow::runLoop()
                         }
                     }
 
-                    // Handle input for the dot
+                    // Only handle scene events when no menu is up
                     if (menus_.empty())
+                    {
+                        // Dot event
                         dot.handleEvent(e);
+                    }
+                    else
+                    {
+                        // Menu event
+                        menus_.back().handleEvent(e);
+                    }
                 }
 
                 // Time since last render frame (seconds)

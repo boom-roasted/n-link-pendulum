@@ -3,7 +3,7 @@
 MainMenu::MainMenu(SDL_Rect rect)
     : background_(rect, SDL_Color({ 119, 181, 254, 200 }))
 {
-    const auto textNames =
+    const auto buttonNames =
         std::vector<std::string>{ "Resume", "Options", "Exit" };
 
     SDL_Color textColor = { 0, 0, 0, 255 };
@@ -15,25 +15,25 @@ MainMenu::MainMenu(SDL_Rect rect)
     int margin = 20;
 
     // Figure out top left x,y for the group of all options
-    int totalHeight = (optionHeight + margin + margin) * textNames.size();
+    int totalHeight = (optionHeight + margin + margin) * buttonNames.size();
     int totalWidth = optionWidth + margin + margin; // One column
 
     int topX = rect.x + (0.5 * rect.w) - (0.5 * totalWidth);
     int topY = rect.y + (0.5 * rect.h) - (0.5 * totalHeight);
 
     // Setup each renderable Text
-    texts_ = std::vector<Text>();
-    texts_.reserve(3);
+    buttons_ = std::vector<Button>();
+    buttons_.reserve(3);
 
     int lastTopX = topX;
     int lastTopY = topY;
 
-    for (const auto& name : textNames)
+    for (const auto& name : buttonNames)
     {
         int x = lastTopX + margin;
         int y = lastTopY + margin;
 
-        texts_.push_back(Text(
+        buttons_.push_back(Button(
             { x, y, optionWidth, optionHeight },
             textColor,
             textBackgroundColor,
@@ -51,6 +51,24 @@ MainMenu::render(SDL_Renderer* renderer, TTF_Font* font)
     background_.render(renderer);
 
     // Render each option
-    for (auto& text : texts_)
-        text.render(renderer, font);
+    for (auto& button : buttons_)
+        button.render(renderer, font);
+}
+
+void
+MainMenu::handleEvent(SDL_Event& e)
+{
+    for (auto& button : buttons_)
+    {
+        button.handleEvent(e);
+        if (button.wasClicked())
+        {
+            SDL_LogInfo(
+                SDL_LOG_CATEGORY_APPLICATION,
+                "Button '%s' was clicked",
+                button.text().c_str());
+            // TODO attach actions to different buttons
+            // button.action();
+        }
+    }
 }
