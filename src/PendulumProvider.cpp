@@ -1,14 +1,16 @@
 #include "PendulumProvider.h"
 
 #include <filesystem>
+#include <limits>
 
 PendulumProvider::PendulumProvider(const SDL_Rect& rect)
     : rect_(rect)
-    , pendulumOverTime(Pendulum::OverTime())
+    , pendulumOverTime_(Pendulum::OverTime())
     , pinTexture_(Texture())
     , nodeTexture_(Texture())
     , currentPendulumIndex_(0)
     , lastFrame_(0)
+    , scaleFactor_(50)
 {
 }
 
@@ -16,6 +18,7 @@ void
 PendulumProvider::setRect(const SDL_Rect& rect)
 {
     rect_ = rect;
+    computeScaleFactor();
 }
 
 bool
@@ -23,7 +26,7 @@ PendulumProvider::loadFromFile(const std::string& p)
 {
     bool success = true;
 
-    if (!pendulumOverTime.empty())
+    if (!pendulumOverTime_.empty())
     {
         success = false;
     }
@@ -33,10 +36,11 @@ PendulumProvider::loadFromFile(const std::string& p)
     }
     else
     {
-        pendulumOverTime = Pendulum::Pendulum::Deserialize(p);
+        pendulumOverTime_ = Pendulum::Pendulum::Deserialize(p);
+        computeScaleFactor();
     }
 
-    lastFrame_ = pendulumOverTime.size();
+    lastFrame_ = pendulumOverTime_.size();
 
     return success;
 }
@@ -52,7 +56,7 @@ PendulumProvider::loadTextures(SDL_Renderer* renderer)
 Pendulum::Pendulum
 PendulumProvider::currentPendulum()
 {
-    return pendulumOverTime[currentPendulumIndex_];
+    return pendulumOverTime_[currentPendulumIndex_];
 }
 
 void
@@ -71,7 +75,7 @@ PendulumProvider::incrementTime(double by)
 
     for (std::size_t i = currentPendulumIndex_; i < lastFrame_; i++)
     {
-        if (pendulumOverTime[i].time() > targetTime)
+        if (pendulumOverTime_[i].time() > targetTime)
         {
             // We found it
             currentPendulumIndex_ = i;
@@ -85,15 +89,20 @@ PendulumProvider::incrementTime(double by)
 }
 
 void
-PendulumProvider::render(SDL_Renderer* renderer, double sf)
+PendulumProvider::render(SDL_Renderer* renderer)
 {
-    if (pendulumOverTime.empty())
+    if (pendulumOverTime_.empty())
         return;
 
     // The offsets determine the pin position, which is the
     // origin of the pendulum coordinate system.
-    const double offsetX = 0.5 * rect_.w;  // Center
-    const double offsetY = 0.15 * rect_.h; // Near the top
+    const double offsetX = xOrigin();
+    const double offsetY = yOrigin();
+
+    // The scale factor will stretch the nodes apart. We want
+    // the scale factor to be sized such that the bottom node
+    // almost touches the bottom of the screen
+    const double sf = scaleFactor_;
 
     const auto& chain = currentPendulum();
 
@@ -133,4 +142,73 @@ PendulumProvider::render(SDL_Renderer* renderer, double sf)
         lastPosition.x = thisX;
         lastPosition.y = thisY;
     }
+}
+
+int
+PendulumProvider::xOrigin()
+{
+    return 0.5 * rect_.w; // Center
+}
+
+int
+PendulumProvider::yOrigin()
+{
+    return 0.15 * rect_.h; // Near the top
+}
+
+void
+PendulumProvider::computeScaleFactor()
+{
+    if (pendulumOverTime_.empty())
+        return;
+
+    double xMin, xMax = 0;
+    double yMin, yMax = 0;
+
+    for (const auto& p : pendulumOverTime_)
+    {
+        for (const auto& n : p.nodes())
+        {
+            if (n.state.y > yMax)
+                yMax = n.state.y;
+
+            if (n.state.y < yMin)
+                yMin = n.state.y;
+
+            if (n.state.x > xMax)
+                xMax = n.state.x;
+
+            if (n.state.x < xMin)
+                xMin = n.state.x;
+        }
+    }
+
+    int padding = 20;
+    int x0 = xOrigin();
+    int y0 = yOrigin();
+
+    const double doubleMaxLimit = std::numeric_limits<double>::max();
+
+    // clang-format off
+    double sfLeft = xMin < 0 ? (x0 - rect_.x - padding) / -xMin : doubleMaxLimit;
+    double sfTop  = yMin < 0 ? (y0 - rect_.y + padding) / -yMin : doubleMaxLimit;
+
+    double sfRight  = xMax > 0 ? (rect_.x + rect_.w - x0 + padding) / xMax : doubleMaxLimit;
+    double sfBottom = yMax > 0 ? (rect_.y + rect_.h - y0 - padding) / yMax : doubleMaxLimit;
+    // clang-format on
+
+    SDL_LogInfo(
+        SDL_LOG_CATEGORY_APPLICATION,
+        "Computed Ideal Scale Factors {%f, %f, %f, %f}",
+        sfLeft,
+        sfTop,
+        sfRight,
+        sfBottom);
+
+    double sfMin = std::numeric_limits<double>::max();
+    for (const auto& sf : { sfTop, sfBottom, sfLeft, sfRight })
+        if (std::abs(sf) < sfMin)
+            sfMin = sf;
+
+    scaleFactor_ = sfMin;
 }

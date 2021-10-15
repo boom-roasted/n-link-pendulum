@@ -277,7 +277,7 @@ MainWindow::runLoop()
                 dot.render(dotTexture_, renderer_);
 
                 // Render pendulum
-                pendulumProvider_.render(renderer_, 50);
+                pendulumProvider_.render(renderer_);
 
                 // Render any menus
                 if (!menus_.empty())

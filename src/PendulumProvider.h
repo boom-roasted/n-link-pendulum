@@ -24,12 +24,12 @@ public:
     void incrementFrame(std::size_t by);
     void incrementTime(double by);
 
-    void render(SDL_Renderer* renderer, double sf);
+    void render(SDL_Renderer* renderer);
 
 private:
     SDL_Rect rect_;
 
-    Pendulum::OverTime pendulumOverTime;
+    Pendulum::OverTime pendulumOverTime_;
 
     Texture pinTexture_;
 
@@ -37,6 +37,15 @@ private:
 
     std::size_t currentPendulumIndex_;
     std::size_t lastFrame_;
+
+    double scaleFactor_;
+
+    int xOrigin();
+    int yOrigin();
+
+    // Computes the ideal scaling factor to fit the simulation in bounds
+    // No-op if pendulum is not loaded
+    void computeScaleFactor();
 
     struct Point
     {
