@@ -9,7 +9,20 @@ Rectangle::Rectangle(const SDL_Rect& rect, const SDL_Color& color)
 void
 Rectangle::render(SDL_Renderer* renderer) const
 {
-    SDL_SetRenderDrawColor(renderer, color_.r, color_.g, color_.b, color_.a);
+    render(renderer, color_);
+}
+
+void
+Rectangle::render(SDL_Renderer* renderer, const SDL_Color& override) const
+{
+    SDL_SetRenderDrawColor(
+        renderer, override.r, override.g, override.b, override.a);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_RenderFillRect(renderer, &rect_);
+}
+
+SDL_Color
+Rectangle::color()
+{
+    return color_;
 }

@@ -10,19 +10,41 @@ Text::Text(
     , fgColor_(fgColor)
     , textTexture_(Texture())
     , text_(text)
+    , swapFgBgNextRender_(false)
 {
+}
+
+void
+Text::swapFgBgNextRender()
+{
+    swapFgBgNextRender_ = true;
 }
 
 void
 Text::render(SDL_Renderer* renderer, TTF_Font* font)
 {
+    // Set foreground and background depending on color swap
+    SDL_Color fg;
+    SDL_Color bg;
+
+    if (swapFgBgNextRender_)
+    {
+        fg = background_.color();
+        bg = fgColor_;
+        swapFgBgNextRender_ = false;
+    }
+    else
+    {
+        fg = fgColor_;
+        bg = background_.color();
+    }
+
     // Render the background
-    background_.render(renderer);
+    background_.render(renderer, bg);
 
     // Render the text in the foreground
     // TODO would it be better to only have this loaded once?
-    if (!textTexture_.loadFromRenderedText(
-            renderer, text_.c_str(), font, fgColor_))
+    if (!textTexture_.loadFromRenderedText(renderer, text_.c_str(), font, fg))
     {
         SDL_LogCritical(
             SDL_LOG_CATEGORY_RENDER, "Unable to render Text texture!\n");

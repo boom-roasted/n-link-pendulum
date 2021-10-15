@@ -16,6 +16,8 @@ public:
         const SDL_Color& bgColor,
         const std::string& text);
 
+    void swapFgBgNextRender();
+
     void render(SDL_Renderer* renderer, TTF_Font* font);
 
     std::string text();
@@ -26,6 +28,7 @@ private:
     SDL_Color fgColor_;
     Texture textTexture_;
     std::string text_;
+    bool swapFgBgNextRender_;
 };
 
 #endif // TEXT_H

@@ -7,14 +7,16 @@ Button::Button(
     const std::string& text)
     : rect_(rect)
     , text_(Text(rect, fgColor, bgColor, text))
-    , wasPressed_(false)
-    , wasClicked_(false)
+    , isPressed_(false)
+    , isClicked_(false)
 {
 }
 
 void
 Button::render(SDL_Renderer* renderer, TTF_Font* font)
 {
+    if (isPressed_)
+        text_.swapFgBgNextRender();
     text_.render(renderer, font);
 }
 
@@ -33,14 +35,14 @@ Button::handleEvent(SDL_Event& e)
                     text().c_str(),
                     e.button.x,
                     e.button.y);
-                wasPressed_ = true;
+                isPressed_ = true;
             }
             break;
 
         // When the mouse is released, it is only worthwhile when
         // the mouse was previously pressed
         case SDL_MOUSEBUTTONUP:
-            if (wasPressed_)
+            if (isPressed_)
             {
                 SDL_LogDebug(
                     SDL_LOG_CATEGORY_INPUT,
@@ -48,8 +50,8 @@ Button::handleEvent(SDL_Event& e)
                     text().c_str(),
                     e.button.x,
                     e.button.y);
-                wasPressed_ = false;
-                wasClicked_ = true;
+                isPressed_ = false;
+                isClicked_ = true;
             }
             break;
 
@@ -57,7 +59,7 @@ Button::handleEvent(SDL_Event& e)
         // if it stays in this button or if it leaves. If it leaves,
         // we shouldn't generate a click for this button.
         case SDL_MOUSEMOTION:
-            if (wasPressed_)
+            if (isPressed_)
             {
                 SDL_LogDebug(
                     SDL_LOG_CATEGORY_INPUT,
@@ -66,7 +68,7 @@ Button::handleEvent(SDL_Event& e)
                     e.motion.x,
                     e.motion.y);
                 if (!isInBounds(e.motion.x, e.motion.y))
-                    wasPressed_ = false;
+                    isPressed_ = false;
             }
             break;
 
@@ -78,8 +80,8 @@ Button::handleEvent(SDL_Event& e)
 bool
 Button::wasClicked()
 {
-    const auto result = wasClicked_;
-    wasClicked_ = false; // Reset state now that it's been checked
+    const auto result = isClicked_;
+    isClicked_ = false; // Reset state now that it's been checked
     return result;
 }
 

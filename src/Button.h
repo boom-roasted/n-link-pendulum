@@ -32,8 +32,8 @@ private:
 
     SDL_Rect rect_;
     Text text_;
-    bool wasPressed_;
-    bool wasClicked_;
+    bool isPressed_;
+    bool isClicked_;
 };
 
 #endif
