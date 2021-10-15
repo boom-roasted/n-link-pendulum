@@ -11,9 +11,9 @@
 class PendulumProvider
 {
 public:
-    PendulumProvider();
+    PendulumProvider(const SDL_Rect& rect);
 
-    ~PendulumProvider();
+    void setRect(const SDL_Rect& rect);
 
     bool loadFromFile(const std::string& p);
 
@@ -24,10 +24,11 @@ public:
     void incrementFrame(std::size_t by);
     void incrementTime(double by);
 
-    void
-    render(SDL_Renderer* renderer, double offsetX, double offsetY, double sf);
+    void render(SDL_Renderer* renderer, double sf);
 
 private:
+    SDL_Rect rect_;
+
     Pendulum::OverTime pendulumOverTime;
 
     Texture pinTexture_;

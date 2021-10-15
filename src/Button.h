@@ -15,6 +15,8 @@ public:
         const SDL_Color& bgColor,
         const std::string& text);
 
+    void setRect(const SDL_Rect& rect);
+
     void render(SDL_Renderer* renderer, TTF_Font* font);
 
     // Tracks mouse events. Will start tracking mouse motion

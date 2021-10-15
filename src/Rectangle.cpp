@@ -7,6 +7,12 @@ Rectangle::Rectangle(const SDL_Rect& rect, const SDL_Color& color)
 }
 
 void
+Rectangle::setRect(const SDL_Rect& rect)
+{
+    rect_ = rect;
+}
+
+void
 Rectangle::render(SDL_Renderer* renderer) const
 {
     render(renderer, color_);

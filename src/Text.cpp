@@ -15,6 +15,13 @@ Text::Text(
 }
 
 void
+Text::setRect(const SDL_Rect& rect)
+{
+    rect_ = rect;
+    background_.setRect(rect);
+}
+
+void
 Text::swapFgBgNextRender()
 {
     swapFgBgNextRender_ = true;

@@ -11,6 +11,12 @@ FpsCounter::FpsCounter(SDL_Rect rect)
 }
 
 void
+FpsCounter::setRect(const SDL_Rect& rect)
+{
+    rect_ = rect;
+}
+
+void
 FpsCounter::start()
 {
     timer_.start();

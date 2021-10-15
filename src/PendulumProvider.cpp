@@ -2,16 +2,21 @@
 
 #include <filesystem>
 
-PendulumProvider::PendulumProvider()
+PendulumProvider::PendulumProvider(const SDL_Rect& rect)
+    : rect_(rect)
+    , pendulumOverTime(Pendulum::OverTime())
+    , pinTexture_(Texture())
+    , nodeTexture_(Texture())
+    , currentPendulumIndex_(0)
+    , lastFrame_(0)
 {
-    pendulumOverTime = Pendulum::OverTime();
-    pinTexture_ = Texture();
-    nodeTexture_ = Texture();
-    currentPendulumIndex_ = 0;
-    lastFrame_ = 0;
 }
 
-PendulumProvider::~PendulumProvider() {}
+void
+PendulumProvider::setRect(const SDL_Rect& rect)
+{
+    rect_ = rect;
+}
 
 bool
 PendulumProvider::loadFromFile(const std::string& p)
@@ -80,14 +85,15 @@ PendulumProvider::incrementTime(double by)
 }
 
 void
-PendulumProvider::render(
-    SDL_Renderer* renderer,
-    double offsetX,
-    double offsetY,
-    double sf)
+PendulumProvider::render(SDL_Renderer* renderer, double sf)
 {
     if (pendulumOverTime.empty())
         return;
+
+    // The offsets determine the pin position, which is the
+    // origin of the pendulum coordinate system.
+    const double offsetX = 0.5 * rect_.w;  // Center
+    const double offsetY = 0.15 * rect_.h; // Near the top
 
     const auto& chain = currentPendulum();
 

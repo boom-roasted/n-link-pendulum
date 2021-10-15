@@ -13,6 +13,13 @@ Button::Button(
 }
 
 void
+Button::setRect(const SDL_Rect& rect)
+{
+    rect_ = rect;
+    text_.setRect(rect);
+}
+
+void
 Button::render(SDL_Renderer* renderer, TTF_Font* font)
 {
     if (isPressed_)

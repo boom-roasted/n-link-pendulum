@@ -12,6 +12,7 @@ class FpsCounter
 public:
     FpsCounter(SDL_Rect rect);
 
+    void setRect(const SDL_Rect& rect);
     void start();
 
     // Render the fps counter to a corner of the window

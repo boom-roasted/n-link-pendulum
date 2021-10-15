@@ -5,15 +5,15 @@
 #include "Timer.h"
 
 MainWindow::MainWindow(int w, int h)
+    : window_(NULL)
+    , renderer_(NULL)
+    , dotTexture_(Texture())
+    , mainFont_(NULL)
+    , pendulumProvider_(PendulumProvider({ 0, 0, w, h }))
+    , menus_(std::vector<MainMenu>())
+    , w_(w)
+    , h_(h)
 {
-    window_ = NULL;
-    renderer_ = NULL;
-    dotTexture_ = Texture();
-    mainFont_ = NULL;
-    pendulumProvider_ = PendulumProvider();
-    menus_ = std::vector<MainMenu>();
-    w_ = w;
-    h_ = h;
 }
 
 MainWindow::~MainWindow()
@@ -233,6 +233,10 @@ MainWindow::runLoop()
                                 w_ = e.window.data1;
                                 h_ = e.window.data2;
                                 dot.setBounds(w_, h_);
+                                pendulumProvider_.setRect({ 0, 0, w_, h_ });
+                                fpsCounter.setRect({ 0, 0, w_, h_ });
+                                for (auto& menu : menus_)
+                                    menu.setRect({ 0, 0, w_, h_ });
                                 break;
                             default:
                                 break;
@@ -273,7 +277,7 @@ MainWindow::runLoop()
                 dot.render(dotTexture_, renderer_);
 
                 // Render pendulum
-                pendulumProvider_.render(renderer_, 0.5 * w_, 0.15 * h_, 50);
+                pendulumProvider_.render(renderer_, 50);
 
                 // Render any menus
                 if (!menus_.empty())
