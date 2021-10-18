@@ -252,7 +252,10 @@ MainWindow::runLoop()
                     else
                     {
                         // Menu event
-                        menus_.back().handleEvent(e);
+                        bool shouldResume;
+                        menus_.back().handleEvent(e, shouldResume, quit);
+                        if (shouldResume)
+                            menus_.pop_back();
                     }
                 }
 
@@ -279,14 +282,14 @@ MainWindow::runLoop()
                 // Render pendulum
                 pendulumProvider_.render(renderer_);
 
+                // Render fps counter
+                fpsCounter.render(renderer_, mainFont_);
+
                 // Render any menus
                 if (!menus_.empty())
                 {
                     (menus_.back()).render(renderer_, mainFont_);
                 }
-
-                // Render fps counter
-                fpsCounter.render(renderer_, mainFont_);
 
                 // Update screen
                 SDL_RenderPresent(renderer_);

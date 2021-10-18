@@ -1,11 +1,14 @@
 #include "Button.h"
 
 Button::Button(
+
     const SDL_Rect& rect,
+    int id,
+    const std::string& text,
     const SDL_Color& fgColor,
-    const SDL_Color& bgColor,
-    const std::string& text)
+    const SDL_Color& bgColor)
     : rect_(rect)
+    , id_(id)
     , text_(Text(rect, fgColor, bgColor, text))
     , isPressed_(false)
     , isClicked_(false)
@@ -90,6 +93,12 @@ Button::wasClicked()
     const auto result = isClicked_;
     isClicked_ = false; // Reset state now that it's been checked
     return result;
+}
+
+int
+Button::id()
+{
+    return id_;
 }
 
 std::string

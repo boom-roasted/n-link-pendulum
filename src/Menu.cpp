@@ -4,22 +4,27 @@ MainMenu::MainMenu(const SDL_Rect& rect)
     : rect_(rect)
     , background_(rect, SDL_Color({ 119, 181, 254, 200 }))
 {
-    const auto buttonNames =
-        std::vector<std::string>{ "Resume", "Options", "Exit" };
+    const std::vector<ButtonData> buttonDatas{
+        { ButtonId::Resume, "Resume" },
+        { ButtonId::Options, "Options" },
+        { ButtonId::Quit, "Exit" },
+    };
 
     SDL_Color textColor = { 0, 0, 0, 255 };
     SDL_Color textBackgroundColor = { 255, 255, 255, 255 };
 
     // Setup each renderable Button
     buttons_.reserve(3);
+    SDL_Rect r = { rect.x, rect.y, 100, 100 }; // will be overwritten
 
-    for (const auto& name : buttonNames)
+    for (const auto& data : buttonDatas)
     {
-        buttons_.push_back(Button(
-            { rect.x, rect.y, 100, 100 }, // will be overwritten
+        buttons_.emplace_back(
+            r,
+            static_cast<int>(data.id),
+            data.name,
             textColor,
-            textBackgroundColor,
-            name));
+            textBackgroundColor);
     }
 
     // Figure out the button positions
@@ -46,7 +51,7 @@ MainMenu::render(SDL_Renderer* renderer, TTF_Font* font)
 }
 
 void
-MainMenu::handleEvent(SDL_Event& e)
+MainMenu::handleEvent(SDL_Event& e, bool& shouldResume, bool& shouldQuit)
 {
     for (auto& button : buttons_)
     {
@@ -57,8 +62,20 @@ MainMenu::handleEvent(SDL_Event& e)
                 SDL_LOG_CATEGORY_APPLICATION,
                 "Button '%s' was clicked",
                 button.text().c_str());
-            // TODO attach actions to different buttons
-            // button.action();
+
+            switch (static_cast<ButtonId>(button.id()))
+            {
+                case ButtonId::Resume:
+                    shouldResume = true;
+                    break;
+
+                case ButtonId::Quit:
+                    shouldQuit = true;
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 }

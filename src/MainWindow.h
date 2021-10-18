@@ -43,6 +43,8 @@ private:
     PendulumProvider pendulumProvider_;
 
     // Menu overlays
+    // TODO maybe this should just be an optional?
+    // Or even just a normal struct, but add a `bool MenuVisible` member?
     std::vector<MainMenu> menus_;
 
     // Screen dimensions
