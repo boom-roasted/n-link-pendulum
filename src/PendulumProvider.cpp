@@ -162,8 +162,8 @@ PendulumProvider::computeScaleFactor()
     if (pendulumOverTime_.empty())
         return;
 
-    double xMin, xMax = 0;
-    double yMin, yMax = 0;
+    double xMin = 0, xMax = 0;
+    double yMin = 0, yMax = 0;
 
     for (const auto& p : pendulumOverTime_)
     {
