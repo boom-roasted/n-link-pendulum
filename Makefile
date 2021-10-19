@@ -2,14 +2,14 @@ CXX := g++
 SOURCES := main.cpp
 SOURCES += Texture.cpp Dot.cpp MainWindow.cpp PendulumProvider.cpp
 SOURCES += Rectangle.cpp Menu.cpp Text.cpp Button.cpp
-SOURCES += Timer.cpp FpsCounter.cpp
+SOURCES += Timer.cpp FpsCounter.cpp Playback.cpp
 SOURCE_DIR := src
 
 # Linker flags
 LDFLAGS := -lSDL2 -lSDL2_image -lSDL2_ttf
 
 # C++ flags. Add -g for debugging
-CXXFLAGS := -std=c++17 -Wall -Werror -pedantic
+CXXFLAGS := -std=c++17 -Wall -Werror -pedantic -g -O0
 
 # Where to build to
 OBJDIR := build
@@ -69,6 +69,11 @@ format:
 .PHONY: check-format
 check-format:
 	clang-format -i -Werror --dry-run $(SOURCE_DIR)/*.cpp $(SOURCE_DIR)/*.h
+
+# Check for memory leaks
+.PHONY: valgrind
+valgrind: $(MAIN)
+	valgrind --leak-check=yes ./$(MAIN)
 
 # Include the .d makefiles. The - at the front suppresses the errors of missing
 # Makefiles. Initially, or after a clean, all the .d files will be missing. We

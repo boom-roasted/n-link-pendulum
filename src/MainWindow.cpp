@@ -2,6 +2,7 @@
 
 #include "Dot.h"
 #include "FpsCounter.h"
+#include "Playback.h"
 #include "Timer.h"
 
 MainWindow::MainWindow(int w, int h)
@@ -181,6 +182,9 @@ MainWindow::runLoop()
             FpsCounter fpsCounter({ 0, 0, w_, h_ });
             fpsCounter.start();
 
+            // Playback control
+            Playback playback({ 0, 0, w_, h_ });
+
             // The dot that will be moving around on the screen
             Dot dot(w_, h_);
 
@@ -248,6 +252,9 @@ MainWindow::runLoop()
                     {
                         // Dot event
                         dot.handleEvent(e);
+
+                        // Playback event
+                        playback.handleEvent(e);
                     }
                     else
                     {
@@ -284,6 +291,9 @@ MainWindow::runLoop()
 
                 // Render fps counter
                 fpsCounter.render(renderer_, mainFont_);
+
+                // Render playback controls
+                playback.render(renderer_, mainFont_);
 
                 // Render any menus
                 if (!menus_.empty())
