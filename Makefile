@@ -1,7 +1,7 @@
 CXX := g++
 SOURCES := main.cpp
 SOURCES += Texture.cpp Dot.cpp MainWindow.cpp PendulumProvider.cpp
-SOURCES += Rectangle.cpp Menu.cpp Text.cpp Button.cpp
+SOURCES += Rectangle.cpp Menu.cpp Text.cpp Button.cpp Icon.cpp
 SOURCES += Timer.cpp FpsCounter.cpp Playback.cpp
 SOURCE_DIR := src
 
@@ -9,7 +9,7 @@ SOURCE_DIR := src
 LDFLAGS := -lSDL2 -lSDL2_image -lSDL2_ttf
 
 # C++ flags. Add -g for debugging
-CXXFLAGS := -std=c++17 -Wall -Werror -pedantic -g -O0
+CXXFLAGS := -std=c++17 -Wall -Werror -pedantic -g
 
 # Where to build to
 OBJDIR := build

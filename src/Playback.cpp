@@ -1,18 +1,18 @@
 #include "Playback.h"
 
-Playback::Playback(const SDL_Rect& rect)
+Playback::Playback(const SDL_Rect& rect, SDL_Renderer* renderer)
     : rect_(rect)
-    , background_(rect, SDL_Color({ 0, 0, 0, 0 })) // Transparent
+    , background_(rect, SDL_Color({ 0, 0, 0, 0 }))
+    , renderer_(renderer) // Transparent
 {
     const std::vector<ButtonData> buttonDatas{
-        { ButtonId::PlayPause, "Play/Pause" },
-        { ButtonId::Restart, "Restart" },
-        { ButtonId::FrameBack, "<<" },
-        { ButtonId::FrameForward, ">>" },
+        { ButtonId::PlayPause, "res/play.png" },
+        { ButtonId::Restart, "res/restart.png" },
+        { ButtonId::FrameBack, "res/framebackward.png" },
+        { ButtonId::FrameForward, "res/frameforward.png" },
     };
 
-    SDL_Color textColor = { 0, 0, 0, 255 };
-    SDL_Color textBackgroundColor = { 200, 200, 200, 255 };
+    SDL_Color backgroundColor = { 200, 200, 200, 255 };
 
     // Setup each renderable Button
     buttons_.reserve(buttonDatas.size());
@@ -20,12 +20,7 @@ Playback::Playback(const SDL_Rect& rect)
 
     for (const auto& data : buttonDatas)
     {
-        buttons_.emplace_back(
-            r,
-            static_cast<int>(data.id),
-            data.name,
-            textColor,
-            textBackgroundColor);
+        buttons_.emplace_back(r, backgroundColor, data.name, renderer);
     }
 
     // Figure out the button positions
@@ -41,47 +36,41 @@ Playback::setRect(const SDL_Rect& rect)
 }
 
 void
-Playback::render(SDL_Renderer* renderer, TTF_Font* font)
+Playback::render()
 {
     // Render background
-    background_.render(renderer);
+    background_.render(renderer_);
 
     // Render each option
     for (auto& button : buttons_)
-        button.render(renderer, font);
+        button.render();
 }
 
-std::optional<Playback::ButtonId>
+void
 Playback::handleEvent(SDL_Event& e)
 {
-    for (auto& button : buttons_)
-    {
-        button.handleEvent(e);
-        if (button.wasClicked())
-        {
-            SDL_LogInfo(
-                SDL_LOG_CATEGORY_APPLICATION,
-                "Button '%s' was clicked",
-                button.text().c_str());
+    // for (auto& button : buttons_)
+    // {
+    // button.handleEvent(e);
+    // if (button.wasClicked())
+    // {
+    //     SDL_LogInfo(
+    //         SDL_LOG_CATEGORY_APPLICATION,
+    //         "Button '%s' was clicked",
+    //         button.text().c_str());
 
-            return static_cast<ButtonId>(button.id());
-        }
-    }
-
-    return std::nullopt;
+    //     return static_cast<ButtonId>(button.id());
+    // }
+    // }
 }
 
 void
 Playback::computePositions()
 {
-    int buttonWidth = 100;
+    int buttonWidth = 50;
     int buttonHeight = 50;
 
-    int margin = 20;
-
-    // Figure out top left x,y for the group of all options
-    // int totalHeight = buttonHeight + margin + margin;
-    // int totalWidth = (buttonWidth + margin + margin) * buttons_.size();
+    int margin = 10;
 
     int topX = rect_.x; // + margin;
     int topY = rect_.y; // + margin;

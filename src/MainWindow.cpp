@@ -183,7 +183,7 @@ MainWindow::runLoop()
             fpsCounter.start();
 
             // Playback control
-            Playback playback({ 0, 0, w_, h_ });
+            Playback playback({ 0, 0, w_, h_ }, renderer_);
 
             // The dot that will be moving around on the screen
             Dot dot(w_, h_);
@@ -293,7 +293,7 @@ MainWindow::runLoop()
                 fpsCounter.render(renderer_, mainFont_);
 
                 // Render playback controls
-                playback.render(renderer_, mainFont_);
+                playback.render();
 
                 // Render any menus
                 if (!menus_.empty())

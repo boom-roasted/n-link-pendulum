@@ -6,15 +6,16 @@
 #include <vector>
 
 #include "Button.h"
+#include "Icon.h"
 
 class Playback
 {
 public:
-    Playback(const SDL_Rect& rect);
+    Playback(const SDL_Rect& rect, SDL_Renderer* renderer);
 
     void setRect(const SDL_Rect& rect);
 
-    void render(SDL_Renderer* renderer, TTF_Font* font);
+    void render();
 
     // Button identifiers
     enum class ButtonId : int
@@ -26,7 +27,7 @@ public:
     };
 
     // Handles event. The button pressed is returned, if any are pressed
-    std::optional<ButtonId> handleEvent(SDL_Event& e);
+    void handleEvent(SDL_Event& e);
 
 private:
     // Computes button positions
@@ -47,7 +48,8 @@ private:
 
     SDL_Rect rect_;
     Rectangle background_;
-    std::vector<Button> buttons_;
+    std::vector<Icon> buttons_;
+    SDL_Renderer* renderer_;
 };
 
 #endif // PLAYBACK_H
