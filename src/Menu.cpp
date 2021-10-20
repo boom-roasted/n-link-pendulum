@@ -1,8 +1,9 @@
 #include "Menu.h"
 
-MainMenu::MainMenu(const SDL_Rect& rect)
+MainMenu::MainMenu(const SDL_Rect& rect, SDL_Renderer* renderer, TTF_Font* font)
     : rect_(rect)
     , background_(rect, SDL_Color({ 119, 181, 254, 200 }))
+    , renderer_(renderer)
 {
     const std::vector<ButtonData> buttonDatas{
         { ButtonId::Resume, "Resume" },
@@ -24,7 +25,9 @@ MainMenu::MainMenu(const SDL_Rect& rect)
             static_cast<int>(data.id),
             data.name,
             textColor,
-            textBackgroundColor);
+            textBackgroundColor,
+            renderer,
+            font);
     }
 
     // Figure out the button positions
@@ -40,14 +43,14 @@ MainMenu::setRect(const SDL_Rect& rect)
 }
 
 void
-MainMenu::render(SDL_Renderer* renderer, TTF_Font* font)
+MainMenu::render()
 {
     // Render background
-    background_.render(renderer);
+    background_.render(renderer_);
 
     // Render each option
     for (auto& button : buttons_)
-        button.render(renderer, font);
+        button.render();
 }
 
 void

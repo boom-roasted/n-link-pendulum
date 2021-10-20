@@ -14,11 +14,13 @@ public:
         int id,
         const std::string& text,
         const SDL_Color& fgColor,
-        const SDL_Color& bgColor);
+        const SDL_Color& bgColor,
+        SDL_Renderer* renderer,
+        TTF_Font* font);
 
     void setRect(const SDL_Rect& rect);
 
-    void render(SDL_Renderer* renderer, TTF_Font* font);
+    void render();
 
     // Tracks mouse events. Will start tracking mouse motion
     // if mouse button is down.

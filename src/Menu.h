@@ -9,11 +9,11 @@
 class MainMenu
 {
 public:
-    MainMenu(const SDL_Rect& rect);
+    MainMenu(const SDL_Rect& rect, SDL_Renderer* renderer, TTF_Font* font);
 
     void setRect(const SDL_Rect& rect);
 
-    void render(SDL_Renderer* renderer, TTF_Font* font);
+    void render();
 
     void handleEvent(SDL_Event& e, bool& shouldResume, bool& shouldQuit);
 
@@ -43,6 +43,7 @@ private:
 
     SDL_Rect rect_;
     Rectangle background_;
+    SDL_Renderer* renderer_;
     std::vector<Button> buttons_;
 };
 

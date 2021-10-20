@@ -1,15 +1,16 @@
 #include "Button.h"
 
 Button::Button(
-
     const SDL_Rect& rect,
     int id,
     const std::string& text,
     const SDL_Color& fgColor,
-    const SDL_Color& bgColor)
+    const SDL_Color& bgColor,
+    SDL_Renderer* renderer,
+    TTF_Font* font)
     : rect_(rect)
     , id_(id)
-    , text_(Text(rect, fgColor, bgColor, text))
+    , text_(Text(rect, fgColor, bgColor, text, renderer, font))
     , isPressed_(false)
     , isClicked_(false)
 {
@@ -23,11 +24,11 @@ Button::setRect(const SDL_Rect& rect)
 }
 
 void
-Button::render(SDL_Renderer* renderer, TTF_Font* font)
+Button::render()
 {
     if (isPressed_)
         text_.swapFgBgNextRender();
-    text_.render(renderer, font);
+    text_.render();
 }
 
 void

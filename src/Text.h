@@ -14,23 +14,32 @@ public:
         const SDL_Rect& rect,
         const SDL_Color& fgColor,
         const SDL_Color& bgColor,
-        const std::string& text);
+        const std::string& text,
+        SDL_Renderer* renderer,
+        TTF_Font* font); // shouldn't be saving raw pointers
 
     void setRect(const SDL_Rect& rect);
 
+    void setText(const std::string& text);
+
     void swapFgBgNextRender();
 
-    void render(SDL_Renderer* renderer, TTF_Font* font);
+    void render();
 
     std::string text();
 
 private:
+    void loadTexture();
+    void swapFgBg();
+
     SDL_Rect rect_;
     Rectangle background_;
     SDL_Color fgColor_;
     Texture textTexture_;
     std::string text_;
     bool swapFgBgNextRender_;
+    SDL_Renderer* renderer_;
+    TTF_Font* font_;
 };
 
 #endif // TEXT_H

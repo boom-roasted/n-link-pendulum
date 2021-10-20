@@ -201,7 +201,8 @@ MainWindow::runLoop()
                             SDL_Rect screenRect = { 0, 0, w_, h_ };
 
                             // Constructs menu in place with forwarded params
-                            menus_.emplace_back(screenRect);
+                            menus_.emplace_back(
+                                screenRect, renderer_, mainFont_);
                         }
                         else
                         {
@@ -287,7 +288,7 @@ MainWindow::runLoop()
                 // Render any menus
                 if (!menus_.empty())
                 {
-                    (menus_.back()).render(renderer_, mainFont_);
+                    (menus_.back()).render();
                 }
 
                 // Update screen
