@@ -57,7 +57,7 @@ Text::render(SDL_Renderer* renderer, TTF_Font* font)
             SDL_LOG_CATEGORY_RENDER, "Unable to render Text texture!\n");
     }
 
-    // Render fps text, aligned to the center of this element
+    // Render text, aligned to the center of this element
     int x = rect_.x + (0.5 * rect_.w) - (0.5 * textTexture_.getWidth());
     int y = rect_.y + (0.5 * rect_.h) - (0.5 * textTexture_.getHeight());
     textTexture_.render(x, y, renderer);
