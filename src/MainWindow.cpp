@@ -8,7 +8,6 @@
 MainWindow::MainWindow(int w, int h)
     : window_(NULL)
     , renderer_(NULL)
-    , dotTexture_(Texture())
     , mainFont_(NULL)
     , pendulumProvider_(PendulumProvider({ 0, 0, w, h }))
     , menus_(std::vector<MainMenu>())
@@ -19,9 +18,6 @@ MainWindow::MainWindow(int w, int h)
 
 MainWindow::~MainWindow()
 {
-    // Free loaded images
-    dotTexture_.free();
-
     // Free fonts
     TTF_CloseFont(mainFont_);
     mainFont_ = NULL;
@@ -123,13 +119,6 @@ MainWindow::loadMedia()
     // Loading success flag
     bool success = true;
 
-    // Load dot texture
-    if (!dotTexture_.loadFromFile("res/dot.bmp", renderer_))
-    {
-        printf("Failed to load dot texture!\n");
-        success = false;
-    }
-
     // Load font
     // Open the font
     mainFont_ = TTF_OpenFont("res/DejaVuSerif.ttf", 16);
@@ -186,7 +175,7 @@ MainWindow::runLoop()
             Playback playback({ 0, 0, w_, h_ }, renderer_);
 
             // The dot that will be moving around on the screen
-            Dot dot(w_, h_);
+            Dot dot(w_, h_, renderer_);
 
             // While application is running
             while (!quit)
@@ -284,7 +273,7 @@ MainWindow::runLoop()
                 SDL_RenderClear(renderer_);
 
                 // Render dot
-                dot.render(dotTexture_, renderer_);
+                dot.render();
 
                 // Render pendulum
                 pendulumProvider_.render(renderer_);

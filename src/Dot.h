@@ -17,7 +17,7 @@ public:
     static const int DOT_VEL = 10;
 
     // Initializes the variables
-    Dot(int boundingWidth, int boundingHeight);
+    Dot(int boundingWidth, int boundingHeight, SDL_Renderer* renderer);
 
     // Takes key presses and adjusts the dot's velocity
     void handleEvent(SDL_Event& e);
@@ -30,7 +30,7 @@ public:
     void setBounds(int w, int h);
 
     // Shows the dot on the screen
-    void render(Texture& texture, SDL_Renderer* renderer);
+    void render();
 
 private:
     // The X and Y offsets of the dot
@@ -42,6 +42,12 @@ private:
     // Bounds of the dot
     int boundingWidth_;
     int boundingHeight_;
+
+    // Reference to renderer
+    SDL_Renderer* renderer_;
+
+    // Dot texture
+    Texture texture_;
 };
 
 #endif // DOT_H

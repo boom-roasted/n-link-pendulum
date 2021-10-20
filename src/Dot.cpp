@@ -2,11 +2,17 @@
 
 #include <iostream>
 
-Dot::Dot(int boundingWidth, int boundingHeight)
+Dot::Dot(int boundingWidth, int boundingHeight, SDL_Renderer* renderer)
 {
     // Set bounds
     boundingWidth_ = boundingWidth;
     boundingHeight_ = boundingHeight;
+
+    // Set renderer
+    renderer_ = renderer;
+
+    // Load dot texture
+    SDL_assert(texture_.loadFromFile("res/dot.bmp", renderer_));
 
     // Initialize the offsets
     posX_ = 0;
@@ -102,8 +108,8 @@ Dot::setBounds(int w, int h)
 }
 
 void
-Dot::render(Texture& texture, SDL_Renderer* renderer)
+Dot::render()
 {
     // Show the dot
-    texture.render(posX_, posY_, renderer);
+    texture_.render(posX_, posY_, renderer_);
 }

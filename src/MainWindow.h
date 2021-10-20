@@ -33,7 +33,6 @@ private:
     SDL_Renderer* renderer_;
 
     // Scene textures
-    Texture dotTexture_;
     Texture fpsTextTexture_;
 
     // Fonts
