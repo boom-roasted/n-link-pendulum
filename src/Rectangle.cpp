@@ -13,6 +13,12 @@ Rectangle::setRect(const SDL_Rect& rect)
 }
 
 void
+Rectangle::setColor(const SDL_Color& color)
+{
+    color_ = color;
+}
+
+void
 Rectangle::render(SDL_Renderer* renderer) const
 {
     render(renderer, color_);

@@ -12,6 +12,7 @@ public:
     Rectangle(const SDL_Rect& rect, const SDL_Color& color);
 
     void setRect(const SDL_Rect& rect);
+    void setColor(const SDL_Color& color);
 
     void render(SDL_Renderer* renderer) const;
     void render(SDL_Renderer* renderer, const SDL_Color& override) const;
