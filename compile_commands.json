@@ -245,5 +245,43 @@
    "build/Icon.cpp.o"
   ],
   "file": "src/Icon.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/n-link-pendulum",
+  "arguments": [
+   "g++",
+   "-Isrc",
+   "-MMD",
+   "-MP",
+   "-std=c++17",
+   "-Wall",
+   "-Werror",
+   "-pedantic",
+   "-g",
+   "-c",
+   "src/Window.cpp",
+   "-o",
+   "build/Window.cpp.o"
+  ],
+  "file": "src/Window.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/n-link-pendulum",
+  "arguments": [
+   "g++",
+   "-Isrc",
+   "-MMD",
+   "-MP",
+   "-std=c++17",
+   "-Wall",
+   "-Werror",
+   "-pedantic",
+   "-g",
+   "-c",
+   "src/Renderer.cpp",
+   "-o",
+   "build/Renderer.cpp.o"
+  ],
+  "file": "src/Renderer.cpp"
  }
 ]

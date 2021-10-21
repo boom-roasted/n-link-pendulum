@@ -24,11 +24,11 @@ MainWindow::~MainWindow()
 
     // Menus should destroy themselves
 
-    // Destroy window
-    SDL_DestroyRenderer(renderer_);
-    SDL_DestroyWindow(window_);
-    window_ = NULL;
-    renderer_ = NULL;
+    // Destroy renderer. Could let destructor handle this.
+    renderer_.dispose();
+
+    // Destroy window. Could let destructor handle this.
+    window_.dispose();
 
     // Quit SDL subsystems
     IMG_Quit();
@@ -52,61 +52,43 @@ MainWindow::init()
         // Set texture filtering to linear
         if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
         {
-            printf("Warning: Linear texture filtering not enabled!");
+            SDL_LogWarn(
+                SDL_LOG_CATEGORY_VIDEO,
+                "Warning: Linear texture filtering not enabled!");
         }
 
-        // Create window
-        window_ = SDL_CreateWindow(
+        window_ = Window(
             "SDL Tutorial",
             SDL_WINDOWPOS_UNDEFINED,
             SDL_WINDOWPOS_UNDEFINED,
             w_,
             h_,
             SDL_WINDOW_SHOWN);
-        if (window_ == NULL)
+
+        // Create vsynced renderer for window
+        renderer_ = Renderer(
+            window_, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
+        // Initialize renderer color
+        SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
+
+        // Initialize PNG loading
+        int imgFlags = IMG_INIT_PNG;
+        if (!(IMG_Init(imgFlags) & imgFlags))
         {
             printf(
-                "Window could not be created! SDL Error: %s\n", SDL_GetError());
+                "SDL_image could not initialize! SDL_image Error: %s\n",
+                IMG_GetError());
             success = false;
         }
-        else
+
+        // Initialize ttf library
+        if (TTF_Init() == -1)
         {
-            // Create vsynced renderer for window
-            renderer_ = SDL_CreateRenderer(
-                window_,
-                -1,
-                SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-            if (renderer_ == NULL)
-            {
-                printf(
-                    "Renderer could not be created! SDL Error: %s\n",
-                    SDL_GetError());
-                success = false;
-            }
-            else
-            {
-                // Initialize renderer color
-                SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
-
-                // Initialize PNG loading
-                int imgFlags = IMG_INIT_PNG;
-                if (!(IMG_Init(imgFlags) & imgFlags))
-                {
-                    printf(
-                        "SDL_image could not initialize! SDL_image Error: %s\n",
-                        IMG_GetError());
-                    success = false;
-                }
-
-                // Initialize ttf library
-                if (TTF_Init() == -1)
-                {
-                    printf(
-                        "SDL_ttf could not initialize! SDL_ttf Error: %s\n",
-                        TTF_GetError());
-                    success = false;
-                }
-            }
+            printf(
+                "SDL_ttf could not initialize! SDL_ttf Error: %s\n",
+                TTF_GetError());
+            success = false;
         }
     }
 
