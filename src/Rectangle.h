@@ -1,5 +1,5 @@
-#ifndef RECTANGLE_H
-#define RECTANGLE_H
+#ifndef PENDULUM_RECTANGLE_H
+#define PENDULUM_RECTANGLE_H
 
 #include <SDL2/SDL.h>
 
@@ -24,4 +24,4 @@ private:
     SDL_Color color_;
 };
 
-#endif // RECTANGLE_H
+#endif // PENDULUM_RECTANGLE_H

@@ -1,5 +1,5 @@
-#ifndef PENDULUMPROVIDER_H
-#define PENDULUMPROVIDER_H
+#ifndef PENDULUM_PENDULUMPROVIDER_H
+#define PENDULUM_PENDULUMPROVIDER_H
 
 #include <SDL2/SDL.h>
 #include <string>
@@ -60,4 +60,4 @@ private:
     };
 };
 
-#endif // PENDULUMPROVIDER_H
+#endif // PENDULUM_PENDULUMPROVIDER_H

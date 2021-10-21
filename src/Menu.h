@@ -1,5 +1,5 @@
-#ifndef MENU_H
-#define MENU_H
+#ifndef PENDULUM_MENU_H
+#define PENDULUM_MENU_H
 
 #include <vector>
 
@@ -47,4 +47,4 @@ private:
     std::vector<Button> buttons_;
 };
 
-#endif // MENU_H
+#endif // PENDULUM_MENU_H

@@ -1,5 +1,5 @@
-#ifndef PLAYBACK_H
-#define PLAYBACK_H
+#ifndef PENDULUM_PLAYBACK_H
+#define PENDULUM_PLAYBACK_H
 
 #include <SDL2/SDL.h>
 #include <optional>
@@ -52,4 +52,4 @@ private:
     SDL_Renderer* renderer_;
 };
 
-#endif // PLAYBACK_H
+#endif // PENDULUM_PLAYBACK_H

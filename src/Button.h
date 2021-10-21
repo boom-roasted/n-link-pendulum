@@ -1,5 +1,5 @@
-#ifndef BUTTON_H
-#define BUTTON_H
+#ifndef PENDULUM_BUTTON_H
+#define PENDULUM_BUTTON_H
 
 #include <SDL2/SDL.h>
 #include <string>
@@ -43,4 +43,4 @@ private:
     bool isClicked_;
 };
 
-#endif
+#endif // PENDULUM_BUTTON_H

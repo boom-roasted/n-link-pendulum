@@ -1,5 +1,5 @@
-#ifndef PENDULUM_H
-#define PENDULUM_H
+#ifndef PENDULUM_PENDULUM_H
+#define PENDULUM_PENDULUM_H
 
 #include <cmath>
 #include <fstream>
@@ -425,4 +425,4 @@ public:
 using OverTime = std::vector<Pendulum>;
 }
 
-#endif // PENDULUM_H
+#endif // PENDULUM_PENDULUM_H

@@ -1,5 +1,5 @@
-#ifndef DOT_H
-#define DOT_H
+#ifndef PENDULUM_DOT_H
+#define PENDULUM_DOT_H
 
 #include <SDL2/SDL.h>
 
@@ -50,4 +50,4 @@ private:
     Texture texture_;
 };
 
-#endif // DOT_H
+#endif // PENDULUM_DOT_H

@@ -1,5 +1,5 @@
-#ifndef ICON_H
-#define ICON_H
+#ifndef PENDULUM_ICON_H
+#define PENDULUM_ICON_H
 
 #include "Rectangle.h"
 #include "Texture.h"
@@ -32,4 +32,4 @@ private:
     SDL_Renderer* renderer_;
 };
 
-#endif // ICON_H
+#endif // PENDULUM_ICON_H

@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef PENDULUM_MAINWINDOW_H
+#define PENDULUM_MAINWINDOW_H
 
 #include <SDL2/SDL.h>
 
@@ -53,4 +53,4 @@ private:
     int h_;
 };
 
-#endif // MAINWINDOW_H
+#endif // PENDULUM_MAINWINDOW_H

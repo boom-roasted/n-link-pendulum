@@ -1,5 +1,5 @@
-#ifndef RENDERER_H
-#define RENDERER_H
+#ifndef PENDULUM_RENDERER_H
+#define PENDULUM_RENDERER_H
 
 #include <SDL2/SDL.h>
 
@@ -32,4 +32,4 @@ private:
     SDL_Renderer* renderer_;
 };
 
-#endif // RENDERER_H
+#endif // PENDULUM_RENDERER_H

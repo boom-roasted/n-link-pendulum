@@ -1,5 +1,5 @@
-#ifndef TEXT_H
-#define TEXT_H
+#ifndef PENDULUM_TEXT_H
+#define PENDULUM_TEXT_H
 
 #include <SDL2/SDL.h>
 #include <string>
@@ -42,4 +42,4 @@ private:
     TTF_Font* font_;
 };
 
-#endif // TEXT_H
+#endif // PENDULUM_TEXT_H

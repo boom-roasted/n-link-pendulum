@@ -1,5 +1,5 @@
-#ifndef TIMER_H
-#define TIMER_H
+#ifndef PENDULUM_TIMER_H
+#define PENDULUM_TIMER_H
 
 #include <SDL2/SDL.h>
 
@@ -40,4 +40,4 @@ private:
     bool isStarted_;
 };
 
-#endif // TIMER_H
+#endif // PENDULUM_TIMER_H

@@ -1,5 +1,5 @@
-#ifndef FPSCOUNTER_H
-#define FPSCOUNTER_H
+#ifndef PENDULUM_FPSCOUNTER_H
+#define PENDULUM_FPSCOUNTER_H
 
 #include <SDL2/SDL.h>
 #include <sstream>
@@ -28,4 +28,4 @@ private:
     unsigned long long countedFrames_;
 };
 
-#endif // FPSCOUNTER_H
+#endif // PENDULUM_FPSCOUNTER_H

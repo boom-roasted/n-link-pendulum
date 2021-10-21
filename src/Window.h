@@ -1,5 +1,5 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#ifndef PENDULUM_WINDOW_H
+#define PENDULUM_WINDOW_H
 
 #include <SDL2/SDL.h>
 
@@ -30,4 +30,4 @@ private:
     SDL_Window* window_;
 };
 
-#endif // WINDOW_H
+#endif // PENDULUM_WINDOW_H

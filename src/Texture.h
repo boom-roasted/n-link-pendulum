@@ -1,5 +1,5 @@
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#ifndef PENDULUM_TEXTURE_H
+#define PENDULUM_TEXTURE_H
 
 #include <string>
 
@@ -63,4 +63,4 @@ private:
     int height_;
 };
 
-#endif // TEXTURE_H
+#endif // PENDULUM_TEXTURE_H
