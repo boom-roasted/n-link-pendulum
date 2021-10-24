@@ -241,15 +241,33 @@ MainWindow::runLoop()
                 // Time since last render frame (seconds)
                 float deltaT = timer.lap() / 1000.f;
 
-                // Freeze scene interaction when menus are presented
+                // Only allow scene interaction when menus are hidden
                 if (menus_.empty())
                 {
                     // Move the dot
                     dot.move();
 
-                    // Increment the chain position
-                    pendulumProvider_.incrementTime(deltaT);
+                    // Chain movement is controlled by the playback controller
+                    if (playback.shouldRestart())
+                        pendulumProvider_.restart();
+
+                    if (!playback.isPaused())
+                    {
+                        // Increment the chain position
+                        pendulumProvider_.incrementTime(deltaT);
+                    }
+                    else
+                    {
+                        // Playback is paused, but frame by frame is allowed
+                        if (playback.shouldFrameBack())
+                            pendulumProvider_.decrementFrame(1);
+                        if (playback.shouldFrameForward())
+                            pendulumProvider_.incrementFrame(1);
+                    }
                 }
+
+                // Playback state has been processed
+                playback.clearState();
 
                 // Clear screen
                 SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);

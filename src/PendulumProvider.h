@@ -16,12 +16,14 @@ public:
     void setRect(const SDL_Rect& rect);
 
     bool loadFromFile(const std::string& p);
-
     void loadTextures(SDL_Renderer* renderer);
 
     Pendulum::Pendulum currentPendulum();
 
+    // Timing controls
+    void restart();
     void incrementFrame(std::size_t by);
+    void decrementFrame(std::size_t by);
     void incrementTime(double by);
 
     void render(SDL_Renderer* renderer);

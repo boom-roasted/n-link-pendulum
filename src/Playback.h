@@ -15,6 +15,13 @@ public:
 
     void setRect(const SDL_Rect& rect);
 
+    // Playback state
+    bool isPaused();
+    bool shouldRestart();
+    bool shouldFrameBack();
+    bool shouldFrameForward();
+    void clearState(); // Resets the 'should*' flags
+
     void render();
 
     // Button identifiers
@@ -50,6 +57,11 @@ private:
     Rectangle background_;
     std::vector<Button<Icon>> buttons_;
     SDL_Renderer* renderer_;
+
+    bool isPaused_ = false;
+    bool shouldRestart_ = false;
+    bool shouldFrameBack_ = false;
+    bool shouldFrameForward_ = false;
 };
 
 #endif // PENDULUM_PLAYBACK_H

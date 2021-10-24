@@ -38,6 +38,38 @@ Playback::setRect(const SDL_Rect& rect)
     computePositions();
 }
 
+bool
+Playback::isPaused()
+{
+    return isPaused_;
+}
+
+bool
+Playback::shouldRestart()
+{
+    return shouldRestart_;
+}
+
+bool
+Playback::shouldFrameBack()
+{
+    return shouldFrameBack_;
+}
+
+bool
+Playback::shouldFrameForward()
+{
+    return shouldFrameForward_;
+}
+
+void
+Playback::clearState()
+{
+    shouldRestart_ = false;
+    shouldFrameBack_ = false;
+    shouldFrameForward_ = false;
+}
+
 void
 Playback::render()
 {
@@ -57,10 +89,33 @@ Playback::handleEvent(SDL_Event& e)
         button.handleEvent(e);
         if (button.wasClicked())
         {
+
             SDL_LogInfo(
                 SDL_LOG_CATEGORY_APPLICATION,
                 "Button '%s' was clicked",
                 button.text().c_str());
+
+            switch (static_cast<ButtonId>(button.id()))
+            {
+                case ButtonId::PlayPause:
+                    isPaused_ = !isPaused_;
+                    break;
+
+                case ButtonId::Restart:
+                    shouldRestart_ = true;
+                    break;
+
+                case ButtonId::FrameBack:
+                    shouldFrameBack_ = true;
+                    break;
+
+                case ButtonId::FrameForward:
+                    shouldFrameForward_ = true;
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 }

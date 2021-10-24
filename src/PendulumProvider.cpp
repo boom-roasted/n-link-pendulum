@@ -48,9 +48,8 @@ PendulumProvider::loadFromFile(const std::string& p)
 void
 PendulumProvider::loadTextures(SDL_Renderer* renderer)
 {
-    pinTexture_.loadFromFile("res/dot.bmp", renderer);
-    nodeTexture_.loadFromFile("res/dot.bmp", renderer);
-    // TODO add asserts or something
+    SDL_assert(pinTexture_.loadFromFile("res/dot.bmp", renderer));
+    SDL_assert(nodeTexture_.loadFromFile("res/dot.bmp", renderer));
 }
 
 Pendulum::Pendulum
@@ -60,12 +59,27 @@ PendulumProvider::currentPendulum()
 }
 
 void
+PendulumProvider::restart()
+{
+    currentPendulumIndex_ = 0;
+}
+
+void
 PendulumProvider::incrementFrame(std::size_t by)
 {
     if (currentPendulumIndex_ + by < lastFrame_)
         currentPendulumIndex_ += by;
     else
-        currentPendulumIndex_ = 0; // Reset
+        restart();
+}
+
+void
+PendulumProvider::decrementFrame(std::size_t by)
+{
+    if (static_cast<int>(currentPendulumIndex_ - by) > 0)
+        currentPendulumIndex_ -= by;
+    else
+        restart();
 }
 
 void
