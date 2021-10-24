@@ -33,7 +33,7 @@ public:
         FrameForward,
     };
 
-    // Handles event. The button pressed is returned, if any are pressed
+    // Handles event
     void handleEvent(SDL_Event& e);
 
 private:
