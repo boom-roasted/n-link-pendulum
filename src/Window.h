@@ -9,7 +9,7 @@ class Window
 {
 public:
     explicit Window(SDL_Window* window);
-    
+
     Window(const char* title, int x, int y, int w, int h, Uint32 flags);
     Window(Window&& other) noexcept;
 
