@@ -3,7 +3,7 @@
 Playback::Playback(const SDL_Rect& rect, SDL_Renderer* renderer)
     : rect_(rect)
     , background_(rect, SDL_Color({ 0, 0, 0, 0 }))
-    , renderer_(renderer) // Transparent
+    , renderer_(renderer)
 {
     const std::vector<ButtonData> buttonDatas{
         { ButtonId::PlayPause, "res/play.png" },
@@ -20,7 +20,10 @@ Playback::Playback(const SDL_Rect& rect, SDL_Renderer* renderer)
 
     for (const auto& data : buttonDatas)
     {
-        buttons_.emplace_back(r, backgroundColor, data.name, renderer);
+        buttons_.emplace_back(
+            r,
+            static_cast<int>(data.id),
+            Icon(r, backgroundColor, data.name, renderer));
     }
 
     // Figure out the button positions
@@ -49,19 +52,17 @@ Playback::render()
 void
 Playback::handleEvent(SDL_Event& e)
 {
-    // for (auto& button : buttons_)
-    // {
-    // button.handleEvent(e);
-    // if (button.wasClicked())
-    // {
-    //     SDL_LogInfo(
-    //         SDL_LOG_CATEGORY_APPLICATION,
-    //         "Button '%s' was clicked",
-    //         button.text().c_str());
-
-    //     return static_cast<ButtonId>(button.id());
-    // }
-    // }
+    for (auto& button : buttons_)
+    {
+        button.handleEvent(e);
+        if (button.wasClicked())
+        {
+            SDL_LogInfo(
+                SDL_LOG_CATEGORY_APPLICATION,
+                "Button '%s' was clicked",
+                button.text().c_str());
+        }
+    }
 }
 
 void

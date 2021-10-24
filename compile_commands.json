@@ -202,25 +202,6 @@
    "-pedantic",
    "-g",
    "-c",
-   "src/Button.cpp",
-   "-o",
-   "build/Button.cpp.o"
-  ],
-  "file": "src/Button.cpp"
- },
- {
-  "directory": "/home/noah/projects/n-link-pendulum",
-  "arguments": [
-   "g++",
-   "-Isrc",
-   "-MMD",
-   "-MP",
-   "-std=c++17",
-   "-Wall",
-   "-Werror",
-   "-pedantic",
-   "-g",
-   "-c",
    "src/Playback.cpp",
    "-o",
    "build/Playback.cpp.o"

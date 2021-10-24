@@ -5,6 +5,7 @@
 
 #include "Button.h"
 #include "Rectangle.h"
+#include "Text.h"
 
 class MainMenu
 {
@@ -44,7 +45,7 @@ private:
     SDL_Rect rect_;
     Rectangle background_;
     SDL_Renderer* renderer_;
-    std::vector<Button> buttons_;
+    std::vector<Button<Text>> buttons_;
 };
 
 #endif // PENDULUM_MENU_H

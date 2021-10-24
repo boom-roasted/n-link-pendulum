@@ -11,8 +11,8 @@ Icon::Icon(
     , iconPath_(iconPath)
     , darkenBackgroundNextRender_(false)
     , renderer_(renderer)
+    , isDirty_(true)
 {
-    setIcon(iconPath);
 }
 
 void
@@ -22,14 +22,39 @@ Icon::setRect(const SDL_Rect& rect)
     background_.setRect(rect);
 }
 
+std::string
+Icon::icon()
+{
+    return iconPath_;
+}
+
+std::string
+Icon::text()
+{
+    return icon();
+}
+
 void
 Icon::setIcon(const std::string& filePath)
 {
-    if (!iconTexture_.loadFromFile(filePath, renderer_))
+    iconPath_ = filePath;
+    isDirty_ = true;
+}
+
+void
+Icon::loadTexture()
+{
+    if (!iconTexture_.loadFromFile(iconPath_, renderer_))
     {
         SDL_LogCritical(
             SDL_LOG_CATEGORY_RENDER, "Unable to load Icon texture!\n");
     }
+}
+
+void
+Icon::setIsPressed()
+{
+    darkenBackgroundNextRender();
 }
 
 void
@@ -42,20 +67,23 @@ void
 Icon::render()
 {
     // Darken background if requested
-    SDL_Color bg;
+    SDL_Color bg = background_.color();
 
     if (darkenBackgroundNextRender_)
     {
-        bg = background_.color(); // TODO darken
+        bg.r = 255; // TODO darken
         darkenBackgroundNextRender_ = false;
-    }
-    else
-    {
-        bg = background_.color();
     }
 
     // Render the background
     background_.render(renderer_, bg);
+
+    // Re-load the texture if it has changed
+    if (isDirty_)
+    {
+        loadTexture();
+        isDirty_ = false;
+    }
 
     // Render the image, aligned to the center of this element
     int x = rect_.x + (0.5 * rect_.w) - (0.5 * iconTexture_.getWidth());

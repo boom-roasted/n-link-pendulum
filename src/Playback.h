@@ -48,7 +48,7 @@ private:
 
     SDL_Rect rect_;
     Rectangle background_;
-    std::vector<Icon> buttons_;
+    std::vector<Button<Icon>> buttons_;
     SDL_Renderer* renderer_;
 };
 

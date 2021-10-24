@@ -12,11 +12,11 @@ Text::Text(
     , fgColor_(fgColor)
     , textTexture_(Texture())
     , text_(text)
-    , swapFgBgNextRender_(false)
     , renderer_(renderer)
     , font_(font)
+    , isPressed_(false)
+    , isDirty_(true)
 {
-    loadTexture();
 }
 
 void
@@ -30,7 +30,7 @@ void
 Text::setText(const std::string& text)
 {
     text_ = text;
-    loadTexture();
+    isDirty_ = true;
 }
 
 void
@@ -42,9 +42,9 @@ Text::loadTexture()
 }
 
 void
-Text::swapFgBgNextRender()
+Text::setIsPressed()
 {
-    swapFgBgNextRender_ = true;
+    isPressed_ = true;
     swapFgBg();
 }
 
@@ -56,8 +56,8 @@ Text::swapFgBg()
     fgColor_ = bg;
     background_.setColor(fg);
 
-    // Update loaded texture to show current colors
-    loadTexture();
+    // Need to update loaded texture to show current colors
+    isDirty_ = true;
 }
 
 void
@@ -66,16 +66,23 @@ Text::render()
     // Render the background
     background_.render(renderer_);
 
+    // Re-load text if needed
+    if (isDirty_)
+    {
+        loadTexture();
+        isDirty_ = false;
+    }
+
     // Render text, aligned to the center of this element
     int x = rect_.x + (0.5 * rect_.w) - (0.5 * textTexture_.getWidth());
     int y = rect_.y + (0.5 * rect_.h) - (0.5 * textTexture_.getHeight());
     textTexture_.render(x, y, renderer_);
 
     // Swap foreground and background colors back if necessary
-    if (swapFgBgNextRender_)
+    if (isPressed_)
     {
         swapFgBg();
-        swapFgBgNextRender_ = false;
+        isPressed_ = false;
     }
 }
 

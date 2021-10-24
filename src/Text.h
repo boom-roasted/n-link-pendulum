@@ -16,19 +16,20 @@ public:
         const SDL_Color& bgColor,
         const std::string& text,
         SDL_Renderer* renderer,
-        TTF_Font* font); // shouldn't be saving raw pointers
+        TTF_Font* font);
 
     void setRect(const SDL_Rect& rect);
 
-    void setText(const std::string& text);
+    void setIsPressed();
 
-    void swapFgBgNextRender();
+    void setText(const std::string& text);
 
     void render();
 
     std::string text();
 
 private:
+    void swapFgBgNextRender();
     void loadTexture();
     void swapFgBg();
 
@@ -37,9 +38,10 @@ private:
     SDL_Color fgColor_;
     Texture textTexture_;
     std::string text_;
-    bool swapFgBgNextRender_;
     SDL_Renderer* renderer_;
     TTF_Font* font_;
+    bool isPressed_;
+    bool isDirty_; // Whether or not to re-load the textures
 };
 
 #endif // PENDULUM_TEXT_H

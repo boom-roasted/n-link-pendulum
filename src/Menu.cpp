@@ -15,7 +15,7 @@ MainMenu::MainMenu(const SDL_Rect& rect, SDL_Renderer* renderer, TTF_Font* font)
     SDL_Color textBackgroundColor = { 255, 255, 255, 255 };
 
     // Setup each renderable Button
-    buttons_.reserve(3);
+    buttons_.reserve(buttonDatas.size());
     SDL_Rect r = { rect.x, rect.y, 100, 100 }; // will be overwritten
 
     for (const auto& data : buttonDatas)
@@ -23,11 +23,7 @@ MainMenu::MainMenu(const SDL_Rect& rect, SDL_Renderer* renderer, TTF_Font* font)
         buttons_.emplace_back(
             r,
             static_cast<int>(data.id),
-            data.name,
-            textColor,
-            textBackgroundColor,
-            renderer,
-            font);
+            Text(r, textColor, textBackgroundColor, data.name, renderer, font));
     }
 
     // Figure out the button positions
