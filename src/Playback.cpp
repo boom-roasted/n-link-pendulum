@@ -6,7 +6,7 @@ Playback::Playback(const SDL_Rect& rect, SDL_Renderer* renderer)
     , renderer_(renderer)
 {
     const std::vector<ButtonData> buttonDatas{
-        { ButtonId::PlayPause, "res/play.png" },
+        { ButtonId::PlayPause, "res/pause.png" },
         { ButtonId::Restart, "res/restart.png" },
         { ButtonId::FrameBack, "res/framebackward.png" },
         { ButtonId::FrameForward, "res/frameforward.png" },
@@ -99,6 +99,7 @@ Playback::handleEvent(SDL_Event& e)
             {
                 case ButtonId::PlayPause:
                     isPaused_ = !isPaused_;
+                    button.content().setIcon(isPaused_ ? "res/play.png" : "res/pause.png");
                     break;
 
                 case ButtonId::Restart:

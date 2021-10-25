@@ -37,6 +37,8 @@ Icon::text()
 void
 Icon::setIcon(const std::string& filePath)
 {
+    if (iconPath_ == filePath)
+        return;
     iconPath_ = filePath;
     isDirty_ = true;
 }
