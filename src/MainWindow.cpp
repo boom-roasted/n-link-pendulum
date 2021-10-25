@@ -2,6 +2,7 @@
 
 #include "Dot.h"
 #include "FpsCounter.h"
+#include "Navigator.h"
 #include "Playback.h"
 #include "Timer.h"
 
@@ -156,6 +157,9 @@ MainWindow::runLoop()
             // Playback control
             Playback playback({ 0, 0, w_, h_ }, renderer_);
 
+            // Navigation control
+            Navigator navigator({ 0, 0, w_, h_ }, renderer_);
+
             // The dot that will be moving around on the screen
             Dot dot(w_, h_, renderer_);
 
@@ -227,6 +231,9 @@ MainWindow::runLoop()
 
                         // Playback event
                         playback.handleEvent(e);
+
+                        // Navigator event
+                        navigator.handleEvent(e);
                     }
                     else
                     {
@@ -246,6 +253,15 @@ MainWindow::runLoop()
                 {
                     // Move the dot
                     dot.move();
+
+                    // Handle zooming and other viewport navigation
+                    if (navigator.shouldZoomFit())
+                        pendulumProvider_.zoomFit();
+                    else if (navigator.shouldZoomIn())
+                        pendulumProvider_.zoom(1.2);
+                    else if (navigator.shouldZoomOut())
+                        pendulumProvider_.zoom(0.8);
+                    navigator.clearState();
 
                     // Chain movement is controlled by the playback controller
                     if (playback.shouldRestart())
@@ -284,6 +300,9 @@ MainWindow::runLoop()
 
                 // Render playback controls
                 playback.render();
+
+                // Render navigation controls
+                navigator.render();
 
                 // Render any menus
                 if (!menus_.empty())

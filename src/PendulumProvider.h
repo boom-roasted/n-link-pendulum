@@ -26,6 +26,10 @@ public:
     void decrementFrame(std::size_t by);
     void incrementTime(double by);
 
+    // Zooming commands
+    void zoomFit();
+    void zoom(double factor);
+
     void render(SDL_Renderer* renderer);
 
 private:

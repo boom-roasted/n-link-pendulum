@@ -103,6 +103,18 @@ PendulumProvider::incrementTime(double by)
 }
 
 void
+PendulumProvider::zoomFit()
+{
+    computeScaleFactor();
+}
+
+void
+PendulumProvider::zoom(double factor)
+{
+    scaleFactor_ *= factor;
+}
+
+void
 PendulumProvider::render(SDL_Renderer* renderer)
 {
     if (pendulumOverTime_.empty())
