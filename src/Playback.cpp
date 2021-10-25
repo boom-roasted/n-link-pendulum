@@ -99,7 +99,8 @@ Playback::handleEvent(SDL_Event& e)
             {
                 case ButtonId::PlayPause:
                     isPaused_ = !isPaused_;
-                    button.content().setIcon(isPaused_ ? "res/play.png" : "res/pause.png");
+                    button.content().setIcon(
+                        isPaused_ ? "res/play.png" : "res/pause.png");
                     break;
 
                 case ButtonId::Restart:
