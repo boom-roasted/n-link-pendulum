@@ -1,11 +1,13 @@
 #include "Navigator.h"
 
+#include "ButtonData.h"
+
 Navigator::Navigator(const SDL_Rect& rect, SDL_Renderer* renderer)
     : rect_(rect)
     , background_(rect, SDL_Color({ 0, 0, 0, 0 }))
     , renderer_(renderer)
 {
-    const std::vector<ButtonData> buttonDatas{
+    const std::vector<ButtonData<ButtonId>> buttonDatas{
         { ButtonId::ZoomIn, "res/zoomIn.png" },
         { ButtonId::ZoomOut, "res/zoomOut.png" },
         { ButtonId::ZoomFit, "res/zoomFit.png" },

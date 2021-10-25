@@ -40,19 +40,6 @@ private:
     // Computes button positions
     void computePositions();
 
-    // TODO combine with `ButtonData` from Menu.h
-    struct ButtonData
-    {
-        ButtonId id;
-        std::string name;
-
-        ButtonData(ButtonId id, const std::string& name)
-            : id(id)
-            , name(name)
-        {
-        }
-    };
-
     SDL_Rect rect_;
     Rectangle background_;
     std::vector<Button<Icon>> buttons_;

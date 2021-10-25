@@ -1,11 +1,13 @@
 #include "Menu.h"
 
+#include "ButtonData.h"
+
 MainMenu::MainMenu(const SDL_Rect& rect, SDL_Renderer* renderer, TTF_Font* font)
     : rect_(rect)
     , background_(rect, SDL_Color({ 119, 181, 254, 200 }))
     , renderer_(renderer)
 {
-    const std::vector<ButtonData> buttonDatas{
+    const std::vector<ButtonData<ButtonId>> buttonDatas{
         { ButtonId::Resume, "Resume" },
         { ButtonId::Options, "Options" },
         { ButtonId::Quit, "Exit" },

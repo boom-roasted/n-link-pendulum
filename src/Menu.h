@@ -30,18 +30,6 @@ private:
         Quit,
     };
 
-    struct ButtonData
-    {
-        ButtonId id;
-        std::string name;
-
-        ButtonData(ButtonId id, const std::string& name)
-            : id(id)
-            , name(name)
-        {
-        }
-    };
-
     SDL_Rect rect_;
     Rectangle background_;
     SDL_Renderer* renderer_;

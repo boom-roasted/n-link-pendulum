@@ -1,11 +1,13 @@
 #include "Playback.h"
 
+#include "ButtonData.h"
+
 Playback::Playback(const SDL_Rect& rect, SDL_Renderer* renderer)
     : rect_(rect)
     , background_(rect, SDL_Color({ 0, 0, 0, 0 }))
     , renderer_(renderer)
 {
-    const std::vector<ButtonData> buttonDatas{
+    const std::vector<ButtonData<ButtonId>> buttonDatas{
         { ButtonId::PlayPause, "res/pause.png" },
         { ButtonId::Restart, "res/restart.png" },
         { ButtonId::FrameBack, "res/framebackward.png" },
