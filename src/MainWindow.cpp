@@ -204,6 +204,7 @@ MainWindow::runLoop()
                             // is minimized or something
                             case SDL_WINDOWEVENT_RESIZED:
                             case SDL_WINDOWEVENT_SIZE_CHANGED:
+                            {
                                 SDL_LogInfo(
                                     SDL_LOG_CATEGORY_APPLICATION,
                                     "Window %d resized to %dx%d\n",
@@ -213,11 +214,15 @@ MainWindow::runLoop()
                                 w_ = e.window.data1;
                                 h_ = e.window.data2;
                                 dot.setBounds(w_, h_);
-                                pendulumProvider_.setRect({ 0, 0, w_, h_ });
-                                fpsCounter.setRect({ 0, 0, w_, h_ });
+                                SDL_Rect r = { 0, 0, w_, h_ };
+                                pendulumProvider_.setRect(r);
+                                fpsCounter.setRect(r);
+                                playback.setRect(r);
+                                navigator.setRect(r);
                                 for (auto& menu : menus_)
-                                    menu.setRect({ 0, 0, w_, h_ });
+                                    menu.setRect(r);
                                 break;
+                            }
                             default:
                                 break;
                         }
