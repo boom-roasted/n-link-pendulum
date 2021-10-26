@@ -63,7 +63,7 @@ MainMenu::render()
 }
 
 void
-MainMenu::handleEvent(SDL_Event& e, bool& shouldResume, bool& shouldQuit)
+MainMenu::handleEvent(SDL_Event& e)
 {
     // If the options menu is displayed, let it handle the event
     if (optionsMenu_)
@@ -77,7 +77,8 @@ MainMenu::handleEvent(SDL_Event& e, bool& shouldResume, bool& shouldQuit)
         }
         else if ((*optionsMenu_).shouldSimulate())
         {
-            SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Should simulate");
+            shouldSimulate_ = true;
+            shouldResume_ = true; // Hide menu after running new simulation
         }
 
         (*optionsMenu_).clearState();
@@ -97,7 +98,7 @@ MainMenu::handleEvent(SDL_Event& e, bool& shouldResume, bool& shouldQuit)
             switch (static_cast<ButtonId>(button.id()))
             {
                 case ButtonId::Resume:
-                    shouldResume = true;
+                    shouldResume_ = true;
                     break;
 
                 case ButtonId::Options:
@@ -105,7 +106,7 @@ MainMenu::handleEvent(SDL_Event& e, bool& shouldResume, bool& shouldQuit)
                     break;
 
                 case ButtonId::Quit:
-                    shouldQuit = true;
+                    shouldQuit_ = true;
                     break;
 
                 default:
@@ -113,6 +114,14 @@ MainMenu::handleEvent(SDL_Event& e, bool& shouldResume, bool& shouldQuit)
             }
         }
     }
+}
+
+void
+MainMenu::clearState()
+{
+    shouldResume_ = false;
+    shouldQuit_ = false;
+    shouldSimulate_ = false;
 }
 
 void

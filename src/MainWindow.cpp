@@ -111,13 +111,10 @@ MainWindow::loadMedia()
         success = false;
     }
 
-    // Load chain
-    if (!pendulumProvider_.loadFromFile("data.bin"))
-    {
-        printf("Failed to load chain data!\n");
-        success = false;
-    }
+    // Load existing simulation or run new one
+    pendulumProvider_.loadOrCreate("data.bin");
 
+    // Load pendulum textures
     pendulumProvider_.loadTextures(renderer_);
 
     return success;
@@ -243,10 +240,17 @@ MainWindow::runLoop()
                     else
                     {
                         // Menu event
-                        bool shouldResume;
-                        menus_.back().handleEvent(e, shouldResume, quit);
-                        if (shouldResume)
+                        menus_.back().handleEvent(e);
+
+                        quit = menus_.back().shouldQuit();
+                        if (menus_.back().shouldSimulate())
+                            pendulumProvider_.runSimulation();
+
+                        // Remove menu or at least clear the event state
+                        if (menus_.back().shouldResume())
                             menus_.pop_back();
+                        else
+                            menus_.back().clearState();
                     }
                 }
 

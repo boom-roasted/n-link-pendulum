@@ -21,28 +21,22 @@ PendulumProvider::setRect(const SDL_Rect& rect)
     computeScaleFactor();
 }
 
-bool
+void
 PendulumProvider::loadFromFile(const std::string& p)
 {
-    bool success = true;
-
+    // Remove existing data
     if (!pendulumOverTime_.empty())
-    {
-        success = false;
-    }
-    else if (!std::filesystem::exists(p))
-    {
-        success = false;
-    }
-    else
-    {
-        pendulumOverTime_ = Pendulum::Pendulum::Deserialize(p);
-        computeScaleFactor();
-    }
+        pendulumOverTime_.clear();
 
+    // Make sure file exists
+    SDL_assert(std::filesystem::exists(p));
+
+    pendulumOverTime_ = Pendulum::Pendulum::Deserialize(p);
+    computeScaleFactor();
+
+    // Reset index bounds
+    currentPendulumIndex_ = 0;
     lastFrame_ = pendulumOverTime_.size();
-
-    return success;
 }
 
 void
@@ -50,6 +44,100 @@ PendulumProvider::loadTextures(SDL_Renderer* renderer)
 {
     SDL_assert(pinTexture_.loadFromFile("res/dot.bmp", renderer));
     SDL_assert(nodeTexture_.loadFromFile("res/dot.bmp", renderer));
+}
+
+void
+PendulumProvider::loadOrCreate(const std::string& p)
+{
+    // File does exist, so load it
+    if (std::filesystem::exists(p))
+    {
+        loadFromFile(p);
+    }
+
+    // File does not exist, so create it
+    else
+    {
+        runSimulation();
+    }
+}
+
+void
+PendulumProvider::runSimulation()
+{
+    // Main modify-able simulation parameters
+    const int numLinks = 3;            // Size of pendulum
+    const std::string fp = "data.bin"; // Output data file
+    const double simTime = 20;         // Simulation time, seconds
+    const int saveFrameStep = 500; // Computed frames between every output frame
+
+    // Default node properties
+    const double m = 0.25;
+    const double l = 3;
+    const double k = 1e5;
+    const double c = 0.0001;
+
+    const double deltaT =
+        1.0 / 200.0 * 1.0 / std::sqrt(k / m); // Time step increment
+    const int iterations = std::lround(simTime / deltaT);
+
+    auto chain = Pendulum::Pendulum::Create(
+        numLinks, m, l, k, c, Pendulum::Pendulum::Layout::Line);
+
+    // Data storage
+    auto fout = std::ofstream(fp, std::ios::out | std::ios::binary);
+    if (!fout)
+    {
+        SDL_LogCritical(
+            SDL_LOG_CATEGORY_SYSTEM,
+            "Cannot open file for writing! Path: %s",
+            fp.c_str());
+        SDL_assert(false); // Data storage file could not be opened
+    }
+
+    // Write initial state to file
+    chain.Serialize(fout);
+
+    // Main simulation loop
+    for (int i = 0; i < iterations; i++)
+    {
+        // Increment time
+        chain.RungeKuttaSecondOrder(deltaT);
+
+        // Write state to file. Not every frame is written, because
+        // that is too much data.
+        if (i % saveFrameStep == 0)
+        {
+            chain.Serialize(fout);
+        }
+
+        // Display progress
+        if (i % (iterations / 20) == 0)
+        {
+            double progress = i / static_cast<double>(iterations);
+            const int barWidth = 70;
+            std::cout << "[";
+            int barPosition = barWidth * progress;
+            for (int i = 0; i < barWidth; ++i)
+            {
+                if (i <= barPosition)
+                    std::cout << "#";
+                else
+                    std::cout << " ";
+            }
+            std::cout << "] " << int(std::lround(progress * 100.0)) << " %\r";
+            std::cout.flush();
+        }
+    }
+
+    // Finish progress bar
+    std::cout << std::endl;
+
+    // Close data file
+    fout.close();
+
+    // Load the data into the interface
+    loadFromFile(fp);
 }
 
 Pendulum::Pendulum

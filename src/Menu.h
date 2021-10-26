@@ -18,7 +18,12 @@ public:
 
     void render();
 
-    void handleEvent(SDL_Event& e, bool& shouldResume, bool& shouldQuit);
+    void handleEvent(SDL_Event& e);
+
+    bool shouldResume() { return shouldResume_; }
+    bool shouldQuit() { return shouldQuit_; }
+    bool shouldSimulate() { return shouldSimulate_; }
+    void clearState();
 
 private:
     // Computes button positions
@@ -38,6 +43,10 @@ private:
     TTF_Font* font_;
     std::vector<Button<Text>> buttons_;
     std::optional<OptionsMenu> optionsMenu_;
+
+    bool shouldResume_ = false;
+    bool shouldQuit_ = false;
+    bool shouldSimulate_ = false;
 };
 
 #endif // PENDULUM_MENU_H

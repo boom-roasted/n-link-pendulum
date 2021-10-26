@@ -15,8 +15,10 @@ public:
 
     void setRect(const SDL_Rect& rect);
 
-    bool loadFromFile(const std::string& p);
+    void loadFromFile(const std::string& p);
+    void loadOrCreate(const std::string& p);
     void loadTextures(SDL_Renderer* renderer);
+    void runSimulation();
 
     Pendulum::Pendulum currentPendulum();
 
