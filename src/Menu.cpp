@@ -79,7 +79,7 @@ MainMenu::handleEvent(SDL_Event& e, bool& shouldResume, bool& shouldQuit)
         {
             SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Should simulate");
         }
-        
+
         (*optionsMenu_).clearState();
         return;
     }

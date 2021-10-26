@@ -2,7 +2,10 @@
 
 #include "ButtonData.h"
 
-OptionsMenu::OptionsMenu(const SDL_Rect& rect, SDL_Renderer* renderer, TTF_Font* font)
+OptionsMenu::OptionsMenu(
+    const SDL_Rect& rect,
+    SDL_Renderer* renderer,
+    TTF_Font* font)
     : rect_(rect)
     , background_(rect, SDL_Color({ 119, 181, 254, 200 }))
     , renderer_(renderer)
@@ -65,16 +68,16 @@ OptionsMenu::handleEvent(SDL_Event& e)
 
             switch (static_cast<ButtonId>(button.id()))
             {
-            case ButtonId::Back:
-                shouldGoBack_ = true;
-                break;
-                
-            case ButtonId::Simulate:
-                shouldSimulate_ = true;
-                break;
-            
-            default:
-                break;
+                case ButtonId::Back:
+                    shouldGoBack_ = true;
+                    break;
+
+                case ButtonId::Simulate:
+                    shouldSimulate_ = true;
+                    break;
+
+                default:
+                    break;
             }
         }
     }

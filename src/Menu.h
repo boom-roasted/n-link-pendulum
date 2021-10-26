@@ -1,13 +1,13 @@
 #ifndef PENDULUM_MENU_H
 #define PENDULUM_MENU_H
 
-#include <vector>
 #include <optional>
+#include <vector>
 
 #include "Button.h"
+#include "OptionsMenu.h"
 #include "Rectangle.h"
 #include "Text.h"
-#include "OptionsMenu.h"
 
 class MainMenu
 {
