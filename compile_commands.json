@@ -283,5 +283,24 @@
    "build/Navigator.cpp.o"
   ],
   "file": "src/Navigator.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/n-link-pendulum",
+  "arguments": [
+   "g++",
+   "-Isrc",
+   "-MMD",
+   "-MP",
+   "-std=c++17",
+   "-Wall",
+   "-Werror",
+   "-pedantic",
+   "-g",
+   "-c",
+   "src/OptionsMenu.cpp",
+   "-o",
+   "build/OptionsMenu.cpp.o"
+  ],
+  "file": "src/OptionsMenu.cpp"
  }
 ]

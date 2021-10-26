@@ -2,10 +2,12 @@
 #define PENDULUM_MENU_H
 
 #include <vector>
+#include <optional>
 
 #include "Button.h"
 #include "Rectangle.h"
 #include "Text.h"
+#include "OptionsMenu.h"
 
 class MainMenu
 {
@@ -33,7 +35,9 @@ private:
     SDL_Rect rect_;
     Rectangle background_;
     SDL_Renderer* renderer_;
+    TTF_Font* font_;
     std::vector<Button<Text>> buttons_;
+    std::optional<OptionsMenu> optionsMenu_;
 };
 
 #endif // PENDULUM_MENU_H

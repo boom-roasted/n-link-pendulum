@@ -1,17 +1,15 @@
-#include "Menu.h"
+#include "OptionsMenu.h"
 
 #include "ButtonData.h"
 
-MainMenu::MainMenu(const SDL_Rect& rect, SDL_Renderer* renderer, TTF_Font* font)
+OptionsMenu::OptionsMenu(const SDL_Rect& rect, SDL_Renderer* renderer, TTF_Font* font)
     : rect_(rect)
     , background_(rect, SDL_Color({ 119, 181, 254, 200 }))
     , renderer_(renderer)
-    , font_(font)
 {
     const std::vector<ButtonData<ButtonId>> buttonDatas{
-        { ButtonId::Resume, "Resume" },
-        { ButtonId::Options, "Options" },
-        { ButtonId::Quit, "Exit" },
+        { ButtonId::Back, "Back" },
+        { ButtonId::Simulate, "Simulate" },
     };
 
     SDL_Color textColor = { 0, 0, 0, 255 };
@@ -34,26 +32,16 @@ MainMenu::MainMenu(const SDL_Rect& rect, SDL_Renderer* renderer, TTF_Font* font)
 }
 
 void
-MainMenu::setRect(const SDL_Rect& rect)
+OptionsMenu::setRect(const SDL_Rect& rect)
 {
     rect_ = rect;
     background_.setRect(rect);
     computePositions();
-
-    if (optionsMenu_)
-        (*optionsMenu_).setRect(rect);
 }
 
 void
-MainMenu::render()
+OptionsMenu::render()
 {
-    // If the options menu is displayed, display it on top
-    if (optionsMenu_)
-    {
-        (*optionsMenu_).render();
-        return;
-    }
-
     // Render background
     background_.render(renderer_);
 
@@ -63,27 +51,8 @@ MainMenu::render()
 }
 
 void
-MainMenu::handleEvent(SDL_Event& e, bool& shouldResume, bool& shouldQuit)
+OptionsMenu::handleEvent(SDL_Event& e)
 {
-    // If the options menu is displayed, let it handle the event
-    if (optionsMenu_)
-    {
-        (*optionsMenu_).handleEvent(e);
-
-        if ((*optionsMenu_).shouldGoBack())
-        {
-            optionsMenu_ = std::nullopt;
-            return; // Can't do anything after setting this to a null optional
-        }
-        else if ((*optionsMenu_).shouldSimulate())
-        {
-            SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Should simulate");
-        }
-        
-        (*optionsMenu_).clearState();
-        return;
-    }
-
     for (auto& button : buttons_)
     {
         button.handleEvent(e);
@@ -96,27 +65,30 @@ MainMenu::handleEvent(SDL_Event& e, bool& shouldResume, bool& shouldQuit)
 
             switch (static_cast<ButtonId>(button.id()))
             {
-                case ButtonId::Resume:
-                    shouldResume = true;
-                    break;
-
-                case ButtonId::Options:
-                    optionsMenu_ = OptionsMenu(rect_, renderer_, font_);
-                    break;
-
-                case ButtonId::Quit:
-                    shouldQuit = true;
-                    break;
-
-                default:
-                    break;
+            case ButtonId::Back:
+                shouldGoBack_ = true;
+                break;
+                
+            case ButtonId::Simulate:
+                shouldSimulate_ = true;
+                break;
+            
+            default:
+                break;
             }
         }
     }
 }
 
 void
-MainMenu::computePositions()
+OptionsMenu::clearState()
+{
+    shouldGoBack_ = false;
+    shouldSimulate_ = false;
+}
+
+void
+OptionsMenu::computePositions()
 {
     int optionWidth = 200;
     int optionHeight = 80;
