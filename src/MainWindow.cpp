@@ -242,7 +242,9 @@ MainWindow::runLoop()
                         // Menu event
                         menus_.back().handleEvent(e);
 
-                        quit = menus_.back().shouldQuit();
+                        if (menus_.back().shouldQuit())
+                            quit = true;
+
                         if (menus_.back().shouldSimulate())
                             pendulumProvider_.runSimulation();
 
