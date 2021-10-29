@@ -4,6 +4,7 @@ SOURCES += Texture.cpp Dot.cpp MainWindow.cpp PendulumProvider.cpp
 SOURCES += Rectangle.cpp Menu.cpp OptionsMenu.cpp Text.cpp Icon.cpp
 SOURCES += Timer.cpp FpsCounter.cpp Playback.cpp Navigator.cpp
 SOURCES += Window.cpp Renderer.cpp
+SOURCES += Clickable.cpp
 SOURCE_DIR := src
 
 # Linker flags
