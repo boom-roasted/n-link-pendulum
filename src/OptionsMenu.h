@@ -37,6 +37,7 @@ private:
     SDL_Rect rect_;
     Rectangle background_;
     SDL_Renderer* renderer_;
+    std::vector<Text> controls_;
     std::vector<Button<Text>> buttons_;
 
     bool shouldGoBack_ = false;

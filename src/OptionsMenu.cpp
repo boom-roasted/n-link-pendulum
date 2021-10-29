@@ -10,18 +10,27 @@ OptionsMenu::OptionsMenu(
     , background_(rect, SDL_Color({ 119, 181, 254, 200 }))
     , renderer_(renderer)
 {
+    // Colors
+    // TODO make these a singleton or something
+    SDL_Color textColor = { 0, 0, 0, 255 };
+    SDL_Color textBackgroundColor = { 255, 255, 255, 255 };
+
+    // Just a rect. Will be overwritten when position sare computed.
+    SDL_Rect r = { rect.x, rect.y, 100, 100 };
+
+    // Setup some text to render on top
+    // TODO replace this with the slider controls
+    controls_.reserve(1);
+    controls_.emplace_back(
+        Text(r, textColor, textBackgroundColor, "I am text", renderer, font));
+
+    // Button data
     const std::vector<ButtonData<ButtonId>> buttonDatas{
         { ButtonId::Back, "Back" },
         { ButtonId::Simulate, "Simulate" },
     };
 
-    SDL_Color textColor = { 0, 0, 0, 255 };
-    SDL_Color textBackgroundColor = { 255, 255, 255, 255 };
-
     // Setup each renderable Button
-    buttons_.reserve(buttonDatas.size());
-    SDL_Rect r = { rect.x, rect.y, 100, 100 }; // will be overwritten
-
     for (const auto& data : buttonDatas)
     {
         buttons_.emplace_back(
@@ -48,7 +57,11 @@ OptionsMenu::render()
     // Render background
     background_.render(renderer_);
 
-    // Render each option
+    // Render each control
+    for (auto& control : controls_)
+        control.render();
+
+    // Render each button
     for (auto& button : buttons_)
         button.render();
 }
@@ -99,7 +112,8 @@ OptionsMenu::computePositions()
     int margin = 20;
 
     // Figure out top left x,y for the group of all options
-    int totalHeight = (optionHeight + margin + margin) * buttons_.size();
+    int totalHeight =
+        (optionHeight + margin + margin) * (controls_.size() + buttons_.size());
     int totalWidth = optionWidth + margin + margin; // One column
 
     int topX = rect_.x + (0.5 * rect_.w) - (0.5 * totalWidth);
@@ -110,6 +124,21 @@ OptionsMenu::computePositions()
     int lastTopX = topX;
     int lastTopY = topY;
 
+    // Render controls first
+    for (auto& control : controls_)
+    {
+        int x = lastTopX + margin;
+        int y = lastTopY + margin;
+
+        control.setRect({ x, y, optionWidth, optionHeight });
+
+        lastTopX = lastTopX; // No update here, just one column
+        lastTopY = y + optionHeight + margin;
+    }
+
+    // TODO divide into horizontal and vertical layouts
+
+    // Then render buttons
     for (auto& button : buttons_)
     {
         int x = lastTopX + margin;
