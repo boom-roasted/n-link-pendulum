@@ -2,7 +2,6 @@
 #define PENDULUM_CLICKABLE_H
 
 #include <SDL2/SDL.h>
-#include <string>
 
 class Clickable
 {
