@@ -11,6 +11,7 @@ class Rectangle
 public:
     Rectangle(const SDL_Rect& rect, const SDL_Color& color);
 
+    SDL_Rect rect();
     void setRect(const SDL_Rect& rect);
     void setColor(const SDL_Color& color);
 

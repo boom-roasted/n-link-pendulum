@@ -15,6 +15,12 @@ Icon::Icon(
 {
 }
 
+SDL_Rect
+Icon::rect()
+{
+    return rect_;
+}
+
 void
 Icon::setRect(const SDL_Rect& rect)
 {

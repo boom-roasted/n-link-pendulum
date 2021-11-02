@@ -5,7 +5,7 @@
 
 #include "Button.h"
 #include "Rectangle.h"
-#include "Text.h"
+#include "Slider.h"
 
 class OptionsMenu
 {
@@ -37,7 +37,7 @@ private:
     SDL_Rect rect_;
     Rectangle background_;
     SDL_Renderer* renderer_;
-    std::vector<Text> controls_;
+    std::vector<Slider> controls_;
     std::vector<Button<Text>> buttons_;
 
     bool shouldGoBack_ = false;

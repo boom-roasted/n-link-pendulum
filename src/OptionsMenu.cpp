@@ -14,15 +14,29 @@ OptionsMenu::OptionsMenu(
     // TODO make these a singleton or something
     SDL_Color textColor = { 0, 0, 0, 255 };
     SDL_Color textBackgroundColor = { 255, 255, 255, 255 };
+    SDL_Color white = { 255, 255, 255, 255 };
 
     // Just a rect. Will be overwritten when position sare computed.
     SDL_Rect r = { rect.x, rect.y, 100, 100 };
 
-    // Setup some text to render on top
-    // TODO replace this with the slider controls
-    controls_.reserve(1);
-    controls_.emplace_back(
-        Text(r, textColor, textBackgroundColor, "I am text", renderer, font));
+    // Setup controls to render on top
+    controls_.reserve(2);
+    controls_.emplace_back(Slider(
+        r,
+        "Number of Links",
+        Slider::Range(1, 4, 1),
+        3,
+        white,
+        renderer,
+        font));
+    controls_.emplace_back(Slider(
+        r,
+        "Node Mass (kg)",
+        Slider::Range(0.25, 1.5, 0.25),
+        0.25,
+        white,
+        renderer,
+        font));
 
     // Button data
     const std::vector<ButtonData<ButtonId>> buttonDatas{
@@ -109,44 +123,44 @@ OptionsMenu::computePositions()
     int optionWidth = 200;
     int optionHeight = 80;
 
-    int margin = 20;
+    int controlWidth = 300;
+    int controlHeight = 90;
+
+    int margin = 10;
 
     // Figure out top left x,y for the group of all options
     int totalHeight =
         (optionHeight + margin + margin) * (controls_.size() + buttons_.size());
-    int totalWidth = optionWidth + margin + margin; // One column
+    int totalControlWidth = controlWidth + margin + margin; // One column
+    int totalOptionWidth = optionWidth + margin + margin;   // One column
 
-    int topX = rect_.x + (0.5 * rect_.w) - (0.5 * totalWidth);
+    int controlX = rect_.x + (0.5 * rect_.w) - (0.5 * totalControlWidth);
+    int optionX = rect_.x + (0.5 * rect_.w) - (0.5 * totalOptionWidth);
     int topY = rect_.y + (0.5 * rect_.h) - (0.5 * totalHeight);
 
-    // Track the top left x, y point of each button
-    // This corresponds to the bottom left x, y point of the button prior
-    int lastTopX = topX;
+    // Track the y value of each control
+    // This is updated after each control to know where to place the next one
     int lastTopY = topY;
 
     // Render controls first
     for (auto& control : controls_)
     {
-        int x = lastTopX + margin;
+        int x = controlX + margin;
         int y = lastTopY + margin;
 
-        control.setRect({ x, y, optionWidth, optionHeight });
+        control.setRect({ x, y, controlWidth, controlHeight });
 
-        lastTopX = lastTopX; // No update here, just one column
-        lastTopY = y + optionHeight + margin;
+        lastTopY = y + controlHeight + margin;
     }
-
-    // TODO divide into horizontal and vertical layouts
 
     // Then render buttons
     for (auto& button : buttons_)
     {
-        int x = lastTopX + margin;
+        int x = optionX + margin;
         int y = lastTopY + margin;
 
         button.setRect({ x, y, optionWidth, optionHeight });
 
-        lastTopX = lastTopX; // No update here, just one column
         lastTopY = y + optionHeight + margin;
     }
 }

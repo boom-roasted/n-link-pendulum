@@ -6,6 +6,12 @@ Rectangle::Rectangle(const SDL_Rect& rect, const SDL_Color& color)
 {
 }
 
+SDL_Rect
+Rectangle::rect()
+{
+    return rect_;
+}
+
 void
 Rectangle::setRect(const SDL_Rect& rect)
 {
