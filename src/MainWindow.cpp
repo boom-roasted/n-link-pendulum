@@ -269,9 +269,9 @@ MainWindow::runLoop()
                     if (navigator.shouldZoomFit())
                         pendulumProvider_.zoomFit();
                     else if (navigator.shouldZoomIn())
-                        pendulumProvider_.zoom(1.2);
+                        pendulumProvider_.zoom(1.1);
                     else if (navigator.shouldZoomOut())
-                        pendulumProvider_.zoom(0.8);
+                        pendulumProvider_.zoom(0.9);
                     navigator.clearState();
 
                     // Chain movement is controlled by the playback controller
