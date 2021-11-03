@@ -44,9 +44,11 @@ private:
     enum class ControlId : int
     {
         NumLinks = 1,
+        SimTime,
         m,
         k,
         l,
+        c,
     };
 
     SDL_Rect rect_;

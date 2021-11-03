@@ -8,8 +8,8 @@
 #include "MainWindow.h"
 
 // Screen dimension constants
-constexpr int SCREEN_WIDTH = 640;
-constexpr int SCREEN_HEIGHT = 480;
+constexpr int SCREEN_WIDTH = 800;
+constexpr int SCREEN_HEIGHT = 600;
 
 int
 main(int argc, char* args[])

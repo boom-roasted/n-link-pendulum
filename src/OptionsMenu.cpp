@@ -30,10 +30,22 @@ OptionsMenu::OptionsMenu(
             pendulumOptions.numLinks,
         },
         {
+            ControlId::SimTime,
+            "Simulation Length (seconds)",
+            Slider::Range(5, 60, 5),
+            pendulumOptions.simTime,
+        },
+        {
             ControlId::m,
             "Node Mass (kg)",
             Slider::Range(0.25, 1.5, 0.25),
             pendulumOptions.m,
+        },
+        {
+            ControlId::l,
+            "Link Length (m)",
+            Slider::Range(1, 10, 1),
+            pendulumOptions.l,
         },
         {
             ControlId::k,
@@ -42,11 +54,11 @@ OptionsMenu::OptionsMenu(
             pendulumOptions.k * 1e-3, // Convert N/m to kN/m}
         },
         {
-            ControlId::l,
-            "Link Length (m)",
-            Slider::Range(1, 10, 1),
-            pendulumOptions.l,
-        }
+            ControlId::c,
+            "Dampening (micro N/m/m)",
+            Slider::Range(50, 500, 50),
+            pendulumOptions.c * 1e6, // Convert N/m/m to micro N/m/m
+        },
     };
 
     for (const auto& data : sliderDatas)
@@ -124,8 +136,16 @@ OptionsMenu::handleEvent(SDL_Event& e)
                     pendulumOptions_.numLinks = control.value();
                     break;
 
+                case ControlId::SimTime:
+                    pendulumOptions_.simTime = control.value();
+                    break;
+
                 case ControlId::m:
                     pendulumOptions_.m = control.value();
+                    break;
+
+                case ControlId::l:
+                    pendulumOptions_.l = control.value();
                     break;
 
                 case ControlId::k:
@@ -133,8 +153,9 @@ OptionsMenu::handleEvent(SDL_Event& e)
                     pendulumOptions_.k = control.value() * 1e3;
                     break;
 
-                case ControlId::l:
-                    pendulumOptions_.l = control.value();
+                case ControlId::c:
+                    // Convert micro N/m/m to N/m/m
+                    pendulumOptions_.c = control.value() * 1e-6;
                     break;
 
                 default:
