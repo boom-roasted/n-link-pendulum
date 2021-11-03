@@ -26,7 +26,7 @@ OptionsMenu::OptionsMenu(
         {
             ControlId::NumLinks,
             "Number of Links",
-            Slider::Range(1, 4, 1),
+            Slider::Range(1, 10, 1),
             pendulumOptions.numLinks,
         },
         {
@@ -38,7 +38,7 @@ OptionsMenu::OptionsMenu(
         {
             ControlId::m,
             "Node Mass (kg)",
-            Slider::Range(0.25, 1.5, 0.25),
+            Slider::Range(0.1, 1, 0.1),
             pendulumOptions.m,
         },
         {
@@ -50,13 +50,13 @@ OptionsMenu::OptionsMenu(
         {
             ControlId::k,
             "Spring Constant (kN/m)",
-            Slider::Range(60, 300, 20),
+            Slider::Range(60, 160, 20),
             pendulumOptions.k * 1e-3, // Convert N/m to kN/m}
         },
         {
             ControlId::c,
             "Dampening (micro N/m/m)",
-            Slider::Range(50, 500, 50),
+            Slider::Range(50, 200, 50),
             pendulumOptions.c * 1e6, // Convert N/m/m to micro N/m/m
         },
     };
