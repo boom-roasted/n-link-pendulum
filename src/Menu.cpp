@@ -2,11 +2,12 @@
 
 #include "ButtonData.h"
 
-MainMenu::MainMenu(const SDL_Rect& rect, SDL_Renderer* renderer, TTF_Font* font)
+MainMenu::MainMenu(const SDL_Rect& rect, const PendulumOptions& pendulumOptions,  SDL_Renderer* renderer, TTF_Font* font)
     : rect_(rect)
     , background_(rect, SDL_Color({ 119, 181, 254, 200 }))
     , renderer_(renderer)
     , font_(font)
+    , pendulumOptions_(pendulumOptions)
 {
     const std::vector<ButtonData<ButtonId>> buttonDatas{
         { ButtonId::Resume, "Resume" },
@@ -79,6 +80,9 @@ MainMenu::handleEvent(SDL_Event& e)
         {
             shouldSimulate_ = true;
             shouldResume_ = true; // Hide menu after running new simulation
+
+            // Use menu options
+            pendulumOptions_ = (*optionsMenu_).pendulumOptions();
         }
 
         (*optionsMenu_).clearState();
@@ -102,7 +106,7 @@ MainMenu::handleEvent(SDL_Event& e)
                     break;
 
                 case ButtonId::Options:
-                    optionsMenu_ = OptionsMenu(rect_, renderer_, font_);
+                    optionsMenu_ = OptionsMenu(rect_, pendulumOptions_, renderer_, font_);
                     break;
 
                 case ButtonId::Quit:

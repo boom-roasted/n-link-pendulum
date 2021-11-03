@@ -185,7 +185,7 @@ MainWindow::runLoop()
 
                             // Constructs menu in place with forwarded params
                             menus_.emplace_back(
-                                screenRect, renderer_, mainFont_);
+                                screenRect, pendulumProvider_.options(), renderer_, mainFont_);
                         }
                         else
                         {
@@ -246,7 +246,8 @@ MainWindow::runLoop()
                             quit = true;
 
                         if (menus_.back().shouldSimulate())
-                            pendulumProvider_.runSimulation();
+                            pendulumProvider_.runSimulation(
+                                menus_.back().pendulumOptions());
 
                         // Remove menu or at least clear the event state
                         if (menus_.back().shouldResume())

@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Pendulum.h"
+#include "PendulumOptions.h"
 #include "Texture.h"
 
 class PendulumProvider
@@ -18,7 +19,7 @@ public:
     void loadFromFile(const std::string& p);
     void loadOrCreate(const std::string& p);
     void loadTextures(SDL_Renderer* renderer);
-    void runSimulation();
+    void runSimulation(const PendulumOptions& options);
 
     Pendulum::Pendulum currentPendulum();
 
@@ -31,6 +32,9 @@ public:
     // Zooming commands
     void zoomFit();
     void zoom(double factor);
+
+    // Options
+    PendulumOptions options() { return lastUsedOptions_; }
 
     void render(SDL_Renderer* renderer);
 
@@ -54,6 +58,8 @@ private:
     // Computes the ideal scaling factor to fit the simulation in bounds
     // No-op if pendulum is not loaded
     void computeScaleFactor();
+
+    PendulumOptions lastUsedOptions_;
 
     struct Point
     {

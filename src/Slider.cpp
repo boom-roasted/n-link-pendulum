@@ -4,6 +4,7 @@
 
 Slider::Slider(
     const SDL_Rect& rect,
+    int id,
     const std::string& label,
     const Range& range,
     const double initialValue,
@@ -11,6 +12,7 @@ Slider::Slider(
     SDL_Renderer* renderer,
     TTF_Font* font)
     : rect_(rect)
+    , id_(id)
     , background_(Rectangle(rect, bgColor))
     , bar_(Rectangle(rect, { 0, 100, 200, 255 }))
     , thumb_(Draggable<Icon>(
@@ -39,6 +41,12 @@ Slider::setRect(const SDL_Rect& rect)
     rect_ = rect;
     background_.setRect(rect);
     computePositions();
+}
+
+int
+Slider::id()
+{
+    return id_;
 }
 
 void

@@ -4,11 +4,13 @@
 
 OptionsMenu::OptionsMenu(
     const SDL_Rect& rect,
+    const PendulumOptions& pendulumOptions,
     SDL_Renderer* renderer,
     TTF_Font* font)
     : rect_(rect)
     , background_(rect, SDL_Color({ 119, 181, 254, 200 }))
     , renderer_(renderer)
+    , pendulumOptions_(pendulumOptions)
 {
     // Colors
     // TODO make these a singleton or something
@@ -23,17 +25,19 @@ OptionsMenu::OptionsMenu(
     controls_.reserve(2);
     controls_.emplace_back(Slider(
         r,
+        static_cast<int>(ControlId::NumLinks),
         "Number of Links",
         Slider::Range(1, 4, 1),
-        3,
+        static_cast<double>(pendulumOptions.numLinks),
         white,
         renderer,
         font));
     controls_.emplace_back(Slider(
         r,
+        static_cast<int>(ControlId::Mass),
         "Node Mass (kg)",
         Slider::Range(0.25, 1.5, 0.25),
-        0.25,
+        pendulumOptions.m,
         white,
         renderer,
         font));
@@ -92,6 +96,20 @@ OptionsMenu::handleEvent(SDL_Event& e)
                 SDL_LOG_CATEGORY_APPLICATION,
                 "Control value changed to: %f",
                 control.value());
+
+            switch (static_cast<ControlId>(control.id()))
+            {
+                case ControlId::NumLinks:
+                    pendulumOptions_.numLinks = control.value();
+                    break;
+
+                case ControlId::Mass:
+                    pendulumOptions_.m = control.value();
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 

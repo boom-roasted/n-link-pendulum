@@ -4,13 +4,14 @@
 #include <vector>
 
 #include "Button.h"
+#include "PendulumOptions.h"
 #include "Rectangle.h"
 #include "Slider.h"
 
 class OptionsMenu
 {
 public:
-    OptionsMenu(const SDL_Rect& rect, SDL_Renderer* renderer, TTF_Font* font);
+    OptionsMenu(const SDL_Rect& rect, const PendulumOptions& pendulumOptions, SDL_Renderer* renderer, TTF_Font* font);
 
     void setRect(const SDL_Rect& rect);
 
@@ -19,6 +20,7 @@ public:
     void handleEvent(SDL_Event& e);
 
     // State
+    PendulumOptions pendulumOptions() { return pendulumOptions_; };
     bool shouldGoBack() { return shouldGoBack_; }
     bool shouldSimulate() { return shouldSimulate_; }
     void clearState();
@@ -34,11 +36,20 @@ private:
         Simulate,
     };
 
+    // Control identifiers
+    enum class ControlId : int
+    {
+        NumLinks = 1,
+        Mass,
+    };
+
     SDL_Rect rect_;
     Rectangle background_;
     SDL_Renderer* renderer_;
     std::vector<Slider> controls_;
     std::vector<Button<Text>> buttons_;
+
+    PendulumOptions pendulumOptions_;
 
     bool shouldGoBack_ = false;
     bool shouldSimulate_ = false;

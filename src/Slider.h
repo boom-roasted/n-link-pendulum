@@ -29,6 +29,7 @@ public:
 
     Slider(
         const SDL_Rect& rect,
+        int id,
         const std::string& label,
         const Range& range,
         const double initialValue,
@@ -38,6 +39,8 @@ public:
 
     SDL_Rect rect();
     void setRect(const SDL_Rect& rect);
+
+    int id();
 
     void render();
     void handleEvent(SDL_Event& e);
@@ -61,6 +64,7 @@ private:
     std::string toString(double val);
 
     SDL_Rect rect_;
+    int id_;
     Rectangle background_;
     Rectangle bar_;
     Draggable<Icon> thumb_;

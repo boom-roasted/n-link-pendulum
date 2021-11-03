@@ -11,6 +11,7 @@ PendulumProvider::PendulumProvider(const SDL_Rect& rect)
     , currentPendulumIndex_(0)
     , lastFrame_(0)
     , scaleFactor_(50)
+    , lastUsedOptions_(PendulumOptions())
 {
 }
 
@@ -58,31 +59,29 @@ PendulumProvider::loadOrCreate(const std::string& p)
     // File does not exist, so create it
     else
     {
-        runSimulation();
+        runSimulation(lastUsedOptions_);
     }
 }
 
 void
-PendulumProvider::runSimulation()
+PendulumProvider::runSimulation(const PendulumOptions& options)
 {
-    // Main modify-able simulation parameters
-    const int numLinks = 3;            // Size of pendulum
+    lastUsedOptions_ = options; // Record options
+    
     const std::string fp = "data.bin"; // Output data file
-    const double simTime = 20;         // Simulation time, seconds
-    const int saveFrameStep = 500; // Computed frames between every output frame
-
-    // Default node properties
-    const double m = 0.25;
-    const double l = 3;
-    const double k = 1e5;
-    const double c = 0.0001;
 
     const double deltaT =
-        1.0 / 200.0 * 1.0 / std::sqrt(k / m); // Time step increment
-    const int iterations = std::lround(simTime / deltaT);
+        1.0 / 200.0 * 1.0 /
+        std::sqrt(options.k / options.m); // Time step increment
+    const int iterations = std::lround(options.simTime / deltaT);
 
     auto chain = Pendulum::Pendulum::Create(
-        numLinks, m, l, k, c, Pendulum::Pendulum::Layout::Line);
+        options.numLinks,
+        options.m,
+        options.l,
+        options.k,
+        options.c,
+        Pendulum::Pendulum::Layout::Line);
 
     // Data storage
     auto fout = std::ofstream(fp, std::ios::out | std::ios::binary);
@@ -106,7 +105,7 @@ PendulumProvider::runSimulation()
 
         // Write state to file. Not every frame is written, because
         // that is too much data.
-        if (i % saveFrameStep == 0)
+        if (i % options.saveFrameStep == 0)
         {
             chain.Serialize(fout);
         }

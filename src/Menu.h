@@ -12,7 +12,7 @@
 class MainMenu
 {
 public:
-    MainMenu(const SDL_Rect& rect, SDL_Renderer* renderer, TTF_Font* font);
+    MainMenu(const SDL_Rect& rect, const PendulumOptions& pendulumOptions, SDL_Renderer* renderer, TTF_Font* font);
 
     void setRect(const SDL_Rect& rect);
 
@@ -20,6 +20,7 @@ public:
 
     void handleEvent(SDL_Event& e);
 
+    PendulumOptions pendulumOptions() { return pendulumOptions_; }
     bool shouldResume() { return shouldResume_; }
     bool shouldQuit() { return shouldQuit_; }
     bool shouldSimulate() { return shouldSimulate_; }
@@ -43,6 +44,8 @@ private:
     TTF_Font* font_;
     std::vector<Button<Text>> buttons_;
     std::optional<OptionsMenu> optionsMenu_;
+
+    PendulumOptions pendulumOptions_;
 
     bool shouldResume_ = false;
     bool shouldQuit_ = false;
