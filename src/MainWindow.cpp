@@ -249,8 +249,14 @@ MainWindow::runLoop()
                             quit = true;
 
                         if (menus_.back().shouldSimulate())
+                        {
                             pendulumProvider_.runSimulation(
                                 menus_.back().pendulumOptions());
+
+                            // The simulate call blocks.
+                            // TODO remove timer restart after adding async
+                            timer.restart();
+                        }
 
                         // Remove menu or at least clear the event state
                         if (menus_.back().shouldResume())

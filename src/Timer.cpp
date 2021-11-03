@@ -25,6 +25,7 @@ Timer::start()
     // Get the current clock time
     startTicks_ = SDL_GetTicks();
     pausedTicks_ = 0;
+    lapTicks_ = startTicks_;
 }
 
 void
@@ -39,6 +40,7 @@ Timer::stop()
     // Clear tick variables
     startTicks_ = 0;
     pausedTicks_ = 0;
+    lapTicks_ = 0;
 }
 
 void
