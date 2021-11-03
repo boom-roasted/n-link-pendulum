@@ -11,7 +11,11 @@
 class OptionsMenu
 {
 public:
-    OptionsMenu(const SDL_Rect& rect, const PendulumOptions& pendulumOptions, SDL_Renderer* renderer, TTF_Font* font);
+    OptionsMenu(
+        const SDL_Rect& rect,
+        const PendulumOptions& pendulumOptions,
+        SDL_Renderer* renderer,
+        TTF_Font* font);
 
     void setRect(const SDL_Rect& rect);
 
@@ -40,7 +44,9 @@ private:
     enum class ControlId : int
     {
         NumLinks = 1,
-        Mass,
+        m,
+        k,
+        l,
     };
 
     SDL_Rect rect_;

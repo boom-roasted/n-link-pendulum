@@ -9,7 +9,7 @@ struct PendulumOptions
 
     double m = 0.25;   // Node mass
     double l = 3;      // Link length
-    double k = 1e5;    // Link spring constant
+    double k = 100e3;  // Link spring constant
     double c = 0.0001; // Link dampening constant
 };
 

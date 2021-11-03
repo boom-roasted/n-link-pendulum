@@ -22,25 +22,46 @@ OptionsMenu::OptionsMenu(
     SDL_Rect r = { rect.x, rect.y, 100, 100 };
 
     // Setup controls to render on top
-    controls_.reserve(2);
-    controls_.emplace_back(Slider(
-        r,
-        static_cast<int>(ControlId::NumLinks),
-        "Number of Links",
-        Slider::Range(1, 4, 1),
-        static_cast<double>(pendulumOptions.numLinks),
-        white,
-        renderer,
-        font));
-    controls_.emplace_back(Slider(
-        r,
-        static_cast<int>(ControlId::Mass),
-        "Node Mass (kg)",
-        Slider::Range(0.25, 1.5, 0.25),
-        pendulumOptions.m,
-        white,
-        renderer,
-        font));
+    const std::vector<SliderData<ControlId>> sliderDatas{
+        {
+            ControlId::NumLinks,
+            "Number of Links",
+            Slider::Range(1, 4, 1),
+            pendulumOptions.numLinks,
+        },
+        {
+            ControlId::m,
+            "Node Mass (kg)",
+            Slider::Range(0.25, 1.5, 0.25),
+            pendulumOptions.m,
+        },
+        {
+            ControlId::k,
+            "Spring Constant (kN/m)",
+            Slider::Range(60, 300, 20),
+            pendulumOptions.k * 1e-3, // Convert N/m to kN/m}
+        },
+        {
+            ControlId::l,
+            "Link Length (m)",
+            Slider::Range(1, 10, 1),
+            pendulumOptions.l,
+        }
+    };
+
+    for (const auto& data : sliderDatas)
+    {
+        controls_.emplace_back(
+            r,
+            static_cast<int>(data.id),
+            data.label,
+            data.range,
+            data.initialValue,
+            white,
+            renderer,
+            font);
+    }
+    controls_.reserve(sliderDatas.size());
 
     // Button data
     const std::vector<ButtonData<ButtonId>> buttonDatas{
@@ -103,8 +124,17 @@ OptionsMenu::handleEvent(SDL_Event& e)
                     pendulumOptions_.numLinks = control.value();
                     break;
 
-                case ControlId::Mass:
+                case ControlId::m:
                     pendulumOptions_.m = control.value();
+                    break;
+
+                case ControlId::k:
+                    // Convert kN/m to N/m
+                    pendulumOptions_.k = control.value() * 1e3;
+                    break;
+
+                case ControlId::l:
+                    pendulumOptions_.l = control.value();
                     break;
 
                 default:
@@ -150,22 +180,21 @@ OptionsMenu::clearState()
 void
 OptionsMenu::computePositions()
 {
-    int optionWidth = 200;
-    int optionHeight = 80;
+    int buttonWidth = 100;
+    int buttonHeight = 40;
 
     int controlWidth = 300;
-    int controlHeight = 90;
+    int controlHeight = 65;
 
     int margin = 10;
 
     // Figure out top left x,y for the group of all options
-    int totalHeight =
-        (optionHeight + margin + margin) * (controls_.size() + buttons_.size());
+    // One button row, multiple control rows.
+    int totalHeight = (controlHeight + margin + margin) * controls_.size() +
+                      (buttonHeight + margin + margin) * 1;
     int totalControlWidth = controlWidth + margin + margin; // One column
-    int totalOptionWidth = optionWidth + margin + margin;   // One column
 
     int controlX = rect_.x + (0.5 * rect_.w) - (0.5 * totalControlWidth);
-    int optionX = rect_.x + (0.5 * rect_.w) - (0.5 * totalOptionWidth);
     int topY = rect_.y + (0.5 * rect_.h) - (0.5 * totalHeight);
 
     // Track the y value of each control
@@ -183,14 +212,19 @@ OptionsMenu::computePositions()
         lastTopY = y + controlHeight + margin;
     }
 
-    // Then render buttons
+    // Then render buttons in a horizontal stack
+    const int totalButtonWidth =
+        (buttonWidth + margin + margin) * buttons_.size(); // One row
+    int buttonX = rect_.x + (0.5 * rect_.w) - (0.5 * totalButtonWidth);
+    const auto buttonY = lastTopY;
+
     for (auto& button : buttons_)
     {
-        int x = optionX + margin;
-        int y = lastTopY + margin;
+        int x = buttonX + margin;
+        int y = buttonY + margin;
 
-        button.setRect({ x, y, optionWidth, optionHeight });
+        button.setRect({ x, y, buttonWidth, buttonHeight });
 
-        lastTopY = y + optionHeight + margin;
+        buttonX = x + buttonWidth + margin;
     }
 }

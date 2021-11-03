@@ -174,8 +174,8 @@ Slider::computePositions()
     // Set up some hard coded layout parameters
     int padding = 10;
     int labelHeight = 20;
-    int barHeight = 10;
-    int barPadding = 20;
+    int barHeight = 2;
+    int barPadding = 10;
     int valueWidth = 60;
     int thumbSize = 20;
 
