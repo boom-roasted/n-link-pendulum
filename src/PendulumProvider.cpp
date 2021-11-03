@@ -43,7 +43,7 @@ PendulumProvider::loadFromFile(const std::string& p)
 void
 PendulumProvider::loadTextures(SDL_Renderer* renderer)
 {
-    SDL_assert(pinTexture_.loadFromFile("res/dot.bmp", renderer));
+    SDL_assert(pinTexture_.loadFromFile("res/pin.png", renderer));
     SDL_assert(nodeTexture_.loadFromFile("res/dot.bmp", renderer));
 }
 
