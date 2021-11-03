@@ -76,15 +76,13 @@ Slider::handleEvent(SDL_Event& e)
     // If the thumb was dragged somewhere, update rect to stay with mouse
     if (thumb_.isDragging())
     {
-        setThumbPositionFromDrag();
-        snapThumbToNearestStride();
+        snapThumbToNearestStride(thumb_.dragEnd().x);
     }
 
     // If thumb drag finished, emit that the value changed
     if (thumb_.dragComplete())
     {
-        setThumbPositionFromDrag();
-        snapThumbToNearestStride();
+        snapThumbToNearestStride(thumb_.dragEnd().x);
         valueChanged_ = true;
     }
 }
@@ -102,9 +100,13 @@ Slider::setValue(double newValue)
     value_ = newValue;
     const auto barRect = bar_.rect();
     const auto thumbRect = thumb_.rect();
-    const auto thumbOffset = computeThumbOffset(barRect.w);
-    thumb_.setRect(
-        { barRect.x + thumbOffset, thumbRect.y, thumbRect.w, thumbRect.h });
+    const auto thumbOffset = computeThumbOffset();
+    thumb_.setRect({
+        barRect.x + thumbOffset - thumbRect.w / 2,
+        thumbRect.y,
+        thumbRect.w,
+        thumbRect.h,
+    });
 }
 
 bool
@@ -116,56 +118,47 @@ Slider::valueChanged()
 }
 
 int
-Slider::computeThumbOffset(int barWidth)
+Slider::computeThumbOffset()
 {
     if (value_ < range_.start) // OOB low
         return 0;
     else if (value_ > range_.stop) // OOB high
-        return barWidth;
+        return bar_.rect().w;
     else
     {
-        const auto strideWidth = barWidth / range_.count();
+        const auto strideWidth = bar_.rect().w / range_.count();
         const int numStrides = (value_ - range_.start) / range_.stride;
         return strideWidth * numStrides;
     }
 }
 
 void
-Slider::setThumbPositionFromDrag()
+Slider::snapThumbToNearestStride(int targetX)
 {
-    const auto& r = thumb_.rect();
-    const auto& barRect = bar_.rect();
-    const auto newThumbX =
-        std::clamp(thumb_.dragEnd().x, barRect.x, barRect.x + barRect.w);
-    thumb_.setRect({ newThumbX, r.y, r.w, r.h });
-}
+    // Clamp target x to be for sure within bounds
+    targetX = std::clamp(targetX, bar_.rect().x, bar_.rect().x + bar_.rect().w);
 
-void
-Slider::snapThumbToNearestStride()
-{
-    const auto r = thumb_.rect();
-    const auto mouseX = r.x;
+    // How far apart is each stride on the bar?
     const auto strideWidth = bar_.rect().w / range_.count();
 
     // Start with the the far left, try each stride and see which is the closest
-    int minDistanceThumbX = bar_.rect().x;
     double minDistanceValue = range_.start;
-    int minDistance = std::abs(minDistanceThumbX - mouseX);
+    int minDistance = std::abs(bar_.rect().x - targetX);
+
     for (int i = 1; i < range_.count() + 1; i++)
     {
-        int newThumbX = bar_.rect().x + strideWidth * i;
+        int tryX = bar_.rect().x + strideWidth * i;
+        int distance = std::abs(tryX - targetX);
 
-        int distance = std::abs(newThumbX - mouseX);
         if (distance < minDistance)
         {
-            minDistanceThumbX = newThumbX;
             minDistanceValue = range_.start + range_.stride * i;
             minDistance = distance;
         }
     }
 
-    thumb_.setRect({ minDistanceThumbX, r.y, r.w, r.h });
-    setValue(minDistanceValue); // TODO shouldn't duplicate computation here
+    // Setting the value also fixes up the positioning
+    setValue(minDistanceValue);
 }
 
 void
@@ -209,7 +202,7 @@ Slider::computePositions()
     // Now the slider thumb
     // Center the thumb image on the specified x, y point
     thumb_.setRect({
-        x + computeThumbOffset(barWidth) - (thumbSize / 2),
+        x + computeThumbOffset() - (thumbSize / 2),
         y + labelHeight + barPadding - (thumbSize / 2),
         thumbSize,
         thumbSize,

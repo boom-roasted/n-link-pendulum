@@ -50,14 +50,12 @@ public:
     bool valueChanged();
 
 private:
+    // Move thumb to the nearest viable position
     // Only move along the x axis. Because that's how the slider works.
     // Clamps to bar dimensions so that thumb stays within bar bounds.
-    void setThumbPositionFromDrag();
+    void snapThumbToNearestStride(int targetX);
 
-    // Move thumb to the nearest viable position
-    void snapThumbToNearestStride();
-
-    int computeThumbOffset(int barWidth);
+    int computeThumbOffset();
 
     void computePositions();
 
