@@ -67,7 +67,7 @@ void
 PendulumProvider::runSimulation(const PendulumOptions& options)
 {
     lastUsedOptions_ = options; // Record options
-    
+
     const std::string fp = "data.bin"; // Output data file
 
     const double deltaT =

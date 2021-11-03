@@ -185,7 +185,10 @@ MainWindow::runLoop()
 
                             // Constructs menu in place with forwarded params
                             menus_.emplace_back(
-                                screenRect, pendulumProvider_.options(), renderer_, mainFont_);
+                                screenRect,
+                                pendulumProvider_.options(),
+                                renderer_,
+                                mainFont_);
                         }
                         else
                         {

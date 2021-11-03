@@ -12,7 +12,11 @@
 class MainMenu
 {
 public:
-    MainMenu(const SDL_Rect& rect, const PendulumOptions& pendulumOptions, SDL_Renderer* renderer, TTF_Font* font);
+    MainMenu(
+        const SDL_Rect& rect,
+        const PendulumOptions& pendulumOptions,
+        SDL_Renderer* renderer,
+        TTF_Font* font);
 
     void setRect(const SDL_Rect& rect);
 

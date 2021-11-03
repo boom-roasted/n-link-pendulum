@@ -2,7 +2,11 @@
 
 #include "ButtonData.h"
 
-MainMenu::MainMenu(const SDL_Rect& rect, const PendulumOptions& pendulumOptions,  SDL_Renderer* renderer, TTF_Font* font)
+MainMenu::MainMenu(
+    const SDL_Rect& rect,
+    const PendulumOptions& pendulumOptions,
+    SDL_Renderer* renderer,
+    TTF_Font* font)
     : rect_(rect)
     , background_(rect, SDL_Color({ 119, 181, 254, 200 }))
     , renderer_(renderer)
@@ -106,7 +110,8 @@ MainMenu::handleEvent(SDL_Event& e)
                     break;
 
                 case ButtonId::Options:
-                    optionsMenu_ = OptionsMenu(rect_, pendulumOptions_, renderer_, font_);
+                    optionsMenu_ =
+                        OptionsMenu(rect_, pendulumOptions_, renderer_, font_);
                     break;
 
                 case ButtonId::Quit:
