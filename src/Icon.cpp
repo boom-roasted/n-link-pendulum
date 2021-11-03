@@ -66,6 +66,12 @@ Icon::setIsPressed()
 }
 
 void
+Icon::setIsDragging()
+{
+    darkenBackgroundNextRender();
+}
+
+void
 Icon::darkenBackgroundNextRender()
 {
     darkenBackgroundNextRender_ = true;

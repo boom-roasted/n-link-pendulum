@@ -83,6 +83,18 @@ OptionsMenu::render()
 void
 OptionsMenu::handleEvent(SDL_Event& e)
 {
+    for (auto& control : controls_)
+    {
+        control.handleEvent(e);
+        if (control.valueChanged())
+        {
+            SDL_LogInfo(
+                SDL_LOG_CATEGORY_APPLICATION,
+                "Control value changed to: %f",
+                control.value());
+        }
+    }
+
     for (auto& button : buttons_)
     {
         button.handleEvent(e);

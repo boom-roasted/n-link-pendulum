@@ -24,6 +24,7 @@ public:
     void setIcon(const std::string& filePath);
 
     void setIsPressed();
+    void setIsDragging();
     void darkenBackgroundNextRender();
 
     void render();

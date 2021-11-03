@@ -1,6 +1,7 @@
 #ifndef PENDULUM_SLIDER_H
 #define PENDULUM_SLIDER_H
 
+#include "Draggable.h"
 #include "Icon.h"
 #include "Rectangle.h"
 #include "Text.h"
@@ -45,16 +46,24 @@ public:
     void setValue(double newValue);
     bool valueChanged();
 
+private:
+    // Only move along the x axis. Because that's how the slider works.
+    // Clamps to bar dimensions so that thumb stays within bar bounds.
+    void setThumbPositionFromDrag();
+
+    // Move thumb to the nearest viable position
+    void snapThumbToNearestStride();
+
     int computeThumbOffset(int barWidth);
+
     void computePositions();
 
-private:
     std::string toString(double val);
 
     SDL_Rect rect_;
     Rectangle background_;
     Rectangle bar_;
-    Icon thumb_;
+    Draggable<Icon> thumb_;
     Text label_;
     Text displayValue_;
     Range range_;

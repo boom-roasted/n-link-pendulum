@@ -1,5 +1,7 @@
 #include "Slider.h"
 
+#include <algorithm>
+
 Slider::Slider(
     const SDL_Rect& rect,
     const std::string& label,
@@ -11,8 +13,10 @@ Slider::Slider(
     : rect_(rect)
     , background_(Rectangle(rect, bgColor))
     , bar_(Rectangle(rect, { 0, 100, 200, 255 }))
-    , thumb_(
-          Icon(rect, { 200, 200, 200, 100 }, "res/sliderThumb.png", renderer))
+    , thumb_(Draggable<Icon>(
+          rect,
+          0, // Id not used yet
+          Icon(rect, { 200, 200, 200, 100 }, "res/sliderThumb.png", renderer)))
     , label_(Text(rect, { 0, 0, 0, 255 }, bgColor, label, renderer, font))
     , displayValue_(Text(rect, { 0, 0, 0, 255 }, bgColor, " ", renderer, font))
     , range_(range)
@@ -59,6 +63,22 @@ Slider::render()
 void
 Slider::handleEvent(SDL_Event& e)
 {
+    thumb_.handleEvent(e);
+
+    // If the thumb was dragged somewhere, update rect to stay with mouse
+    if (thumb_.isDragging())
+    {
+        setThumbPositionFromDrag();
+        snapThumbToNearestStride();
+    }
+
+    // If thumb drag finished, emit that the value changed
+    if (thumb_.dragComplete())
+    {
+        setThumbPositionFromDrag();
+        snapThumbToNearestStride();
+        valueChanged_ = true;
+    }
 }
 
 double
@@ -100,6 +120,44 @@ Slider::computeThumbOffset(int barWidth)
         const int numStrides = (value_ - range_.start) / range_.stride;
         return strideWidth * numStrides;
     }
+}
+
+void
+Slider::setThumbPositionFromDrag()
+{
+    const auto& r = thumb_.rect();
+    const auto& barRect = bar_.rect();
+    const auto newThumbX =
+        std::clamp(thumb_.dragEnd().x, barRect.x, barRect.x + barRect.w);
+    thumb_.setRect({ newThumbX, r.y, r.w, r.h });
+}
+
+void
+Slider::snapThumbToNearestStride()
+{
+    const auto r = thumb_.rect();
+    const auto mouseX = r.x;
+    const auto strideWidth = bar_.rect().w / range_.count();
+
+    // Start with the the far left, try each stride and see which is the closest
+    int minDistanceThumbX = bar_.rect().x;
+    double minDistanceValue = range_.start;
+    int minDistance = std::abs(minDistanceThumbX - mouseX);
+    for (int i = 1; i < range_.count() + 1; i++)
+    {
+        int newThumbX = bar_.rect().x + strideWidth * i;
+
+        int distance = std::abs(newThumbX - mouseX);
+        if (distance < minDistance)
+        {
+            minDistanceThumbX = newThumbX;
+            minDistanceValue = range_.start + range_.stride * i;
+            minDistance = distance;
+        }
+    }
+
+    thumb_.setRect({ minDistanceThumbX, r.y, r.w, r.h });
+    setValue(minDistanceValue); // TODO shouldn't duplicate computation here
 }
 
 void
