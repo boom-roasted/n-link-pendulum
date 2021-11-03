@@ -12,13 +12,24 @@ PendulumProvider::PendulumProvider(const SDL_Rect& rect)
     , lastFrame_(0)
     , scaleFactor_(50)
     , lastUsedOptions_(PendulumOptions())
+    , grid_(Grid(
+          rect,
+          { 0, 0 },               // Origin
+          { 189, 189, 189, 255 }, // Gray
+          1,                      // x-axis spacing
+          1,                      // y-axis spacing
+          1                       // Scale factor
+          ))
 {
+    grid_.setOrigin(origin());
 }
 
 void
 PendulumProvider::setRect(const SDL_Rect& rect)
 {
     rect_ = rect;
+    grid_.setRect(rect);
+    grid_.setOrigin(origin());
     computeScaleFactor();
 }
 
@@ -198,7 +209,7 @@ PendulumProvider::zoomFit()
 void
 PendulumProvider::zoom(double factor)
 {
-    scaleFactor_ *= factor;
+    setScaleFactor(scaleFactor_ * factor);
 }
 
 void
@@ -207,10 +218,13 @@ PendulumProvider::render(SDL_Renderer* renderer)
     if (pendulumOverTime_.empty())
         return;
 
+    // Render the underlying grid
+    grid_.render(renderer);
+
     // The offsets determine the pin position, which is the
     // origin of the pendulum coordinate system.
-    const double offsetX = xOrigin();
-    const double offsetY = yOrigin();
+    const double offsetX = origin().x;
+    const double offsetY = origin().y;
 
     // The scale factor will stretch the nodes apart. We want
     // the scale factor to be sized such that the bottom node
@@ -246,7 +260,6 @@ PendulumProvider::render(SDL_Renderer* renderer)
 
         // Draw connecting line
         // Line width isn't controllable without sdl2_gfx
-        // TODO Instead can make a rectangle
         SDL_SetRenderDrawColor(renderer, 0x00, 100, 149, 237);
         SDL_RenderDrawLine(
             renderer, lastPosition.x, lastPosition.y, thisX, thisY);
@@ -257,16 +270,20 @@ PendulumProvider::render(SDL_Renderer* renderer)
     }
 }
 
-int
-PendulumProvider::xOrigin()
+SDL_Point
+PendulumProvider::origin()
 {
-    return 0.5 * rect_.w; // Center
+    return {
+        static_cast<int>(0.5 * rect_.w),  // Center
+        static_cast<int>(0.15 * rect_.h), // Near the top
+    };
 }
 
-int
-PendulumProvider::yOrigin()
+void
+PendulumProvider::setScaleFactor(double scaleFactor)
 {
-    return 0.15 * rect_.h; // Near the top
+    scaleFactor_ = scaleFactor;
+    grid_.setScaleFactor(scaleFactor);
 }
 
 void
@@ -297,8 +314,8 @@ PendulumProvider::computeScaleFactor()
     }
 
     int padding = 20;
-    int x0 = xOrigin();
-    int y0 = yOrigin();
+    int x0 = origin().x;
+    int y0 = origin().y;
 
     const double doubleMaxLimit = std::numeric_limits<double>::max();
 
@@ -323,5 +340,6 @@ PendulumProvider::computeScaleFactor()
         if (std::abs(sf) < sfMin)
             sfMin = sf;
 
-    scaleFactor_ = sfMin;
+    // Update the pendulum scale factor
+    setScaleFactor(sfMin);
 }

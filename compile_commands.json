@@ -359,5 +359,24 @@
    "build/Slider.cpp.o"
   ],
   "file": "src/Slider.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/n-link-pendulum",
+  "arguments": [
+   "g++",
+   "-Isrc",
+   "-MMD",
+   "-MP",
+   "-std=c++17",
+   "-Wall",
+   "-Werror",
+   "-pedantic",
+   "-g",
+   "-c",
+   "src/Grid.cpp",
+   "-o",
+   "build/Grid.cpp.o"
+  ],
+  "file": "src/Grid.cpp"
  }
 ]

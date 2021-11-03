@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "Grid.h"
 #include "Pendulum.h"
 #include "PendulumOptions.h"
 #include "Texture.h"
@@ -33,6 +34,11 @@ public:
     void zoomFit();
     void zoom(double factor);
 
+    // Viewport commands
+    SDL_Point origin();
+    void setScaleFactor(double scaleFactor);
+    double scaleFactor() { return scaleFactor_; }
+
     // Options
     PendulumOptions options() { return lastUsedOptions_; }
 
@@ -52,14 +58,13 @@ private:
 
     double scaleFactor_;
 
-    int xOrigin();
-    int yOrigin();
+    PendulumOptions lastUsedOptions_;
+
+    Grid grid_;
 
     // Computes the ideal scaling factor to fit the simulation in bounds
     // No-op if pendulum is not loaded
     void computeScaleFactor();
-
-    PendulumOptions lastUsedOptions_;
 
     struct Point
     {
