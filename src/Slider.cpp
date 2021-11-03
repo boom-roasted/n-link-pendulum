@@ -175,7 +175,7 @@ Slider::computePositions()
     int padding = 10;
     int labelHeight = 20;
     int barHeight = 2;
-    int barPadding = 10;
+    int barPadding = 15;
     int valueWidth = 60;
     int thumbSize = 20;
 
@@ -207,9 +207,10 @@ Slider::computePositions()
     });
 
     // Now the slider thumb
+    // Center the thumb image on the specified x, y point
     thumb_.setRect({
-        x + computeThumbOffset(barWidth),
-        y + labelHeight + barPadding,
+        x + computeThumbOffset(barWidth) - (thumbSize / 2),
+        y + labelHeight + barPadding - (thumbSize / 2),
         thumbSize,
         thumbSize,
     });
