@@ -50,25 +50,6 @@
    "-pedantic",
    "-g",
    "-c",
-   "src/Dot.cpp",
-   "-o",
-   "build/Dot.cpp.o"
-  ],
-  "file": "src/Dot.cpp"
- },
- {
-  "directory": "/home/noah/projects/n-link-pendulum",
-  "arguments": [
-   "g++",
-   "-Isrc",
-   "-MMD",
-   "-MP",
-   "-std=c++17",
-   "-Wall",
-   "-Werror",
-   "-pedantic",
-   "-g",
-   "-c",
    "src/MainWindow.cpp",
    "-o",
    "build/MainWindow.cpp.o"

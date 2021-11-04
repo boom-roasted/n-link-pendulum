@@ -1,6 +1,5 @@
 #include "MainWindow.h"
 
-#include "Dot.h"
 #include "FpsCounter.h"
 #include "Navigator.h"
 #include "Playback.h"
@@ -157,9 +156,6 @@ MainWindow::runLoop()
             // Navigation control
             Navigator navigator({ 0, 0, w_, h_ }, renderer_);
 
-            // The dot that will be moving around on the screen
-            Dot dot(w_, h_, renderer_);
-
             // While application is running
             while (!quit)
             {
@@ -213,7 +209,6 @@ MainWindow::runLoop()
                                     e.window.data2);
                                 w_ = e.window.data1;
                                 h_ = e.window.data2;
-                                dot.setBounds(w_, h_);
                                 SDL_Rect r = { 0, 0, w_, h_ };
                                 pendulumProvider_.setRect(r);
                                 fpsCounter.setRect(r);
@@ -231,9 +226,6 @@ MainWindow::runLoop()
                     // Only handle scene events when no menu is up
                     if (menus_.empty())
                     {
-                        // Dot event
-                        dot.handleEvent(e);
-
                         // Playback event
                         playback.handleEvent(e);
 
@@ -272,9 +264,6 @@ MainWindow::runLoop()
                 // Only allow scene interaction when menus are hidden
                 if (menus_.empty())
                 {
-                    // Move the dot
-                    dot.move();
-
                     // Handle zooming and other viewport navigation
                     if (navigator.shouldZoomFit())
                         pendulumProvider_.zoomFit();
@@ -309,9 +298,6 @@ MainWindow::runLoop()
                 // Clear screen
                 SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
                 SDL_RenderClear(renderer_);
-
-                // Render dot
-                dot.render();
 
                 // Render pendulum
                 pendulumProvider_.render(renderer_);
