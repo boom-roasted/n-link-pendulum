@@ -3,9 +3,8 @@
 
 struct PendulumOptions
 {
-    int numLinks = 3;        // Size of pendulum
-    double simTime = 20;     // Simulation time (seconds)
-    int saveFrameStep = 500; // Computed frames between every output frame
+    int numLinks = 3;    // Size of pendulum
+    double simTime = 20; // Simulation time (seconds)
 
     double m = 0.2;    // Node mass (kg)
     double l = 3;      // Link length (m)

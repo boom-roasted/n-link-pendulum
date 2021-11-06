@@ -86,6 +86,11 @@ PendulumProvider::runSimulation(const PendulumOptions& options)
         std::sqrt(options.k / options.m); // Time step increment
     const int iterations = std::lround(options.simTime / deltaT);
 
+    // Save one frame every 1/120th of a second
+    const int saveFrameStep = 1.0 / 120 / deltaT;
+    SDL_LogInfo(
+        SDL_LOG_CATEGORY_APPLICATION, "Save frame step: %d", saveFrameStep);
+
     auto chain = Pendulum::Pendulum::Create(
         options.numLinks,
         options.m,
@@ -116,7 +121,7 @@ PendulumProvider::runSimulation(const PendulumOptions& options)
 
         // Write state to file. Not every frame is written, because
         // that is too much data.
-        if (i % options.saveFrameStep == 0)
+        if (i % saveFrameStep == 0)
         {
             chain.Serialize(fout);
         }
