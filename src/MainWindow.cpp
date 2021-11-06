@@ -286,9 +286,9 @@ MainWindow::runLoop()
                     {
                         // Playback is paused, but frame by frame is allowed
                         if (playback.shouldFrameBack())
-                            pendulumProvider_.decrementFrame(1);
+                            pendulumProvider_.decrementFrame(10);
                         if (playback.shouldFrameForward())
-                            pendulumProvider_.incrementFrame(1);
+                            pendulumProvider_.incrementFrame(10);
                     }
                 }
 
