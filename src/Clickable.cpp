@@ -50,7 +50,7 @@ Clickable::handleEvent(SDL_Event& e)
 
         // Check if the hotkey is active. If so, generate a normal
         // click event.
-        case SDL_KEYUP:
+        case SDL_KEYDOWN:
             if (hotkey_)
             {
                 if ((*hotkey_).isActive(e))
