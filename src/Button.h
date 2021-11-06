@@ -5,15 +5,20 @@
 #include <string>
 
 #include "Clickable.h"
+#include "Hotkey.h"
 
 template<class Content>
 class Button
 {
 public:
-    Button(const SDL_Rect& rect, int id, const Content& content)
+    Button(
+        const SDL_Rect& rect,
+        int id,
+        const Content& content,
+        const std::optional<Hotkey>& hotkey = std::nullopt)
         : id_(id)
         , content_(content)
-        , clickable_(Clickable(rect))
+        , clickable_(Clickable(rect, hotkey))
     {
     }
 

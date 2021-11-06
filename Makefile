@@ -3,7 +3,7 @@ SOURCES := main.cpp
 SOURCES += Texture.cpp MainWindow.cpp PendulumProvider.cpp
 SOURCES += Rectangle.cpp Menu.cpp OptionsMenu.cpp Text.cpp Icon.cpp
 SOURCES += Timer.cpp FpsCounter.cpp Playback.cpp Navigator.cpp
-SOURCES += Window.cpp Renderer.cpp
+SOURCES += Window.cpp Renderer.cpp Hotkey.cpp
 SOURCES += Clickable.cpp DragHandler.cpp Slider.cpp Grid.cpp
 SOURCE_DIR := src
 

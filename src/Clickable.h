@@ -2,11 +2,16 @@
 #define PENDULUM_CLICKABLE_H
 
 #include <SDL2/SDL.h>
+#include <optional>
+
+#include "Hotkey.h"
 
 class Clickable
 {
 public:
-    Clickable(const SDL_Rect& rect);
+    Clickable(
+        const SDL_Rect& rect,
+        const std::optional<Hotkey>& hotkey = std::nullopt);
 
     void setRect(const SDL_Rect& rect);
 
@@ -26,6 +31,7 @@ private:
     SDL_Rect rect_;
     bool isPressed_;
     bool isClicked_;
+    std::optional<Hotkey> hotkey_;
 };
 
 #endif // PENDULUM_CLICKABLE_H

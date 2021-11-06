@@ -1,6 +1,7 @@
 #ifndef PENDULUM_BUTTONDATA_H
 #define PENDULUM_BUTTONDATA_H
 
+#include "Hotkey.h"
 #include "Slider.h"
 #include <string>
 
@@ -9,10 +10,21 @@ struct ButtonData
 {
     ButtonId id;
     std::string name;
+    std::optional<Hotkey> hotkey;
 
     ButtonData(ButtonId id, const std::string& name)
         : id(id)
         , name(name)
+    {
+    }
+
+    ButtonData(
+        ButtonId id,
+        const std::string& name,
+        const std::optional<Hotkey>& hotkey)
+        : id(id)
+        , name(name)
+        , hotkey(hotkey)
     {
     }
 };

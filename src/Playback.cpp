@@ -8,10 +8,10 @@ Playback::Playback(const SDL_Rect& rect, SDL_Renderer* renderer)
     , renderer_(renderer)
 {
     const std::vector<ButtonData<ButtonId>> buttonDatas{
-        { ButtonId::PlayPause, "res/pause.png" },
-        { ButtonId::Restart, "res/restart.png" },
-        { ButtonId::FrameBack, "res/framebackward.png" },
-        { ButtonId::FrameForward, "res/frameforward.png" },
+        { ButtonId::PlayPause, "res/pause.png", SDLK_SPACE },
+        { ButtonId::Restart, "res/restart.png", SDLK_r },
+        { ButtonId::FrameBack, "res/framebackward.png", SDLK_j },
+        { ButtonId::FrameForward, "res/frameforward.png", SDLK_l },
     };
 
     SDL_Color backgroundColor = { 200, 200, 200, 255 };
@@ -25,7 +25,8 @@ Playback::Playback(const SDL_Rect& rect, SDL_Renderer* renderer)
         buttons_.emplace_back(
             r,
             static_cast<int>(data.id),
-            Icon(r, backgroundColor, data.name, renderer));
+            Icon(r, backgroundColor, data.name, renderer),
+            data.hotkey);
     }
 
     // Figure out the button positions

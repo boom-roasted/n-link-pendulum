@@ -1,9 +1,10 @@
 #include "Clickable.h"
 
-Clickable::Clickable(const SDL_Rect& rect)
+Clickable::Clickable(const SDL_Rect& rect, const std::optional<Hotkey>& hotkey)
     : rect_(rect)
     , isPressed_(false)
     , isClicked_(false)
+    , hotkey_(hotkey)
 {
 }
 
@@ -46,6 +47,18 @@ Clickable::handleEvent(SDL_Event& e)
                     isPressed_ = false;
             }
             break;
+
+        // Check if the hotkey is active. If so, generate a normal
+        // click event.
+        case SDL_KEYUP:
+            if (hotkey_)
+            {
+                if ((*hotkey_).isActive(e))
+                {
+                    isPressed_ = false;
+                    isClicked_ = true;
+                }
+            }
 
         default:
             break;

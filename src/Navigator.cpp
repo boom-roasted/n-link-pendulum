@@ -8,9 +8,9 @@ Navigator::Navigator(const SDL_Rect& rect, SDL_Renderer* renderer)
     , renderer_(renderer)
 {
     const std::vector<ButtonData<ButtonId>> buttonDatas{
-        { ButtonId::ZoomIn, "res/zoomIn.png" },
-        { ButtonId::ZoomOut, "res/zoomOut.png" },
-        { ButtonId::ZoomFit, "res/zoomFit.png" },
+        { ButtonId::ZoomIn, "res/zoomIn.png", SDLK_EQUALS },
+        { ButtonId::ZoomOut, "res/zoomOut.png", SDLK_MINUS },
+        { ButtonId::ZoomFit, "res/zoomFit.png", SDLK_0 },
     };
 
     SDL_Color backgroundColor = { 200, 200, 200, 255 };
@@ -21,10 +21,11 @@ Navigator::Navigator(const SDL_Rect& rect, SDL_Renderer* renderer)
 
     for (const auto& data : buttonDatas)
     {
-        buttons_.emplace_back(
+        buttons_.emplace_back(Button(
             r,
             static_cast<int>(data.id),
-            Icon(r, backgroundColor, data.name, renderer));
+            Icon(r, backgroundColor, data.name, renderer),
+            data.hotkey));
     }
 
     // Figure out the button positions
@@ -66,7 +67,6 @@ Navigator::handleEvent(SDL_Event& e)
         button.handleEvent(e);
         if (button.wasClicked())
         {
-
             SDL_LogInfo(
                 SDL_LOG_CATEGORY_APPLICATION,
                 "Button '%s' was clicked",
