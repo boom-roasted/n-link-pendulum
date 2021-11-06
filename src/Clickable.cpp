@@ -1,10 +1,20 @@
 #include "Clickable.h"
 
-Clickable::Clickable(const SDL_Rect& rect, const std::optional<Hotkey>& hotkey)
+Clickable::Clickable(const SDL_Rect& rect)
+    : Clickable(rect, std::vector<Hotkey>())
+{
+}
+
+Clickable::Clickable(const SDL_Rect& rect, const Hotkey& hotkey)
+    : Clickable(rect, std::vector<Hotkey>{ hotkey })
+{
+}
+
+Clickable::Clickable(const SDL_Rect& rect, const std::vector<Hotkey>& hotkeys)
     : rect_(rect)
     , isPressed_(false)
     , isClicked_(false)
-    , hotkey_(hotkey)
+    , hotkeys_(hotkeys)
 {
 }
 
@@ -48,15 +58,16 @@ Clickable::handleEvent(SDL_Event& e)
             }
             break;
 
-        // Check if the hotkey is active. If so, generate a normal
+        // Check if any hotkeys are active. If so, generate a normal
         // click event.
         case SDL_KEYDOWN:
-            if (hotkey_)
+            for (const auto& hotkey : hotkeys_)
             {
-                if ((*hotkey_).isActive(e))
+                if (hotkey.isActive(e))
                 {
                     isPressed_ = false;
                     isClicked_ = true;
+                    break;
                 }
             }
 

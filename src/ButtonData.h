@@ -10,21 +10,25 @@ struct ButtonData
 {
     ButtonId id;
     std::string name;
-    std::optional<Hotkey> hotkey;
-
-    ButtonData(ButtonId id, const std::string& name)
-        : id(id)
-        , name(name)
-    {
-    }
+    std::vector<Hotkey> hotkeys;
 
     ButtonData(
         ButtonId id,
         const std::string& name,
-        const std::optional<Hotkey>& hotkey)
+        const std::vector<Hotkey>& hotkeys)
         : id(id)
         , name(name)
-        , hotkey(hotkey)
+        , hotkeys(hotkeys)
+    {
+    }
+
+    ButtonData(ButtonId id, const std::string& name, const Hotkey& hotkey)
+        : ButtonData(id, name, std::vector<Hotkey>{ hotkey })
+    {
+    }
+
+    ButtonData(ButtonId id, const std::string& name)
+        : ButtonData(id, name, std::vector<Hotkey>())
     {
     }
 };

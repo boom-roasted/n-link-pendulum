@@ -7,12 +7,14 @@ Playback::Playback(const SDL_Rect& rect, SDL_Renderer* renderer)
     , background_(rect, SDL_Color({ 0, 0, 0, 0 }))
     , renderer_(renderer)
 {
+    // clang-format off
     const std::vector<ButtonData<ButtonId>> buttonDatas{
-        { ButtonId::PlayPause, "res/pause.png", SDLK_SPACE },
+        { ButtonId::PlayPause, "res/pause.png", { SDLK_SPACE, SDLK_k } },
         { ButtonId::Restart, "res/restart.png", SDLK_r },
-        { ButtonId::FrameBack, "res/framebackward.png", SDLK_j },
-        { ButtonId::FrameForward, "res/frameforward.png", SDLK_l },
+        { ButtonId::FrameBack, "res/framebackward.png", { SDLK_LEFT, SDLK_j } },
+        { ButtonId::FrameForward, "res/frameforward.png", { SDLK_RIGHT, SDLK_l } },
     };
+    // clang-format on
 
     SDL_Color backgroundColor = { 200, 200, 200, 255 };
 
@@ -26,7 +28,7 @@ Playback::Playback(const SDL_Rect& rect, SDL_Renderer* renderer)
             r,
             static_cast<int>(data.id),
             Icon(r, backgroundColor, data.name, renderer),
-            data.hotkey);
+            data.hotkeys);
     }
 
     // Figure out the button positions

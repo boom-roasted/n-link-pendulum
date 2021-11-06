@@ -10,17 +10,35 @@
 template<class Content>
 class Button
 {
-public:
     Button(
         const SDL_Rect& rect,
         int id,
         const Content& content,
-        const std::optional<Hotkey>& hotkey = std::nullopt)
+        const Clickable& clickable)
         : id_(id)
         , content_(content)
-        , clickable_(Clickable(rect, hotkey))
+        , clickable_(clickable)
     {
     }
+
+public:
+    // clang-format off
+    Button(const SDL_Rect& rect, int id, const Content& content)
+        : Button(rect, id, content, Clickable(rect))
+    {
+    }
+
+    Button(
+        const SDL_Rect& rect, int id, const Content& content, const Hotkey& hotkey)
+        : Button(rect, id, content, Clickable(rect, hotkey))
+    {
+    }
+
+    Button(const SDL_Rect& rect, int id, const Content& content, const std::vector<Hotkey>& hotkeys)
+        : Button(rect, id, content, Clickable(rect, hotkeys))
+    {
+    }
+    // clang-format on
 
     void setRect(const SDL_Rect& rect)
     {

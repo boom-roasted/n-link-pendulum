@@ -12,7 +12,7 @@ Hotkey::Hotkey(SDL_KeyCode keycode, SDL_Keymod modifiers)
 }
 
 bool
-Hotkey::isActive(SDL_Event& e)
+Hotkey::isActive(SDL_Event& e) const
 {
     return (
         e.type == SDL_KEYDOWN &&            // On the key down

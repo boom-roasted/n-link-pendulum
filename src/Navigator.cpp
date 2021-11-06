@@ -25,7 +25,7 @@ Navigator::Navigator(const SDL_Rect& rect, SDL_Renderer* renderer)
             r,
             static_cast<int>(data.id),
             Icon(r, backgroundColor, data.name, renderer),
-            data.hotkey));
+            data.hotkeys));
     }
 
     // Figure out the button positions

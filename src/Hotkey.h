@@ -9,7 +9,7 @@ public:
     Hotkey(SDL_KeyCode keycode);
     Hotkey(SDL_KeyCode keycode, SDL_Keymod modifiers);
 
-    bool isActive(SDL_Event& e);
+    bool isActive(SDL_Event& e) const;
 
 private:
     SDL_KeyCode keycode_;
