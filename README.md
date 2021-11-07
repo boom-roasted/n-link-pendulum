@@ -1,12 +1,8 @@
 # n-Link Pendulum
 
-A simulation of an n-link pendulum.
+A simulation of an n-link pendulum, visualized with SDL2.
 
 The simulation demonstrates the use of the Runge Kutta method for numerical analysis.
-
-### Interface
-
-![Image of Interface](img/3-link.png)
 
 ### Quickstart
 
@@ -14,6 +10,18 @@ To start the simulation, clone the repository and run the following command
 ```console
 make run
 ```
+
+You may also be interested in installing the build dependencies (listed below) if you do not already have them.
+
+### Build Dependencies:
+
+* `make`
+* `g++`
+* `SDL2 SDL2_image SDL2_ttf`
+
+### Interface
+
+![Image of Interface](img/3-link.png)
 
 ### Keyboard Shortcuts
 
@@ -33,7 +41,7 @@ make run
 
 ### Simulation Options
 
-Found in the Options menu
+Found in the options menu
 
 * Number of pendulum links
 * Simulation time
@@ -41,9 +49,3 @@ Found in the Options menu
 * Link length
 * Spring constant
 * Dampening constant
-
-### Build dependencies:
-
-* `make`
-* `g++`
-* `SDL2 SDL2_image SDL2_ttf`
