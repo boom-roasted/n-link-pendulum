@@ -1,10 +1,11 @@
 #ifndef PENDULUM_ICON_H
 #define PENDULUM_ICON_H
 
-#include "Rectangle.h"
-#include "Texture.h"
 #include <SDL2/SDL.h>
 #include <string>
+
+#include "Rectangle.h"
+#include "Texture.h"
 
 // Similar to text, but a small image
 class Icon

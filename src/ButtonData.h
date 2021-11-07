@@ -1,9 +1,10 @@
 #ifndef PENDULUM_BUTTONDATA_H
 #define PENDULUM_BUTTONDATA_H
 
+#include <string>
+
 #include "Hotkey.h"
 #include "Slider.h"
-#include <string>
 
 template<typename ButtonId>
 struct ButtonData

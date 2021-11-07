@@ -1,13 +1,14 @@
 #ifndef PENDULUM_SLIDER_H
 #define PENDULUM_SLIDER_H
 
+#include <SDL2/SDL.h>
+#include <string>
+
 #include "Draggable.h"
 #include "Icon.h"
 #include "Rectangle.h"
 #include "Text.h"
 #include "Texture.h"
-#include <SDL2/SDL.h>
-#include <string>
 
 class Slider
 {
