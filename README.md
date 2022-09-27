@@ -21,7 +21,7 @@ You may also be interested in installing the build dependencies (listed below) i
 
 ### Interface
 
-![Image of Interface](img/3-link.png)
+![Image of Interface](img/10-link.png)
 
 ### Keyboard Shortcuts
 
@@ -49,3 +49,5 @@ Found in the options menu
 * Link length
 * Spring constant
 * Dampening constant
+
+![Image of Options Menu](img/options.png)
