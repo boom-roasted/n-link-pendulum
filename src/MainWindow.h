@@ -18,16 +18,16 @@ public:
     // Frees media and shuts down SDL
     ~MainWindow();
 
-    // Starts up SDL and creates window
-    bool init();
-
-    // Loads media
-    bool loadMedia();
-
     // Main event loop
     void runLoop();
 
 private:
+    // Starts up SDL and creates window
+    void init();
+
+    // Loads media
+    void loadMedia();
+
     // The window we'll be rendering to
     Window window_;
 
