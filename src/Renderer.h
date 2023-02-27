@@ -22,8 +22,6 @@ public:
 
     ~Renderer();
 
-    void dispose();
-
     // Cast opertator. Converts the C++ wrapper object into C object
     // when it is used with the C functions that come with the library
     operator SDL_Renderer*() { return renderer_; }

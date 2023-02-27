@@ -38,15 +38,9 @@ Renderer::operator=(Renderer&& other) noexcept
 
 Renderer::~Renderer()
 {
-    dispose();
-}
-
-void
-Renderer::dispose()
-{
-    if (renderer_ != nullptr)
+    if (renderer_)
     {
+        SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Destroying renderer");
         SDL_DestroyRenderer(renderer_);
-        renderer_ = nullptr;
     }
 }

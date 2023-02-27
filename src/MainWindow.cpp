@@ -37,20 +37,6 @@ MainWindow::MainWindow(int w, int h)
     SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
 }
 
-MainWindow::~MainWindow()
-{
-    // Menus should destroy themselves
-
-    // Destroy renderer. Could let destructor handle this.
-    renderer_.dispose();
-
-    // Destroy window. Could let destructor handle this.
-    window_.dispose();
-
-    // Quit SDL subsystems
-    SDL_Quit();
-}
-
 void
 MainWindow::loadMedia()
 {

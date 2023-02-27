@@ -38,15 +38,9 @@ Window::operator=(Window&& other) noexcept
 
 Window::~Window()
 {
-    dispose();
-}
-
-void
-Window::dispose()
-{
-    if (window_ != nullptr)
+    if (window_)
     {
+        SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Destroying window");
         SDL_DestroyWindow(window_);
-        window_ = nullptr;
     }
 }

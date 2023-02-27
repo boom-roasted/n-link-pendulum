@@ -16,11 +16,10 @@
 class MainWindow
 {
 public:
+    // Sets up SDL.
+    // C library calls (that require init/quit) are managed by
+    // C++ wrappers which automatically free the memory on destruction.
     MainWindow(int w, int h);
-
-    // Deallocates memory
-    // Frees media and shuts down SDL
-    ~MainWindow();
 
     // Main event loop
     void runLoop();
