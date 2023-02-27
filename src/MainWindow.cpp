@@ -9,7 +9,10 @@
 #include "String.h"
 
 MainWindow::MainWindow(int w, int h)
-    : window_(NULL)
+    : sdlLib_(SdlLib())
+    , sdlImg_(SdlImg(IMG_INIT_PNG))
+    , sdlTtf_(SdlTtf())
+    , window_(NULL)
     , renderer_(NULL)
     , mainFont_(NULL)
     , pendulumProvider_(PendulumProvider({ 0, 0, w, h }))
@@ -17,6 +20,21 @@ MainWindow::MainWindow(int w, int h)
     , w_(w)
     , h_(h)
 {
+    // The actual window.
+    window_ = Window(
+        "Pendulum",
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        w_,
+        h_,
+        SDL_WINDOW_SHOWN);
+
+    // A vsynced renderer for window.
+    renderer_ = Renderer(
+        window_, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
+    // Initialize renderer color
+    SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
 }
 
 MainWindow::~MainWindow()
@@ -34,59 +52,7 @@ MainWindow::~MainWindow()
     window_.dispose();
 
     // Quit SDL subsystems
-    IMG_Quit();
     SDL_Quit();
-}
-
-void
-MainWindow::init()
-{
-    // Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        throw std::runtime_error("SDL could not initialize! SDL Error: " + str(SDL_GetError()));
-    }
-
-    // Set texture filtering to linear.
-    // Not unrecoverable to fail?
-    if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
-    {
-        SDL_LogWarn(
-            SDL_LOG_CATEGORY_VIDEO,
-            "Warning: Linear texture filtering not enabled!");
-    }
-
-    window_ = Window(
-        "SDL Tutorial",
-        SDL_WINDOWPOS_UNDEFINED,
-        SDL_WINDOWPOS_UNDEFINED,
-        w_,
-        h_,
-        SDL_WINDOW_SHOWN);
-
-    // Create vsynced renderer for window
-    renderer_ = Renderer(
-        window_, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-
-    // Initialize renderer color
-    SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
-
-    // Initialize PNG loading
-    int imgFlags = IMG_INIT_PNG;
-    if (!(IMG_Init(imgFlags) & imgFlags))
-    {
-        throw std::runtime_error(
-            "SDL_image could not initialize! SDL_image Error: " +
-            str(IMG_GetError()));
-    }
-
-    // Initialize ttf library
-    if (TTF_Init() == -1)
-    {
-        throw std::runtime_error(
-            "SDL_ttf could not initialize! SDL_ttf Error: " +
-            str(TTF_GetError()));
-    }
 }
 
 void
@@ -110,9 +76,6 @@ MainWindow::loadMedia()
 void
 MainWindow::runLoop()
 {
-    // Start up SDL and create window
-    init();
-
     // Load media
     loadMedia();
 

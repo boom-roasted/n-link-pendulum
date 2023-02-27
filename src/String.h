@@ -3,12 +3,12 @@
 
 #include <string>
 
-std::string str(const char* s)
+inline std::string str(const char* s)
 {
     return std::string(s);
 }
 
-std::string str(int x)
+inline std::string str(int x)
 {
     return std::to_string(x);
 }

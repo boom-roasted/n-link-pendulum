@@ -8,6 +8,9 @@
 #include "Renderer.h"
 #include "Texture.h"
 #include "Window.h"
+#include "SdlLib.h"
+#include "SdlImg.h"
+#include "SdlTtf.h"
 
 class MainWindow
 {
@@ -22,11 +25,13 @@ public:
     void runLoop();
 
 private:
-    // Starts up SDL and creates window
-    void init();
-
     // Loads media
     void loadMedia();
+
+    // The sdl library (handles spinning up/down)
+    SdlLib sdlLib_;
+    SdlImg sdlImg_;
+    SdlTtf sdlTtf_;
 
     // The window we'll be rendering to
     Window window_;
