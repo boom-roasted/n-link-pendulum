@@ -54,6 +54,7 @@ $(OBJDIR)/%.cpp.o: %.cpp
 .PHONY: clean
 clean:
 	rm -rf $(OBJDIR)
+	rm -f $(MAIN)
 
 # Run executable (building if necessary)
 .PHONY: run
