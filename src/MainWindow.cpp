@@ -14,7 +14,7 @@ MainWindow::MainWindow(int w, int h)
     , sdlTtf_(SdlTtf())
     , window_(NULL)
     , renderer_(NULL)
-    , mainFont_(NULL)
+    , mainFont_(Font("res/DejaVuSerif.ttf", 16))
     , pendulumProvider_(PendulumProvider({ 0, 0, w, h }))
     , menus_(std::vector<MainMenu>())
     , w_(w)
@@ -39,10 +39,6 @@ MainWindow::MainWindow(int w, int h)
 
 MainWindow::~MainWindow()
 {
-    // Free fonts
-    TTF_CloseFont(mainFont_);
-    mainFont_ = NULL;
-
     // Menus should destroy themselves
 
     // Destroy renderer. Could let destructor handle this.
@@ -58,14 +54,6 @@ MainWindow::~MainWindow()
 void
 MainWindow::loadMedia()
 {
-    // Load font
-    // Open the font
-    mainFont_ = TTF_OpenFont("res/DejaVuSerif.ttf", 16);
-    if (mainFont_ == NULL)
-    {
-        throw std::runtime_error("Failed to load ttf font! SDL_ttf Error: " + str(TTF_GetError()));
-    }
-
     // Load existing simulation or run new one
     pendulumProvider_.loadOrCreate("data.bin");
 

@@ -11,6 +11,7 @@
 #include "SdlLib.h"
 #include "SdlImg.h"
 #include "SdlTtf.h"
+#include "Font.h"
 
 class MainWindow
 {
@@ -43,7 +44,7 @@ private:
     Texture fpsTextTexture_;
 
     // Fonts
-    TTF_Font* mainFont_;
+    Font mainFont_;
 
     // The pendulum
     PendulumProvider pendulumProvider_;
