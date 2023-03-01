@@ -1,9 +1,9 @@
 [
  {
-  "directory": "/home/noah/projects/n-link-pendulum",
+  "directory": "/home/noah/projects/pendulum",
   "arguments": [
    "g++",
-   "-Isrc",
+   "-Ipendui",
    "-MMD",
    "-MP",
    "-std=c++17",
@@ -12,17 +12,17 @@
    "-pedantic",
    "-g",
    "-c",
-   "src/main.cpp",
+   "pendui/main.cpp",
    "-o",
    "build/main.cpp.o"
   ],
-  "file": "src/main.cpp"
+  "file": "pendui/main.cpp"
  },
  {
-  "directory": "/home/noah/projects/n-link-pendulum",
+  "directory": "/home/noah/projects/pendulum",
   "arguments": [
    "g++",
-   "-Isrc",
+   "-Ipendui",
    "-MMD",
    "-MP",
    "-std=c++17",
@@ -31,17 +31,17 @@
    "-pedantic",
    "-g",
    "-c",
-   "src/Texture.cpp",
+   "pendui/Texture.cpp",
    "-o",
    "build/Texture.cpp.o"
   ],
-  "file": "src/Texture.cpp"
+  "file": "pendui/Texture.cpp"
  },
  {
-  "directory": "/home/noah/projects/n-link-pendulum",
+  "directory": "/home/noah/projects/pendulum",
   "arguments": [
    "g++",
-   "-Isrc",
+   "-Ipendui",
    "-MMD",
    "-MP",
    "-std=c++17",
@@ -50,17 +50,17 @@
    "-pedantic",
    "-g",
    "-c",
-   "src/MainWindow.cpp",
+   "pendui/MainWindow.cpp",
    "-o",
    "build/MainWindow.cpp.o"
   ],
-  "file": "src/MainWindow.cpp"
+  "file": "pendui/MainWindow.cpp"
  },
  {
-  "directory": "/home/noah/projects/n-link-pendulum",
+  "directory": "/home/noah/projects/pendulum",
   "arguments": [
    "g++",
-   "-Isrc",
+   "-Ipendui",
    "-MMD",
    "-MP",
    "-std=c++17",
@@ -69,17 +69,17 @@
    "-pedantic",
    "-g",
    "-c",
-   "src/PendulumProvider.cpp",
+   "pendui/PendulumProvider.cpp",
    "-o",
    "build/PendulumProvider.cpp.o"
   ],
-  "file": "src/PendulumProvider.cpp"
+  "file": "pendui/PendulumProvider.cpp"
  },
  {
-  "directory": "/home/noah/projects/n-link-pendulum",
+  "directory": "/home/noah/projects/pendulum",
   "arguments": [
    "g++",
-   "-Isrc",
+   "-Ipendui",
    "-MMD",
    "-MP",
    "-std=c++17",
@@ -88,36 +88,17 @@
    "-pedantic",
    "-g",
    "-c",
-   "src/Timer.cpp",
-   "-o",
-   "build/Timer.cpp.o"
-  ],
-  "file": "src/Timer.cpp"
- },
- {
-  "directory": "/home/noah/projects/n-link-pendulum",
-  "arguments": [
-   "g++",
-   "-Isrc",
-   "-MMD",
-   "-MP",
-   "-std=c++17",
-   "-Wall",
-   "-Werror",
-   "-pedantic",
-   "-g",
-   "-c",
-   "src/Rectangle.cpp",
+   "pendui/Rectangle.cpp",
    "-o",
    "build/Rectangle.cpp.o"
   ],
-  "file": "src/Rectangle.cpp"
+  "file": "pendui/Rectangle.cpp"
  },
  {
-  "directory": "/home/noah/projects/n-link-pendulum",
+  "directory": "/home/noah/projects/pendulum",
   "arguments": [
    "g++",
-   "-Isrc",
+   "-Ipendui",
    "-MMD",
    "-MP",
    "-std=c++17",
@@ -126,17 +107,17 @@
    "-pedantic",
    "-g",
    "-c",
-   "src/Menu.cpp",
+   "pendui/Menu.cpp",
    "-o",
    "build/Menu.cpp.o"
   ],
-  "file": "src/Menu.cpp"
+  "file": "pendui/Menu.cpp"
  },
  {
-  "directory": "/home/noah/projects/n-link-pendulum",
+  "directory": "/home/noah/projects/pendulum",
   "arguments": [
    "g++",
-   "-Isrc",
+   "-Ipendui",
    "-MMD",
    "-MP",
    "-std=c++17",
@@ -145,150 +126,17 @@
    "-pedantic",
    "-g",
    "-c",
-   "src/Text.cpp",
-   "-o",
-   "build/Text.cpp.o"
-  ],
-  "file": "src/Text.cpp"
- },
- {
-  "directory": "/home/noah/projects/n-link-pendulum",
-  "arguments": [
-   "g++",
-   "-Isrc",
-   "-MMD",
-   "-MP",
-   "-std=c++17",
-   "-Wall",
-   "-Werror",
-   "-pedantic",
-   "-g",
-   "-c",
-   "src/FpsCounter.cpp",
-   "-o",
-   "build/FpsCounter.cpp.o"
-  ],
-  "file": "src/FpsCounter.cpp"
- },
- {
-  "directory": "/home/noah/projects/n-link-pendulum",
-  "arguments": [
-   "g++",
-   "-Isrc",
-   "-MMD",
-   "-MP",
-   "-std=c++17",
-   "-Wall",
-   "-Werror",
-   "-pedantic",
-   "-g",
-   "-c",
-   "src/Playback.cpp",
-   "-o",
-   "build/Playback.cpp.o"
-  ],
-  "file": "src/Playback.cpp"
- },
- {
-  "directory": "/home/noah/projects/n-link-pendulum",
-  "arguments": [
-   "g++",
-   "-Isrc",
-   "-MMD",
-   "-MP",
-   "-std=c++17",
-   "-Wall",
-   "-Werror",
-   "-pedantic",
-   "-g",
-   "-c",
-   "src/Icon.cpp",
-   "-o",
-   "build/Icon.cpp.o"
-  ],
-  "file": "src/Icon.cpp"
- },
- {
-  "directory": "/home/noah/projects/n-link-pendulum",
-  "arguments": [
-   "g++",
-   "-Isrc",
-   "-MMD",
-   "-MP",
-   "-std=c++17",
-   "-Wall",
-   "-Werror",
-   "-pedantic",
-   "-g",
-   "-c",
-   "src/Window.cpp",
-   "-o",
-   "build/Window.cpp.o"
-  ],
-  "file": "src/Window.cpp"
- },
- {
-  "directory": "/home/noah/projects/n-link-pendulum",
-  "arguments": [
-   "g++",
-   "-Isrc",
-   "-MMD",
-   "-MP",
-   "-std=c++17",
-   "-Wall",
-   "-Werror",
-   "-pedantic",
-   "-g",
-   "-c",
-   "src/Renderer.cpp",
-   "-o",
-   "build/Renderer.cpp.o"
-  ],
-  "file": "src/Renderer.cpp"
- },
- {
-  "directory": "/home/noah/projects/n-link-pendulum",
-  "arguments": [
-   "g++",
-   "-Isrc",
-   "-MMD",
-   "-MP",
-   "-std=c++17",
-   "-Wall",
-   "-Werror",
-   "-pedantic",
-   "-g",
-   "-c",
-   "src/Navigator.cpp",
-   "-o",
-   "build/Navigator.cpp.o"
-  ],
-  "file": "src/Navigator.cpp"
- },
- {
-  "directory": "/home/noah/projects/n-link-pendulum",
-  "arguments": [
-   "g++",
-   "-Isrc",
-   "-MMD",
-   "-MP",
-   "-std=c++17",
-   "-Wall",
-   "-Werror",
-   "-pedantic",
-   "-g",
-   "-c",
-   "src/OptionsMenu.cpp",
+   "pendui/OptionsMenu.cpp",
    "-o",
    "build/OptionsMenu.cpp.o"
   ],
-  "file": "src/OptionsMenu.cpp"
+  "file": "pendui/OptionsMenu.cpp"
  },
  {
-  "directory": "/home/noah/projects/n-link-pendulum",
+  "directory": "/home/noah/projects/pendulum",
   "arguments": [
    "g++",
-   "-Isrc",
+   "-Ipendui",
    "-MMD",
    "-MP",
    "-std=c++17",
@@ -297,17 +145,188 @@
    "-pedantic",
    "-g",
    "-c",
-   "src/Clickable.cpp",
+   "pendui/Text.cpp",
+   "-o",
+   "build/Text.cpp.o"
+  ],
+  "file": "pendui/Text.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/pendulum",
+  "arguments": [
+   "g++",
+   "-Ipendui",
+   "-MMD",
+   "-MP",
+   "-std=c++17",
+   "-Wall",
+   "-Werror",
+   "-pedantic",
+   "-g",
+   "-c",
+   "pendui/Icon.cpp",
+   "-o",
+   "build/Icon.cpp.o"
+  ],
+  "file": "pendui/Icon.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/pendulum",
+  "arguments": [
+   "g++",
+   "-Ipendui",
+   "-MMD",
+   "-MP",
+   "-std=c++17",
+   "-Wall",
+   "-Werror",
+   "-pedantic",
+   "-g",
+   "-c",
+   "pendui/Timer.cpp",
+   "-o",
+   "build/Timer.cpp.o"
+  ],
+  "file": "pendui/Timer.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/pendulum",
+  "arguments": [
+   "g++",
+   "-Ipendui",
+   "-MMD",
+   "-MP",
+   "-std=c++17",
+   "-Wall",
+   "-Werror",
+   "-pedantic",
+   "-g",
+   "-c",
+   "pendui/FpsCounter.cpp",
+   "-o",
+   "build/FpsCounter.cpp.o"
+  ],
+  "file": "pendui/FpsCounter.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/pendulum",
+  "arguments": [
+   "g++",
+   "-Ipendui",
+   "-MMD",
+   "-MP",
+   "-std=c++17",
+   "-Wall",
+   "-Werror",
+   "-pedantic",
+   "-g",
+   "-c",
+   "pendui/Playback.cpp",
+   "-o",
+   "build/Playback.cpp.o"
+  ],
+  "file": "pendui/Playback.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/pendulum",
+  "arguments": [
+   "g++",
+   "-Ipendui",
+   "-MMD",
+   "-MP",
+   "-std=c++17",
+   "-Wall",
+   "-Werror",
+   "-pedantic",
+   "-g",
+   "-c",
+   "pendui/Navigator.cpp",
+   "-o",
+   "build/Navigator.cpp.o"
+  ],
+  "file": "pendui/Navigator.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/pendulum",
+  "arguments": [
+   "g++",
+   "-Ipendui",
+   "-MMD",
+   "-MP",
+   "-std=c++17",
+   "-Wall",
+   "-Werror",
+   "-pedantic",
+   "-g",
+   "-c",
+   "pendui/Window.cpp",
+   "-o",
+   "build/Window.cpp.o"
+  ],
+  "file": "pendui/Window.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/pendulum",
+  "arguments": [
+   "g++",
+   "-Ipendui",
+   "-MMD",
+   "-MP",
+   "-std=c++17",
+   "-Wall",
+   "-Werror",
+   "-pedantic",
+   "-g",
+   "-c",
+   "pendui/Renderer.cpp",
+   "-o",
+   "build/Renderer.cpp.o"
+  ],
+  "file": "pendui/Renderer.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/pendulum",
+  "arguments": [
+   "g++",
+   "-Ipendui",
+   "-MMD",
+   "-MP",
+   "-std=c++17",
+   "-Wall",
+   "-Werror",
+   "-pedantic",
+   "-g",
+   "-c",
+   "pendui/Hotkey.cpp",
+   "-o",
+   "build/Hotkey.cpp.o"
+  ],
+  "file": "pendui/Hotkey.cpp"
+ },
+ {
+  "directory": "/home/noah/projects/pendulum",
+  "arguments": [
+   "g++",
+   "-Ipendui",
+   "-MMD",
+   "-MP",
+   "-std=c++17",
+   "-Wall",
+   "-Werror",
+   "-pedantic",
+   "-g",
+   "-c",
+   "pendui/Clickable.cpp",
    "-o",
    "build/Clickable.cpp.o"
   ],
-  "file": "src/Clickable.cpp"
+  "file": "pendui/Clickable.cpp"
  },
  {
-  "directory": "/home/noah/projects/n-link-pendulum",
+  "directory": "/home/noah/projects/pendulum",
   "arguments": [
    "g++",
-   "-Isrc",
+   "-Ipendui",
    "-MMD",
    "-MP",
    "-std=c++17",
@@ -316,17 +335,17 @@
    "-pedantic",
    "-g",
    "-c",
-   "src/DragHandler.cpp",
+   "pendui/DragHandler.cpp",
    "-o",
    "build/DragHandler.cpp.o"
   ],
-  "file": "src/DragHandler.cpp"
+  "file": "pendui/DragHandler.cpp"
  },
  {
-  "directory": "/home/noah/projects/n-link-pendulum",
+  "directory": "/home/noah/projects/pendulum",
   "arguments": [
    "g++",
-   "-Isrc",
+   "-Ipendui",
    "-MMD",
    "-MP",
    "-std=c++17",
@@ -335,17 +354,17 @@
    "-pedantic",
    "-g",
    "-c",
-   "src/Slider.cpp",
+   "pendui/Slider.cpp",
    "-o",
    "build/Slider.cpp.o"
   ],
-  "file": "src/Slider.cpp"
+  "file": "pendui/Slider.cpp"
  },
  {
-  "directory": "/home/noah/projects/n-link-pendulum",
+  "directory": "/home/noah/projects/pendulum",
   "arguments": [
    "g++",
-   "-Isrc",
+   "-Ipendui",
    "-MMD",
    "-MP",
    "-std=c++17",
@@ -354,10 +373,10 @@
    "-pedantic",
    "-g",
    "-c",
-   "src/Grid.cpp",
+   "pendui/Grid.cpp",
    "-o",
    "build/Grid.cpp.o"
   ],
-  "file": "src/Grid.cpp"
+  "file": "pendui/Grid.cpp"
  }
 ]
