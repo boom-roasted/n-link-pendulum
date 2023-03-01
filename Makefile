@@ -5,7 +5,7 @@ SOURCES += Rectangle.cpp Menu.cpp OptionsMenu.cpp Text.cpp Icon.cpp
 SOURCES += Timer.cpp FpsCounter.cpp Playback.cpp Navigator.cpp
 SOURCES += Window.cpp Renderer.cpp Hotkey.cpp
 SOURCES += Clickable.cpp DragHandler.cpp Slider.cpp Grid.cpp
-SOURCE_DIR := src
+SOURCE_DIR := pendui
 
 # Linker flags
 LDFLAGS := -lSDL2 -lSDL2_image -lSDL2_ttf
