@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.20)
 project(pendlib LANGUAGES CXX VERSION 0.0.1)
 
 set(SOURCES
-    Pendulum.cpp
+    src/Pendulum.cpp
+    src/State.cpp
+    src/Computation.cpp
 )
 
 add_library(pendlib ${SOURCES})

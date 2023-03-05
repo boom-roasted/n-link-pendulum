@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "Grid.h"
-#include "Pendulum.h"
+#include "Pendlib.h"
 #include "PendulumOptions.h"
 #include "Texture.h"
 

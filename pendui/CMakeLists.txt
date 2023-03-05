@@ -38,6 +38,11 @@ set(RESOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/res/pause.png
     ${CMAKE_CURRENT_SOURCE_DIR}/res/pin.png
     ${CMAKE_CURRENT_SOURCE_DIR}/res/play.png
+    ${CMAKE_CURRENT_SOURCE_DIR}/res/restart.png
+    ${CMAKE_CURRENT_SOURCE_DIR}/res/sliderThumb.png
+    ${CMAKE_CURRENT_SOURCE_DIR}/res/zoomFit.png
+    ${CMAKE_CURRENT_SOURCE_DIR}/res/zoomIn.png
+    ${CMAKE_CURRENT_SOURCE_DIR}/res/zoomOut.png
 )
 add_custom_command(
     TARGET pendui POST_BUILD
