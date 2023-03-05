@@ -22,7 +22,7 @@ public:
     void loadTextures(SDL_Renderer* renderer);
     void runSimulation(const PendulumOptions& options);
 
-    Pendulum::Pendulum currentPendulum();
+    pendlib::Pendulum currentPendulum();
 
     // Timing controls
     void restart();
@@ -47,7 +47,7 @@ public:
 private:
     SDL_Rect rect_;
 
-    Pendulum::OverTime pendulumOverTime_;
+    pendlib::OverTime pendulumOverTime_;
 
     Texture pinTexture_;
 

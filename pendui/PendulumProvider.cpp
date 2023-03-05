@@ -5,7 +5,7 @@
 
 PendulumProvider::PendulumProvider(const SDL_Rect& rect)
     : rect_(rect)
-    , pendulumOverTime_(Pendulum::OverTime())
+    , pendulumOverTime_(pendlib::OverTime())
     , pinTexture_(Texture())
     , nodeTexture_(Texture())
     , currentPendulumIndex_(0)
@@ -43,7 +43,7 @@ PendulumProvider::loadFromFile(const std::string& p)
     // Make sure file exists
     SDL_assert(std::filesystem::exists(p));
 
-    pendulumOverTime_ = Pendulum::Pendulum::Deserialize(p);
+    pendulumOverTime_ = pendlib::Pendulum::Deserialize(p);
     computeScaleFactor();
 
     // Reset index bounds
@@ -91,13 +91,13 @@ PendulumProvider::runSimulation(const PendulumOptions& options)
     SDL_LogInfo(
         SDL_LOG_CATEGORY_APPLICATION, "Save frame step: %d", saveFrameStep);
 
-    auto chain = Pendulum::Pendulum::Create(
+    auto chain = pendlib::Pendulum::Create(
         options.numLinks,
         options.m,
         options.l,
         options.k,
         options.c,
-        Pendulum::Pendulum::Layout::Line);
+        pendlib::Pendulum::Layout::Line);
 
     // Data storage
     auto fout = std::ofstream(fp, std::ios::out | std::ios::binary);
@@ -155,7 +155,7 @@ PendulumProvider::runSimulation(const PendulumOptions& options)
     loadFromFile(fp);
 }
 
-Pendulum::Pendulum
+pendlib::Pendulum
 PendulumProvider::currentPendulum()
 {
     return pendulumOverTime_[currentPendulumIndex_];

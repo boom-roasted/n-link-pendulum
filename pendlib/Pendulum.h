@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include <vector>
 
-namespace Pendulum
+namespace pendlib
 {
 struct Pin
 {
