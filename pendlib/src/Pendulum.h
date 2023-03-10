@@ -17,17 +17,6 @@ namespace pendlib
 {
 class Pendulum
 {
-    double ts_; // Time stamp
-    Pin pin_;
-    std::vector<Node> nodes_;
-
-    Pendulum(double ts, const Pin& pin, const std::vector<Node>& nodes)
-        : ts_(ts)
-        , pin_(pin)
-        , nodes_(nodes)
-    {
-    }
-
 public:
     enum class Layout
     {
@@ -35,7 +24,6 @@ public:
         LShape,
     };
 
-    double time() const { return ts_; }
     std::vector<Node> nodes() const { return nodes_; }
     Pin pin() const { return pin_; }
 
@@ -43,18 +31,26 @@ public:
     Create(int numNodes, double m, double l, double k, double c, Layout layout);
 
     // A second order Runge Kutta function
-    void RungeKuttaSecondOrder(double deltaT);
+    void ApplyRungeKuttaSecondOrder(double deltaT);
 
-    // Serialize this Pendulum in it's current state to binary format
+    // Serialize this Pendulum in it's current state to binary format.
     void Serialize(std::ofstream& f);
 
-    // Read in a binary file of many Pendulums
-    static std::vector<Pendulum> Deserialize(const std::string& p);
+    // Read a Pendulum from a binary file.
+    static Pendulum Deserialize(std::ifstream& f);
 
     void PrintState() const;
-};
 
-using OverTime = std::vector<Pendulum>;
+private:
+    Pendulum(const Pin& pin, const std::vector<Node>& nodes)
+        : pin_(pin)
+        , nodes_(nodes)
+    {
+    }
+
+    Pin pin_;
+    std::vector<Node> nodes_;
+};
 }
 
 #endif // PENDULUM_PENDULUM_H

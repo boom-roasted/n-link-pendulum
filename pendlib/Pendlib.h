@@ -6,6 +6,7 @@
 #include "src/Pin.h"
 #include "src/Operators.h"
 #include "src/Pendulum.h"
+#include "src/PendulumStep.h"
 #include "src/State.h"
 #include "src/Vector.h"
 

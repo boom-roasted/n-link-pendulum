@@ -2,10 +2,11 @@
 
 #include <filesystem>
 #include <limits>
+#include <iostream>
 
 PendulumProvider::PendulumProvider(const SDL_Rect& rect)
     : rect_(rect)
-    , pendulumOverTime_(pendlib::OverTime())
+    , pendulumTimeSeries_(pendlib::PendulumTimeSeries())
     , pinTexture_(Texture())
     , nodeTexture_(Texture())
     , currentPendulumIndex_(0)
@@ -36,19 +37,24 @@ PendulumProvider::setRect(const SDL_Rect& rect)
 void
 PendulumProvider::loadFromFile(const std::string& p)
 {
-    // Remove existing data
-    if (!pendulumOverTime_.empty())
-        pendulumOverTime_.clear();
-
     // Make sure file exists
-    SDL_assert(std::filesystem::exists(p));
+    if (!std::filesystem::exists(p))
+    {
+        SDL_LogInfo(
+        SDL_LOG_CATEGORY_APPLICATION, "Could not load file because it does not exist: %s", p);
+        return;
+    }
 
-    pendulumOverTime_ = pendlib::Pendulum::Deserialize(p);
+    // Remove existing data
+    if (!pendulumTimeSeries_.empty())
+        pendulumTimeSeries_.clear();
+
+    pendulumTimeSeries_ = pendlib::PendulumStep::DeserializeTimeSeries(p);
     computeScaleFactor();
 
     // Reset index bounds
     currentPendulumIndex_ = 0;
-    lastFrame_ = pendulumOverTime_.size();
+    lastFrame_ = pendulumTimeSeries_.size();
 }
 
 void
@@ -98,7 +104,9 @@ PendulumProvider::runSimulation(const PendulumOptions& options)
         options.k,
         options.c,
         pendlib::Pendulum::Layout::Line);
+    auto pendStep = pendlib::PendulumStep(chain);
 
+    {
     // Data storage
     auto fout = std::ofstream(fp, std::ios::out | std::ios::binary);
     if (!fout)
@@ -111,19 +119,21 @@ PendulumProvider::runSimulation(const PendulumOptions& options)
     }
 
     // Write initial state to file
-    chain.Serialize(fout);
+    pendStep.Serialize(fout);
+    int n = 1;
 
     // Main simulation loop
     for (int i = 0; i < iterations; i++)
     {
         // Increment time
-        chain.RungeKuttaSecondOrder(deltaT);
+        pendStep.IncrementTime(deltaT);
 
         // Write state to file. Not every frame is written, because
         // that is too much data.
         if (i % saveFrameStep == 0)
         {
-            chain.Serialize(fout);
+            ++n;
+            pendStep.Serialize(fout);
         }
 
         // Display progress
@@ -147,18 +157,20 @@ PendulumProvider::runSimulation(const PendulumOptions& options)
 
     // Finish progress bar
     std::cout << std::endl;
+    std::cout << "Wrote " << n << " pendulum steps." << std::endl;
 
     // Close data file
-    fout.close();
+    fout.flush();
+    }
 
     // Load the data into the interface
     loadFromFile(fp);
 }
 
-pendlib::Pendulum
-PendulumProvider::currentPendulum()
+pendlib::PendulumStep
+PendulumProvider::currentStep()
 {
-    return pendulumOverTime_[currentPendulumIndex_];
+    return pendulumTimeSeries_[currentPendulumIndex_];
 }
 
 void
@@ -188,11 +200,11 @@ PendulumProvider::decrementFrame(std::size_t by)
 void
 PendulumProvider::incrementTime(double by)
 {
-    const auto targetTime = currentPendulum().time() + by;
+    const auto targetTime = currentStep().time() + by;
 
     for (std::size_t i = currentPendulumIndex_; i < lastFrame_; i++)
     {
-        if (pendulumOverTime_[i].time() > targetTime)
+        if (pendulumTimeSeries_[i].time() > targetTime)
         {
             // We found it
             currentPendulumIndex_ = i;
@@ -220,7 +232,7 @@ PendulumProvider::zoom(double factor)
 void
 PendulumProvider::render(SDL_Renderer* renderer)
 {
-    if (pendulumOverTime_.empty())
+    if (pendulumTimeSeries_.empty())
         return;
 
     // Render the underlying grid
@@ -236,7 +248,8 @@ PendulumProvider::render(SDL_Renderer* renderer)
     // almost touches the bottom of the screen
     const double sf = scaleFactor_;
 
-    const auto& chain = currentPendulum();
+    const auto& pendStep = currentStep();
+    const auto& pend = pendStep.pendulum();
 
     const auto applyScalingX = [offsetX, sf](double x)
     { return x * sf + offsetX; };
@@ -244,13 +257,14 @@ PendulumProvider::render(SDL_Renderer* renderer)
     { return y * sf + offsetY; };
 
     // Show the pin
-    const auto pinX = applyScalingX(chain.pin().x);
-    const auto pinY = applyScalingY(chain.pin().y);
+    const auto& pin = pend.pin();
+    const auto pinX = applyScalingX(pin.x);
+    const auto pinY = applyScalingY(pin.y);
     pinTexture_.render(pinX, pinY, renderer, true);
 
     // Show the nodes.
     // Need to track position of previous point to draw connecting lines
-    const auto nodes = chain.nodes();
+    const auto& nodes = pend.nodes();
     auto lastPosition = Point(pinX, pinY);
 
     for (std::size_t i = 0; i < nodes.size(); i++)
@@ -294,15 +308,15 @@ PendulumProvider::setScaleFactor(double scaleFactor)
 void
 PendulumProvider::computeScaleFactor()
 {
-    if (pendulumOverTime_.empty())
+    if (pendulumTimeSeries_.empty())
         return;
 
     double xMin = 0, xMax = 0;
     double yMin = 0, yMax = 0;
 
-    for (const auto& p : pendulumOverTime_)
+    for (const auto& p : pendulumTimeSeries_)
     {
-        for (const auto& n : p.nodes())
+        for (const auto& n : p.pendulum().nodes())
         {
             if (n.state.y > yMax)
                 yMax = n.state.y;

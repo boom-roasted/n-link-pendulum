@@ -12,7 +12,6 @@ Pendulum
 Pendulum::Create(int numNodes, double m, double l, double k, double c, Layout layout)
 {
     // Defaults
-    const double currentTime = 0;
     const auto pin = Pin(0, 0);
     const double xdot0 = 0;
     const double ydot0 = 0;
@@ -43,14 +42,11 @@ Pendulum::Create(int numNodes, double m, double l, double k, double c, Layout la
         nodes.push_back(node);
     }
 
-    return Pendulum(currentTime, pin, nodes);
+    return Pendulum(pin, nodes);
 }
 
-void Pendulum::RungeKuttaSecondOrder(double deltaT)
+void Pendulum::ApplyRungeKuttaSecondOrder(double deltaT)
 {
-    // Update time
-    ts_ += deltaT;
-
     const auto z1 = nodes_;
     const auto f1 = ComputeState(pin_, z1);
 
@@ -77,9 +73,6 @@ void Pendulum::RungeKuttaSecondOrder(double deltaT)
 
 void Pendulum::Serialize(std::ofstream& f)
 {
-    // Current time
-    f.write(reinterpret_cast<char*>(&ts_), sizeof(ts_));
-
     // Pin x, pin y
     f.write(reinterpret_cast<char*>(&pin_.x), sizeof(pin_.x));
     f.write(reinterpret_cast<char*>(&pin_.y), sizeof(pin_.y));
@@ -95,57 +88,30 @@ void Pendulum::Serialize(std::ofstream& f)
         nodes_.size() * sizeof(nodes_[0])); // Node data
 }
 
-std::vector<Pendulum> Pendulum::Deserialize(const std::string& p)
+Pendulum Pendulum::Deserialize(std::ifstream& f)
 {
-    // Open file for reading
-    auto f = std::ifstream(p, std::ios::in | std::ios::binary);
-    if (!f)
-        throw std::runtime_error("Cannot open file for reading");
+    // Pin x, pin y
+    double xPin;
+    double yPin;
+    f.read(reinterpret_cast<char*>(&xPin), sizeof(xPin));
+    f.read(reinterpret_cast<char*>(&yPin), sizeof(yPin));
 
-    // Initialize Pendulum vector
-    auto pendulumOverTime = std::vector<Pendulum>();
+    // Number of nodes
+    std::size_t numNodes;
+    f.read(reinterpret_cast<char*>(&numNodes), sizeof(numNodes));
 
-    // Read all pendulums available
-    while (!f.eof())
-    {
-        // Current time
-        double currentTime;
-        f.read(reinterpret_cast<char*>(&currentTime), sizeof(currentTime));
+    // Nodes vector
+    std::vector<Node> nodes(numNodes);
+    f.read(
+        reinterpret_cast<char*>(nodes.data()),
+        nodes.size() * sizeof(Node));
 
-        // Pin x, pin y
-        double xPin;
-        double yPin;
-        f.read(reinterpret_cast<char*>(&xPin), sizeof(xPin));
-        f.read(reinterpret_cast<char*>(&yPin), sizeof(yPin));
-
-        // Number of nodes
-        std::size_t numNodes;
-        f.read(reinterpret_cast<char*>(&numNodes), sizeof(numNodes));
-
-        // Nodes vector
-        std::vector<Node> nodes(numNodes);
-        f.read(
-            reinterpret_cast<char*>(nodes.data()),
-            nodes.size() * sizeof(Node));
-
-        // Store pendulum
-        pendulumOverTime.push_back(
-            Pendulum(currentTime, Pin(xPin, yPin), nodes));
-    }
-
-    // Close input file
-    f.close();
-
-    // TODO The last value appears to be trash.
-    pendulumOverTime.pop_back();
-
-    return pendulumOverTime;
+    // Done
+    return Pendulum(Pin(xPin, yPin), nodes);
 }
 
 void Pendulum::PrintState() const
 {
-    std::cout << "t = " << ts_;
-
     for (std::size_t n = 0; n < nodes_.size(); n++)
     {
         const Node& node = nodes_[n];
