@@ -21,8 +21,6 @@ public:
 
     ~Window();
 
-    void dispose();
-
     // Cast operator for using this class with the SDL library functions
     operator SDL_Window*() { return window_; }
 
