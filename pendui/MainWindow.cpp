@@ -2,10 +2,6 @@
 
 #include <stdexcept>
 
-#include "FpsCounter.h"
-#include "Navigator.h"
-#include "Playback.h"
-#include "Timer.h"
 #include "String.h"
 
 MainWindow::MainWindow(int w, int h)
@@ -17,6 +13,10 @@ MainWindow::MainWindow(int w, int h)
     , mainFont_(Font("res/DejaVuSerif.ttf", 16))
     , pendulumProvider_(PendulumProvider({ 0, 0, w, h }))
     , menus_(std::vector<MainMenu>())
+    , timer_(Timer())
+    , fpsCounter_(FpsCounter({ 0, 0, w_, h_ }))
+    , playback_(Playback({ 0, 0, w_, h_ }, renderer_))
+    , navigator_(Navigator({ 0, 0, w_, h_ }, renderer_))
     , w_(w)
     , h_(h)
 {
@@ -59,19 +59,9 @@ MainWindow::runLoop()
     // Event handler
     SDL_Event e;
 
-    // Timer
-    Timer timer;
-    timer.start();
-
-    // Fps counter
-    FpsCounter fpsCounter({ 0, 0, w_, h_ });
-    fpsCounter.start();
-
-    // Playback control
-    Playback playback({ 0, 0, w_, h_ }, renderer_);
-
-    // Navigation control
-    Navigator navigator({ 0, 0, w_, h_ }, renderer_);
+    // Timers
+    timer_.start();
+    fpsCounter_.start();
 
     // While application is running
     while (!quit)
@@ -128,9 +118,9 @@ MainWindow::runLoop()
                         h_ = e.window.data2;
                         SDL_Rect r = { 0, 0, w_, h_ };
                         pendulumProvider_.setRect(r);
-                        fpsCounter.setRect(r);
-                        playback.setRect(r);
-                        navigator.setRect(r);
+                        fpsCounter_.setRect(r);
+                        playback_.setRect(r);
+                        navigator_.setRect(r);
                         for (auto& menu : menus_)
                             menu.setRect(r);
                         break;
@@ -144,10 +134,10 @@ MainWindow::runLoop()
             if (menus_.empty())
             {
                 // Playback event
-                playback.handleEvent(e);
+                playback_.handleEvent(e);
 
                 // Navigator event
-                navigator.handleEvent(e);
+                navigator_.handleEvent(e);
             }
             else
             {
@@ -164,7 +154,7 @@ MainWindow::runLoop()
 
                     // The simulate call blocks.
                     // TODO remove timer restart after adding async
-                    timer.restart();
+                    timer_.restart();
                 }
 
                 // Remove menu or at least clear the event state
@@ -176,25 +166,25 @@ MainWindow::runLoop()
         }
 
         // Time since last render frame (seconds)
-        float deltaT = timer.lap() / 1000.f;
+        float deltaT = timer_.lap() / 1000.f;
 
         // Only allow scene interaction when menus are hidden
         if (menus_.empty())
         {
             // Handle zooming and other viewport navigation
-            if (navigator.shouldZoomFit())
+            if (navigator_.shouldZoomFit())
                 pendulumProvider_.zoomFit();
-            else if (navigator.shouldZoomIn())
+            else if (navigator_.shouldZoomIn())
                 pendulumProvider_.zoom(1.1);
-            else if (navigator.shouldZoomOut())
+            else if (navigator_.shouldZoomOut())
                 pendulumProvider_.zoom(0.9);
-            navigator.clearState();
+            navigator_.clearState();
 
             // Chain movement is controlled by the playback controller
-            if (playback.shouldRestart())
+            if (playback_.shouldRestart())
                 pendulumProvider_.restart();
 
-            if (!playback.isPaused())
+            if (!playback_.isPaused())
             {
                 // Increment the chain position
                 pendulumProvider_.incrementTime(deltaT);
@@ -202,15 +192,15 @@ MainWindow::runLoop()
             else
             {
                 // Playback is paused, but frame by frame is allowed
-                if (playback.shouldFrameBack())
+                if (playback_.shouldFrameBack())
                     pendulumProvider_.decrementFrame(10);
-                if (playback.shouldFrameForward())
+                if (playback_.shouldFrameForward())
                     pendulumProvider_.incrementFrame(10);
             }
         }
 
         // Playback state has been processed
-        playback.clearState();
+        playback_.clearState();
 
         // Clear screen
         SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -220,13 +210,13 @@ MainWindow::runLoop()
         pendulumProvider_.render(renderer_);
 
         // Render fps counter
-        fpsCounter.render(renderer_, mainFont_);
+        fpsCounter_.render(renderer_, mainFont_);
 
         // Render playback controls
-        playback.render();
+        playback_.render();
 
         // Render navigation controls
-        navigator.render();
+        navigator_.render();
 
         // Render any menus
         if (!menus_.empty())

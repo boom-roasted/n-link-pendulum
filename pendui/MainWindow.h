@@ -12,6 +12,10 @@
 #include "SdlImg.h"
 #include "SdlTtf.h"
 #include "Font.h"
+#include "Timer.h"
+#include "FpsCounter.h"
+#include "Navigator.h"
+#include "Playback.h"
 
 class MainWindow
 {
@@ -52,6 +56,14 @@ private:
     // TODO maybe this should just be an optional?
     // Or even just a normal struct, but add a `bool MenuVisible` member?
     std::vector<MainMenu> menus_;
+
+    // Timers etc.
+    Timer timer_;
+    FpsCounter fpsCounter_;
+    
+    // Controls
+    Playback playback_;
+    Navigator navigator_;
 
     // Screen dimensions
     int w_;

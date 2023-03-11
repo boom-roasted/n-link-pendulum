@@ -25,9 +25,7 @@ set(SOURCES
 
 add_executable(pendui ${SOURCES})
 target_compile_features(pendui PUBLIC cxx_std_20)
-target_link_libraries(pendui PUBLIC SDL2main SDL2 SDL2_image SDL2_ttf PUBLIC pendlib)
-# target_include_directories(pendui PUBLIC pendlib)
-
+target_link_libraries(pendui PUBLIC SDL2main SDL2 SDL2_image SDL2_ttf pendlib)
 
 # Copy resource files to the target build directory
 set(RESOURCES
