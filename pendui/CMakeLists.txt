@@ -27,6 +27,12 @@ add_executable(pendui ${SOURCES})
 target_compile_features(pendui PUBLIC cxx_std_20)
 target_link_libraries(pendui PUBLIC SDL2main SDL2 SDL2_image SDL2_ttf pendlib)
 
+add_custom_target(run
+    COMMAND pendui
+    DEPENDS pendui
+    WORKING_DIRECTORY ${CMAKE_PROJECT_DIR}
+)
+
 # Copy resource files to the target build directory
 set(RESOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/res/DejaVuSerif.ttf
