@@ -5,6 +5,7 @@
 
 namespace pendlib
 {
+// Position and velocity.
 struct State
 {
     double x; // X position

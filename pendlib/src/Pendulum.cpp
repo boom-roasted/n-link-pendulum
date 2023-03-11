@@ -47,11 +47,18 @@ Pendulum::Create(int numNodes, double m, double l, double k, double c, Layout la
 
 void Pendulum::ApplyRungeKuttaSecondOrder(double deltaT)
 {
+    // Compute state of the pin as is.
+    // Essentially z=position, f=velocity (movement)
     const auto z1 = nodes_;
     const auto f1 = ComputeState(pin_, z1);
 
+    // Determine the delta position.
+    // Applying the time step to the velocity/acceleration converts:
+    // Acceleration-->velocity, velocity-->position
     const auto deltaZ1 = f1 * deltaT;
 
+    // Apply the delta position to determine an updated position.
+    // Get state for this position as well.
     const auto z2 = z1 + deltaZ1;
     const auto f2 = ComputeState(pin_, z2);
 
