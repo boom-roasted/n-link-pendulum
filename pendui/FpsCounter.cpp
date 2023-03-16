@@ -2,12 +2,19 @@
 
 FpsCounter::FpsCounter(SDL_Rect rect)
     : rect_(rect)
+    , renderer_(NULL)
     , timer_(Timer())
     , texture_(Texture())
     , color_({ 0, 0, 0, 0 })
     , text_("")
     , countedFrames_(0)
 {
+}
+
+void
+FpsCounter::setRenderer(SDL_Renderer* renderer)
+{
+    renderer_ = renderer;
 }
 
 void
@@ -23,7 +30,7 @@ FpsCounter::start()
 }
 
 void
-FpsCounter::render(SDL_Renderer* renderer, TTF_Font* font)
+FpsCounter::render(TTF_Font* font)
 {
     // Calculate fps. If there was a very small time delta, fps
     // might be too high.
@@ -38,7 +45,7 @@ FpsCounter::render(SDL_Renderer* renderer, TTF_Font* font)
 
     // Render text
     if (!texture_.loadFromRenderedText(
-            renderer, text_.str().c_str(), font, color_))
+            renderer_, text_.str().c_str(), font, color_))
         printf("Unable to render FPS texture!\n");
 
     constexpr int padding = 20;
@@ -47,7 +54,7 @@ FpsCounter::render(SDL_Renderer* renderer, TTF_Font* font)
     texture_.render(
         rect_.x + padding,
         rect_.y - padding + (rect_.h - texture_.getHeight()),
-        renderer);
+        renderer_);
 
     // Count this frame. Could reset every once and a while to prevent
     // overflow, but doesn't really matter. It'll mess up the average

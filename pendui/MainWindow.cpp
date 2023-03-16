@@ -14,9 +14,9 @@ MainWindow::MainWindow(int w, int h)
     , pendulumProvider_(PendulumProvider({ 0, 0, w, h }))
     , menus_(std::vector<MainMenu>())
     , timer_(Timer())
-    , fpsCounter_(FpsCounter({ 0, 0, w_, h_ }))
-    , playback_(Playback({ 0, 0, w_, h_ }, renderer_))
-    , navigator_(Navigator({ 0, 0, w_, h_ }, renderer_))
+    , fpsCounter_(FpsCounter({ 0, 0, w, h }))
+    , playback_(Playback({ 0, 0, w, h }, NULL))
+    , navigator_(Navigator({ 0, 0, w, h }, NULL))
     , w_(w)
     , h_(h)
 {
@@ -35,6 +35,11 @@ MainWindow::MainWindow(int w, int h)
 
     // Initialize renderer color
     SDL_SetRenderDrawColor(renderer_, 0xFF, 0xFF, 0xFF, 0xFF);
+
+    // Set component renderers
+    fpsCounter_.setRenderer(renderer_);
+    playback_.setRenderer(renderer_);
+    navigator_.setRenderer(renderer_);
 }
 
 void
@@ -210,7 +215,7 @@ MainWindow::runLoop()
         pendulumProvider_.render(renderer_);
 
         // Render fps counter
-        fpsCounter_.render(renderer_, mainFont_);
+        fpsCounter_.render(mainFont_);
 
         // Render playback controls
         playback_.render();

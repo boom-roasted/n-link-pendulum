@@ -18,6 +18,7 @@ public:
         SDL_Renderer* renderer,
         TTF_Font* font);
 
+    void setRenderer(SDL_Renderer* renderer);
     void setRect(const SDL_Rect& rect);
 
     void setIsPressed();

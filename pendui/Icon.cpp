@@ -15,6 +15,13 @@ Icon::Icon(
 {
 }
 
+void
+Icon::setRenderer(SDL_Renderer* renderer)
+{
+    renderer_ = renderer;
+    isDirty_ = true;
+}
+
 SDL_Rect
 Icon::rect()
 {

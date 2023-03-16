@@ -33,6 +33,16 @@ Navigator::Navigator(const SDL_Rect& rect, SDL_Renderer* renderer)
 }
 
 void
+Navigator::setRenderer(SDL_Renderer* renderer)
+{
+    renderer_ = renderer;
+    for (auto& button : buttons_)
+    {
+        button.setRenderer(renderer);
+    }
+}
+
+void
 Navigator::setRect(const SDL_Rect& rect)
 {
     rect_ = rect;

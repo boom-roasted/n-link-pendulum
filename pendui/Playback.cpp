@@ -36,6 +36,16 @@ Playback::Playback(const SDL_Rect& rect, SDL_Renderer* renderer)
 }
 
 void
+Playback::setRenderer(SDL_Renderer* renderer)
+{
+    renderer_ = renderer;
+    for (auto& button : buttons_)
+    {
+        button.setRenderer(renderer);
+    }
+}
+
+void
 Playback::setRect(const SDL_Rect& rect)
 {
     rect_ = rect;

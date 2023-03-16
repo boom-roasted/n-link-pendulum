@@ -12,6 +12,7 @@ class Navigator
 public:
     Navigator(const SDL_Rect& rect, SDL_Renderer* renderer);
 
+    void setRenderer(SDL_Renderer* renderer);
     void setRect(const SDL_Rect& rect);
 
     // Navigator state

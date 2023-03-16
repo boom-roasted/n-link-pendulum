@@ -17,6 +17,8 @@ public:
         const std::string& iconPath,
         SDL_Renderer* renderer);
 
+    void setRenderer(SDL_Renderer* renderer);
+
     SDL_Rect rect();
     void setRect(const SDL_Rect& rect);
 

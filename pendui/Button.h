@@ -40,6 +40,12 @@ public:
     }
     // clang-format on
 
+    void
+    setRenderer(SDL_Renderer* renderer)
+    {
+        content_.setRenderer(renderer);
+    }
+
     void setRect(const SDL_Rect& rect)
     {
         content_.setRect(rect);

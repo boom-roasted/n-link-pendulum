@@ -20,6 +20,13 @@ Text::Text(
 }
 
 void
+Text::setRenderer(SDL_Renderer* renderer)
+{
+    renderer_ = renderer;
+    isDirty_ = true;
+}
+
+void
 Text::setRect(const SDL_Rect& rect)
 {
     rect_ = rect;
